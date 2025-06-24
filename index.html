@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Passage - Luminose</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Effet de particules en arrière-plan */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .door {
+            width: 120px;
+            height: 180px;
+            margin: 0 auto 40px;
+            position: relative;
+            background: linear-gradient(145deg, #2c2c54, #1a1a2e);
+            border-radius: 8px;
+            box-shadow: 
+                0 0 30px rgba(255, 215, 0, 0.3),
+                inset 0 2px 10px rgba(255, 255, 255, 0.1);
+            border: 2px solid #ffd700;
+        }
+
+        .door::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            width: 8px;
+            height: 8px;
+            background: #ffd700;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .door::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        .message {
+            color: #f0f0f0;
+            font-size: 2.2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            animation: glow 4s ease-in-out infinite alternate;
+            line-height: 1.4;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.2); }
+            to { text-shadow: 0 0 30px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 215, 0, 0.4); }
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        /* Animation d'apparition */
+        .container {
+            animation: fadeIn 2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .message {
+                font-size: 1.6rem;
+                letter-spacing: 1px;
+                padding: 0 20px;
+            }
+            
+            .door {
+                width: 80px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <div class="door"></div>
+        <div class="message">
+            Le passage n'est pas<br>encore ouvert
+        </div>
+        <div class="subtitle">Luminose</div>
+    </div>
+
+    <script>
+        // Génération des étoiles
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        createStars();
+    </script>
+</body>
+</html>
