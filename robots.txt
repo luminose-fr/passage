@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://passage.luminose.fr/sitemap.xml

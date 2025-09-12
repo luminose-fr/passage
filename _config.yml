@@ -1,0 +1,38 @@
+title: "Le Seuil — Luminose"
+description: "Parcours initiatique thérapeutique premium — 4 mois · 7 séances · cadre sécurisé · entretien préalable requis."
+url: "https://passage.luminose.fr"
+baseurl: ""
+lang: fr
+permalink: /:title/
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-redirect-from
+
+# Variables de thème et de funnel
+cta_label: "Vérifier l’adéquation" # CTA unique site-wide 
+                                   # Demander l’entretien
+calendly_url: "https://calendly.com/luminose/entretien-le-seuil?hide_landing_page_details=1&hide_event_type_details=1"
+
+# SEO tag config
+logo: /assets/logo.svg
+social:
+  name: "Luminose"
+  links: []
+
+defaults:
+  - scope: { path: "" }
+    values:
+      layout: default
+      lang: fr
+      image: /assets/og-default.jpg
+      seo:
+        type: WebPage
+
+sass:
+  style: compressed
+  sourcemap: never
+
+exclude:
+  - node_modules
+  - vendor

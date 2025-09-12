@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Seuil & La Renaissance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .column {
+            position: relative;
+            flex: 1;
+            cursor: pointer;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden;
+        }
+
+        .column-left {
+            background: linear-gradient(180deg, #E5C7CD 0%,#E8C6BD 25%,#F8D2B6 50%, #FCDFB9 75%, #FFDDAA 100%);
+            background-attachment: fixed;
+        }
+
+        .column-right {
+            background: linear-gradient(180deg, #1F1536 0%, #3F244C 25%, #683554 50%, #AB585C 75%, #E28864 100%);
+            background-attachment: fixed;
+        }
+
+        .column-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            z-index: 10;
+            transition: all 0.8s ease;
+            user-select: none;
+        }
+
+        .column-left .column-title {
+            color: #4A4A4A;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .column-right .column-title {
+            color: #F5F5F5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 40px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transform: translateY(20px);
+        }
+
+        .content.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            margin-top: 80px;
+        }
+
+        .content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            margin-top: 30px;
+        }
+
+        .content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .content ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .content li {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .column-left .content {
+            color: #4A4A4A;
+        }
+
+        .column-right .content {
+            color: #F5F5F5;
+        }
+
+        .column-left .content h2,
+        .column-left .content h3 {
+            color: #2C2C2C;
+        }
+
+        .column-right .content h2,
+        .column-right .content h3 {
+            color: #FFF;
+        }
+
+        /* États d'expansion */
+        .expanded-left {
+            flex: 4;
+        }
+
+        .expanded-right {
+            flex: 4;
+        }
+
+        .collapsed {
+            flex: 1;
+        }
+
+        .column.expanded {
+            cursor: default;
+        }
+
+        .column.expanded .column-title {
+            top: 10%;
+            font-size: 2rem;
+            cursor: default;
+        }
+
+        /* Responsive - Mobile et tablette */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .column {
+                flex: 1;
+                height: 50vh;
+            }
+
+            .column-title {
+                font-size: 2rem;
+            }
+
+            .expanded-left,
+            .expanded-right {
+                flex: 4;
+                height: 80vh;
+            }
+
+            .collapsed {
+                flex: 1;
+                height: 20vh;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .content h2 {
+                font-size: 2rem;
+                margin-top: 60px;
+            }
+
+            .content h3 {
+                font-size: 1.5rem;
+            }
+
+            .content p,
+            .content li {
+                font-size: 1rem;
+            }
+        }
+
+        /* Scrollbar styling */
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="column column-left" id="leftColumn">
+            <div class="column-title">Le Seuil</div>
+            <div class="content" id="leftContent">
+                <h2>Le Seuil - L'Art de la Transition</h2>
+                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                
+                <h3>Les Fondements</h3>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                
+                <h3>Principes Essentiels</h3>
+                <ul>
+                    <li>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</li>
+                    <li>Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt</li>
+                    <li>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet</li>
+                    <li>Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt</li>
+                    <li>Ut labore et dolore magnam aliquam quaerat voluptatem</li>
+                </ul>
+                
+                <h3>La Philosophie du Seuil</h3>
+                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+                
+                <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.</p>
+                
+                <h3>Applications Pratiques</h3>
+                <p>Omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
+                
+                <ul>
+                    <li>Itaque earum rerum hic tenetur a sapiente delectus</li>
+                    <li>Ut aut reiciendis voluptatibus maiores alias consequatur</li>
+                    <li>Aut perferendis doloribus asperiores repellat</li>
+                </ul>
+                
+                <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+                
+                <h3>Conclusion</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+        </div>
+        
+        <div class="column column-right" id="rightColumn">
+            <div class="column-title">La Renaissance</div>
+            <div class="content" id="rightContent">
+                <h2>La Renaissance - L'Éveil des Possibles</h2>
+                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum fermentum nunc.</p>
+                
+                <h3>L'Art de la Transformation</h3>
+                <p>Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim. Etiam cursus, magna vel dignissim cursus, nulla nisl tempor augue, eget tincidunt nisl massa non ante.</p>
+                
+                <p>Morbi fermentum, velit eget scelerisque tempor, tortor elit cursus lorem, ut rutrum elit urna ut massa. Donec vel ante vel nunc tempor tristique. Nullam sit amet nisi condimentum erat iaculis auctor.</p>
+                
+                <h3>Les Piliers de la Renaissance</h3>
+                <ul>
+                    <li>Créativité et innovation comme forces motrices</li>
+                    <li>Harmonie entre tradition et modernité</li>
+                    <li>Exploration des nouveaux territoires artistiques</li>
+                    <li>Développement de la conscience collective</li>
+                    <li>Intégration des technologies émergentes</li>
+                </ul>
+                
+                <h3>Vision et Perspectives</h3>
+                <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>
+                
+                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.</p>
+                
+                <h3>Méthodologie</h3>
+                <p>Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.</p>
+                
+                <ul>
+                    <li>Analyse approfondie des tendances contemporaines</li>
+                    <li>Expérimentation avec les nouvelles formes d'expression</li>
+                    <li>Collaboration interdisciplinaire</li>
+                    <li>Évaluation continue des résultats</li>
+                </ul>
+                
+                <h3>L'Avenir de la Renaissance</h3>
+                <p>Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat.</p>
+                
+                <p>Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus. Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula vulputate sem tristique cursus.</p>
+                
+                <h3>Conclusion</h3>
+                <p>Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. Nam lacus libero, pretium at, lobortis vitae, ultricies et, tellus. Donec aliquet, tortor sed accumsan bibendum, erat ligula aliquet magna, vitae ornare odio metus a mi.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const leftColumn = document.getElementById('leftColumn');
+        const rightColumn = document.getElementById('rightColumn');
+        const leftContent = document.getElementById('leftContent');
+        const rightContent = document.getElementById('rightContent');
+        const container = document.querySelector('.container');
+
+        let currentState = 'initial'; // 'initial', 'left-expanded', 'right-expanded'
+
+        function resetColumns() {
+            leftColumn.classList.remove('expanded-left', 'collapsed', 'expanded');
+            rightColumn.classList.remove('expanded-right', 'collapsed', 'expanded');
+            leftContent.classList.remove('show');
+            rightContent.classList.remove('show');
+        }
+
+        function expandLeft() {
+            resetColumns();
+            leftColumn.classList.add('expanded-left', 'expanded');
+            rightColumn.classList.add('collapsed');
+            currentState = 'left-expanded';
+            
+            // Délai pour l'animation du contenu
+            setTimeout(() => {
+                leftContent.classList.add('show');
+            }, 400);
+        }
+
+        function expandRight() {
+            resetColumns();
+            rightColumn.classList.add('expanded-right', 'expanded');
+            leftColumn.classList.add('collapsed');
+            currentState = 'right-expanded';
+            
+            // Délai pour l'animation du contenu
+            setTimeout(() => {
+                rightContent.classList.add('show');
+            }, 400);
+        }
+
+        leftColumn.addEventListener('click', (e) => {
+            // Empêcher le clic sur le contenu de déclencher l'expansion
+            if (e.target.closest('.content')) {
+                return;
+            }
+            
+            // Désactiver le clic si la colonne est déjà dépliée
+            if (currentState === 'left-expanded') {
+                return;
+            }
+            
+            expandLeft();
+        });
+
+        rightColumn.addEventListener('click', (e) => {
+            // Empêcher le clic sur le contenu de déclencher l'expansion
+            if (e.target.closest('.content')) {
+                return;
+            }
+            
+            // Désactiver le clic si la colonne est déjà dépliée
+            if (currentState === 'right-expanded') {
+                return;
+            }
+            
+            expandRight();
+        });
+
+        // Initialisation
+        resetColumns();
+    </script>
+</body>
+</html>

@@ -1,0 +1,675 @@
+@use "ui-variables"as v;
+
+/* Expose tokens aussi en CSS custom properties pour JS/calculs */
+:root {
+  --overlay-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Typo globale 19px (au cas où Bulma ne prend pas le $body-size) */
+
+strong {
+  background-color: v.$pink-light;
+}
+.has-pink-contrast strong,
+.has-orange-medium-contrast strong {
+  background-color: transparent;
+}
+.has-gold-contrast strong {
+  background-color: v.$gold-medium;
+}
+
+.is-simple,
+h2.is-simple,
+.content h2.is-simple,
+.content h2:not(:first-child).is-simple {
+  font-weight: normal;
+  font-family: v.$family-sans-serif;
+  font-size: var(--bulma-size-6);
+  color: v.$prune;
+  margin-top: 0;
+  margin-bottom: var(--bulma-content-block-margin-bottom);
+}
+
+h3,
+.content h3 {
+  font-family: v.$family-serif;
+  color: v.$prune;
+  font-size: var(--bulma-size-4);
+  // font-weight: var(--bulma-title-weight);
+}
+.section.intro {
+  padding-bottom:0;
+  h2.is-simple:last-child {
+    margin-bottom: 0;
+  }
+  *:not(:last-child):not(:first-child) {
+    margin-bottom: 0.25rem;
+  }
+  // h1:not(:last-child) {
+  //   margin-bottom: var(--bulma-content-block-margin-bottom);
+  // }
+}
+
+p.illustration,
+.content p:not(:last-child).illustration {
+  font-size: 3rem;
+  margin-bottom: 0;
+}
+
+.has-hero-contrast {
+  background-color: v.$prune;
+  color: #fff;
+  
+  h2, h3 {
+    color: #fff;
+  }
+
+  .button.is-primary{
+    background-color: #fff;
+    border-color: #fff;
+    color: v.$prune;
+  }
+}
+
+.has-white-background {
+  background-color: #fff;
+}
+
+.has-pink-contrast {
+  background-color: v.$pink;
+}
+
+.has-gold-contrast {
+  background-color: v.$gold-light;
+
+  hr {
+    background-color: v.$gold;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.has-gold-contrast-border {
+  border: 2px solid v.$gold;
+}
+
+.has-orange-medium-contrast {
+  background-color: v.$orange-light;
+  color: v.$orange;
+
+  h3 {
+    color: v.$orange;
+  }
+
+  small {
+    color: v.$orange-medium;
+  }
+
+  hr {
+    background-color: v.$orange;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.has-rounded-corners-small {
+  border-radius: var(--bulma-radius);
+  padding: var(--bulma-block-spacing);
+  margin-bottom: 0.75rem;
+}
+.has-rounded-corners {
+  border-radius: var(--bulma-radius-large);
+  padding: var(--bulma-block-spacing);
+  margin-bottom: 0.75rem;
+}
+.has-rounded-corners:last-child {
+  margin-bottom: 0;
+}
+img.has-rounded-corners{
+  padding:0;
+}
+
+.content ul.fa-ul {
+  list-style-type: none;   /* supprime les puces */
+  margin-left: 0;          /* remet à plat pour mobile */
+  padding-left: 1.5em;     /* espace laissé pour l'icône */
+
+  li.fa-li {
+    position: absolute;      /* positionnement auto de l’icône par FA */
+    left: 0;                 /* colle à gauche */
+  }
+}
+
+
+.numero-etape {
+  display: inline-block;
+  background:v.$pink;
+  width:2rem;
+  height:2rem;
+  line-height: 2rem;
+  text-align: center;
+  border-radius: 9999px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tag {
+  background-color: v.$gold;
+  color: v.$gold-light;
+}
+.tag.is-pink {
+  background-color: v.$pink;
+  color: v.$prune;
+}
+
+.image-fit {
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+}
+
+.image-container-egg {
+  border-radius: 200px;
+  overflow: hidden;
+}
+
+.has-text-centered {
+  .tags {
+    justify-content: center;
+  }
+}
+.illustration i.icon {
+  font-size: 3rem;
+  color: inherit;
+}
+
+/* Fond gradient fixe qui ne bouge pas au scroll (y compris iOS) */
+.gradient-fixed::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: v.$gradient;
+  transform: translateZ(0);
+}
+
+/* Boutons pilules partout + CTA texte blanc */
+.button {
+  border-radius: 9999px;
+}
+
+.button.is-primary {
+  background-color: v.$prune;
+  border-color: v.$prune;
+  color: #fff;
+}
+
+.button.is-secondary {
+  background-color: white;
+  border-color: v.$prune;
+  color: v.$prune;
+  border-width: 2px;;
+
+  .is-hidden-mobile {
+    padding:0 0.25rem;
+  }
+}
+
+/* Compensation du menu fixe (prend en compte marque + bloc blanc) */
+.has-floating-nav .site-main {
+  padding-top: 1.5rem;
+}
+
+// Carousel
+//
+.carousel {
+  position: relative;
+  overflow: hidden;
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.4s ease;
+    will-change: transform;
+
+    .carousel-slide {
+      flex: 0 0 100%;     /* ← chaque slide occupe 100% de la largeur viewport */
+      box-sizing: border-box;
+      display: flex;      /* optionnel : pour centrer le contenu */
+      justify-content: center;
+      align-items: center;
+    }
+
+    img {
+      max-width: 100%;    /* ← image ne dépasse jamais la slide */
+      height: auto;       /* ← garde proportions carrées */
+      object-fit: contain;/* ← si tu veux forcer affichage complet */
+      display: block;
+    }
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%; 
+    transform: translateY(-50%);
+    background: none; 
+    border: none;
+    font-size: 1.5rem; 
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 9999px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .carousel-btn.prev { left: .5rem; }
+  .carousel-btn.next { right: .5rem; }
+  .carousel-btn:disabled { opacity: .4; cursor: default; }
+
+  .carousel-dots {
+    position: absolute;
+    bottom: 1rem;
+    left:0; right:0;
+    display: flex; 
+    justify-content: center; 
+  }
+  .carousel-dot {
+    width: .75rem; 
+    height: .75rem;
+    border-radius: 50%;
+    margin: 0 .25rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    cursor: pointer;
+  }
+  .carousel-dot.is-active { 
+    background: v.$prune; 
+  }
+}
+
+.has-orange-medium-contrast .carousel .carousel-dot.is-active { 
+    background: v.$orange; 
+}
+
+
+
+//
+// Nav générale
+//
+/* Conteneur fixe global */
+.floating-nav {
+  left: 0;
+  right: 0;
+  padding: 0 1.5rem;
+  pointer-events: none;
+  /* seuls les enfants autorisent l’interaction */
+  position: sticky;
+  top: 1.5rem;
+  z-index: 1100 !important;
+}
+
+/* Bloc blanc translucide (desktop + mobile) */
+.nav-shell {
+  pointer-events: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: v.$nav-padding;
+  border-radius: v.$rounded-radius;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: v.$nav-shadow;
+}
+
+@supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+  .nav-shell {
+    -webkit-backdrop-filter: saturate(120%) blur(12px);
+    backdrop-filter: saturate(120%) blur(12px);
+  }
+}
+
+/* Rangée principale du nav */
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* groupe gauche vs CTA à droite */
+  gap: v.$nav-padding;
+}
+
+/* Groupe gauche (marque + liens collés) */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: v.$nav-padding;
+  /* même valeur que le padding interne du menu */
+}
+
+/* Groupe de liens (desktop) */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: v.$nav-padding;
+}
+
+/* Brand chip (clé + Le Seuil) */
+.brand.nav-chip,
+.nav-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .25rem .875rem;
+  border-radius: v.$rounded-radius;
+  background: #fff;
+  color: v.$prune-500;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: color .15s ease, background .15s ease, border-color .15s ease;
+}
+
+.brand.nav-chip:hover,
+.nav-chip:hover {
+  color: v.$prune;
+  background: v.$pink-light;
+}
+
+.nav-chip.is-active,
+.nav-chip[aria-current="page"] {
+  background: v.$pink;
+  color: v.$prune;
+}
+
+.key-ico {
+  color: v.$prune;
+}
+
+.floating-nav .main-icon {
+  font-size: inherit;
+
+  .icon.icon-key {
+    margin-left: -0.2rem;
+    width: auto;
+  }
+}
+
+/* CTA + bouton Menu */
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: v.$nav-padding;
+}
+
+.cta-pill {
+  white-space: nowrap;
+}
+
+//
+// Nav spécifique mobile
+//
+/* Ligne mobile de marque (hors bloc blanc) */
+.nav-mobile-top {
+  pointer-events: auto;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .brand .icon-text.main-icon {
+    font-size: 1.6rem;
+    border-radius: v.$rounded-radius;
+    padding: v.$nav-padding;
+    vertical-align: middle;
+  }
+}
+
+/* Barre mobile (Menu + CTA) dans le bloc blanc */
+.nav-mobile-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: v.$nav-padding;
+}
+
+/* Overlay fixe pour le menu mobile déplié: recouvre sans pousser le contenu */
+.mobile-overlay {
+  box-shadow: v.$nav-shadow;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: white;
+  top: 3.60rem;
+  z-index: 1099;
+  pointer-events: none;
+  border-bottom-left-radius: v.$rounded-radius;
+  border-bottom-right-radius: v.$rounded-radius;
+ 
+  .container {
+    pointer-events: none;
+  }
+
+  .mobile-panel {
+    padding: 0.6rem;
+    pointer-events: auto;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 0.6rem;
+    display: grid;
+    gap: .5rem;
+
+    max-height: calc(100vh - var(--overlay-bottom));
+    overflow: auto;
+  }
+}
+
+@supports (height: 100dvh) {
+  .mobile-overlay .mobile-panel {
+    max-height: calc(100dvh - var(--overlay-bottom));
+  }
+}
+
+/* Masquage robuste */
+.is-hidden {
+  display: none !important;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Focus visibles et skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: 1rem;
+  top: 4.5rem;
+  background: #fff;
+  padding: .5rem .75rem;
+  border: 2px solid v.$prune;
+  border-radius: 6px;
+  z-index: 1100;
+}
+
+// 
+// Accueil
+//
+.hero-body {
+  padding: 1.5rem;
+
+  h1 {
+    font-family: v.$family-serif;
+    font-size: var(--bulma-size-4);
+    line-height: 2rem;
+    margin-bottom: 2.3rem;
+  }
+
+  h2 {
+    font-family: v.$family-serif;
+    font-size: var(--bulma-size-4);
+  }
+
+  h2:not(:first-child) {
+    margin-top: 0.5rem;
+  }
+
+  .box {
+    position: relative;
+  }
+
+  .main-icon {
+    rotate: 45deg;
+    font-size: 3rem;
+    position: absolute;
+    top: -0.8rem;
+  }
+}
+
+.title:not(:last-child),
+.tags:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+
+.box.programme {
+  h3:not(:first-child) {
+    margin-top: 0;
+  }
+}
+
+.box.temoignages {
+  text-align: center;
+
+  h3:not(:first-child) {
+    margin-top: 0;
+  }
+
+  .temoignage {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+
+    .texte {
+      background-color: #fff;
+      font-family: v.$family-serif;
+    }
+
+    .metadata-container {
+      padding-left: 0.75rem;
+    }
+
+  }
+
+  .carousel .carousel-btn {
+    top:3rem;
+  }
+  .carousel .carousel-btn.prev {
+    left:33%;
+  }
+  .carousel .carousel-btn.next {
+    right:33%;
+  }
+}
+
+.florent {
+  .title.person {
+    font-weight: var(--bulma-title-weight);
+    font-size: var(--bulma-size-4);
+    margin-bottom: 0.75rem;
+  }
+
+  .subtitle.job {
+    font-size: var(--bulma-body-size);
+    font-family: v.$family-sans-serif;
+    margin: 0;
+    margin-bottom: 0.75rem;
+  }
+}
+
+// Programme
+//
+.card .card-content {
+  .content h3,
+  h3 {
+    font-size: var(--bulma-size-4);
+    font-family: v.$family-serif;
+  }
+  .content h4,
+  h4 {
+    font-size: var(--bulma-size-7);
+  }
+  .principal {
+    text-align: center;
+    margin-bottom: 0.75rem;
+  }
+  .cle {
+    text-align: center;
+    font-family: v.$family-serif;
+  }
+  button.plus {
+    padding:0.75rem;
+
+    .icon {
+      transition: transform 0.3s ease;
+    }
+  }
+  button.plus.is-open .icon {
+    transform: rotate(180deg);
+  }
+  .secondaire {
+    border-top: 2px v.$pink solid;
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+
+    .tag-title {
+      text-align: center;
+    }
+
+    .tag-title:not(:first-child) {
+      margin-top: var(--bulma-block-spacing);
+    }
+
+    .reassurance {
+      border-top: 2px v.$pink solid;
+      padding-top: 0.75rem;
+      margin-top: 0.75rem;
+    }
+  }
+  
+}
+
+.section.interesse {
+  
+}
+
+// A propos
+//
+.section.qui {
+  img.florent {
+    width: 100px;
+    height: 100px;
+    margin:var(--bulma-block-spacing);
+  }
+}
+
+// Cadre et sécurité
+//
+
+
+// FAQ
+//
+
+/* bloc global */
+/* Bloc global */
+.faq-block {
+
+}
+
+/* Panel + Answers */
+.faq-answer { display: none; }
+.faq-answer.is-active { display: block; }

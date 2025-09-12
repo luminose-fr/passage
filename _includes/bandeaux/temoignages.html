@@ -1,0 +1,49 @@
+{% if site.data.temoignages %}
+	{% assign temoignages = site.data.temoignages | slice: 0,9 %}
+{% endif %}
+{% if temoignages.size > 0 %}
+<div class="box content temoignages carousel-container has-orange-medium-contrast">
+	<div class="carousel" data-carousel>
+		<p class="illustration"><i class="icon icon-temoignages"></i></p>
+		<h3>Témoignages</h3>
+		
+		<div class="carousel-track">
+		{% for temoignage in temoignages %}
+			{% assign i = forloop.index0 %}
+			{% assign m = i | modulo: 3 %}
+			{% if m == 0 %}
+			<div class="carousel-slide {% if forloop.first %} is-active{% endif %}">
+				<div class="columns">
+			{% endif %}
+
+				<div class="column is-one-third temoignage n-{{ forloop.index }}">
+				<div class="texte has-rounded-corners">« {{ temoignage.texte | strip_html }} »</div>
+				<div class="metadata-container">
+					<div class="auteur">{{ temoignage.auteur | strip_html }}</div>
+					<div class="etoiles">
+						{% for j in (1..5) %}
+						{% if j > temoignage.etoiles %}
+							<i class="far fa-star"></i>
+						{% else %}
+							<i class="fas fa-star"></i>
+						{% endif %}
+						{% endfor %}
+					</div>
+					<small class="date">{{ temoignage.date | strip_html }}</small>
+				</div>
+				</div>
+			{% if m == 2 or forloop.last %}
+				</div>
+			</div>
+			{% endif %}
+		{% endfor %}
+		</div>
+
+		<button class="carousel-btn prev is-hidden-touch" aria-label="Précédent" disabled><i class="fa-solid fa-chevron-left"></i></button>
+		<button class="carousel-btn next is-hidden-touch" aria-label="Suivant"><i class="fa-solid fa-chevron-right"></i></button>
+
+		<div class="carousel-dots is-hidden" role="tablist"></div>
+	</div>
+</div>
+{% endif %}
+

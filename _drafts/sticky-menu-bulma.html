@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Sticky avec Bulma</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <style>
+        /* Solution simple : sticky CSS pur */
+        .sticky-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Style pour le contenu de démonstration */
+        .demo-content {
+            min-height: 200vh;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            padding: 2rem;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Titre de la page -->
+    <section class="hero is-medium hero-section">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title is-1">Titre de ma page</h1>
+                <h2 class="subtitle is-4">Faites défiler pour voir le menu devenir sticky</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu qui deviendra sticky -->
+    <nav class="navbar is-primary sticky-navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="#">
+                    <strong>Mon Site</strong>
+                </a>
+                
+                <!-- Burger menu pour mobile -->
+                <a role="button" class="navbar-burger" data-target="navbarMenu" aria-label="menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </div>
+            
+            <div id="navbarMenu" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="#accueil">Accueil</a>
+                    <a class="navbar-item" href="#services">Services</a>
+                    <a class="navbar-item" href="#portfolio">Portfolio</a>
+                    <a class="navbar-item" href="#contact">Contact</a>
+                </div>
+                
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-light">
+                                <strong>Connexion</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Autres contenus -->
+    <section class="section demo-content">
+        <div class="container">
+            <div class="content">
+                <h2 class="title is-2">Contenu de la page</h2>
+                <p class="is-size-5">
+                    Continuez à faire défiler pour tester le comportement sticky du menu.
+                    Le menu restera collé en haut de la page une fois que vous aurez dépassé sa position initiale.
+                </p>
+                
+                <div class="columns">
+                    <div class="column">
+                        <div class="box">
+                            <h3 class="title is-4">Section 1</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box">
+                            <h3 class="title is-4">Section 2</h3>
+                            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box">
+                    <h3 class="title is-4">Contenu supplémentaire</h3>
+                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                </div>
+                
+                <div class="notification is-info">
+                    <p><strong>Note :</strong> Cette solution utilise <code>position: sticky</code> en CSS pur, sans JavaScript complexe. C'est plus simple, plus performant et sans bugs de positionnement !</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // JavaScript minimal uniquement pour le burger menu
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gérer le burger menu pour mobile
+            const burgers = document.querySelectorAll('.navbar-burger');
+            burgers.forEach(burger => {
+                burger.addEventListener('click', function() {
+                    const targetId = burger.dataset.target;
+                    const target = document.getElementById(targetId);
+                    
+                    burger.classList.toggle('is-active');
+                    if (target) {
+                        target.classList.toggle('is-active');
+                    }
+                });
+            });
+            
+            // 🔍 DIAGNOSTIC : Vérifier les problèmes potentiels
+            const stickyNav = document.querySelector('.sticky-navbar');
+            
+            function checkStickyIssues() {
+                let parent = stickyNav.parentElement;
+                let issues = [];
+                
+                // Vérifier les parents jusqu'au body
+                while (parent && parent !== document.body) {
+                    const styles = window.getComputedStyle(parent);
+                    
+                    // Vérifier overflow
+                    if (styles.overflow !== 'visible' || styles.overflowY !== 'visible') {
+                        issues.push(`Parent "${parent.tagName}" a overflow: ${styles.overflow}/${styles.overflowY}`);
+                    }
+                    
+                    // Vérifier height fixe
+                    if (styles.height !== 'auto' && styles.height !== '0px') {
+                        issues.push(`Parent "${parent.tagName}" a height: ${styles.height}`);
+                    }
+                    
+                    parent = parent.parentElement;
+                }
+                
+                if (issues.length > 0) {
+                    console.warn('🚨 Problèmes détectés avec sticky:', issues);
+                } else {
+                    console.info('✅ Aucun problème détecté avec sticky');
+                }
+                
+                // Vérifier la position du menu
+                const rect = stickyNav.getBoundingClientRect();
+                console.info('📍 Position du menu:', {
+                    top: rect.top,
+                    visible: rect.top >= 0 && rect.top <= window.innerHeight
+                });
+            }
+            
+            // Diagnostic au chargement
+            setTimeout(checkStickyIssues, 1000);
+            
+            // Diagnostic pendant le scroll (debug)
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(checkStickyIssues, 500);
+            });
+        });
+    </script>
+</body>
+</html>

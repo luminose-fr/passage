@@ -1,0 +1,152 @@
+@use "ui-variables"as v;
+@use "bulma-1.0.4/sass/utilities/mixins";
+
+@include mixins.fullhd {
+    :root {
+        --bulma-size-4: 1.7rem;
+    }
+    
+  // Styles applied
+  // above v.$fullhd
+  html, body {
+    font-size: 20px;
+  }
+  .hero-body .title.is-1 {
+    font-size: 4rem;
+    }
+}
+
+// @include mixins.widescreen-only {
+
+//   // Styles applied
+//   // between v.$widescreen
+//   // and v.$fullhd
+//   html, body {
+//     font-size: 17px;
+//   }
+// }
+
+// @include mixins.desktop-only {
+
+//   // Styles applied
+//   // between v.$desktop
+//   // and v.$widescreen
+//   html, body {
+//     font-size: 16px;
+//   }
+// }
+
+@include mixins.desktop {
+    .is-visible-desktop {
+        display: block !important;
+    }
+    .avant-pendant-apres .column:not(:first-child) {
+        border-left: 2px v.$gold-medium solid;
+    }
+    .faq-container {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+    .faq-menu {
+        flex: 1;                  /* prend toute largeur initialement */
+        max-width: 800px;          /* large centré plein écran */
+    }
+    .faq-container.has-selection .faq-menu {
+        flex: 0 0 280px;           /* quand réponse affichée → menu redevient colonne */
+        max-width: none;
+    }
+    .faq-panel {
+        display: none;
+        flex: 1;
+        max-width: 600px;
+    }
+    .faq-panel.is-visible {
+        display: block;
+        animation: fadeIn .3s ease;
+    }
+    .faq-back {
+        display: none;
+    }
+}
+
+@include mixins.touch {
+    .nav-mobile-top {
+        padding-top:0.75rem;
+    }
+    .has-floating-nav .site-main{ 
+        padding-top: 0.75rem; 
+    }
+    .floating-nav{
+        top: 0.75rem;
+    }
+    .nav-shell {
+        padding: 0.6rem;
+    }
+
+    /* État ouvert: le nav-shell joint visuellement avec l’overlay */
+    .nav-shell.is-open {
+        border-radius: v.$nav-radius-open;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+
+        /* Conserve la hauteur: cache la bordure au lieu de la retirer */
+        border-bottom-color: white;
+        background: white;
+    }
+    .faq-block {
+        // min-height: 15rem; 
+        overflow: hidden;
+    }
+    
+    .faq-container {
+        display: flex;
+        width: calc(200% + 2rem);
+        overflow-x: hidden;
+        transition: transform .3s ease; 
+    }
+    
+    .faq-menu,
+    .faq-panel {
+        flex: 0 0 calc(50% - 1rem); /* 50% moins la moitié du gap */
+        width: calc(50% - 1rem);
+    }
+    
+
+    .faq-container {
+        transform: translateX(0);
+        gap: 2rem; 
+    }
+
+    .faq-container.show-panel {
+        transform: translateX(calc(-50% - 1rem)); /* Décalage qui tient compte du gap */
+    }
+}
+
+@include mixins.tablet-only {
+
+    html,
+    body {
+        font-size: 17px;
+    }
+    .avant-pendant-apres .column:not(:first-child) {
+        border-left: 2px v.$gold-medium solid;
+    }
+}
+
+@include mixins.mobile {
+
+    html,
+    body {
+        font-size: 17px;
+    }
+    .avant-pendant-apres .column:not(:first-child) {
+        border-top: 2px v.$gold-medium solid;
+    }
+
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateX(20px);}
+  to   {opacity: 1; transform: translateX(0);}
+}

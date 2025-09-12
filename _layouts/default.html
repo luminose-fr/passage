@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="{{ page.lang | default: site.lang }}">
+<head>
+  <title>{% if page.title %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  {% include head.html %}
+</head>
+<body class="gradient-fixed has-floating-nav">
+  {% include header.html %}
+  <main id="main" role="main" class="site-main">
+    {{ content }}
+  </main>
+  {% include footer.html %}
+  <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
+</body>
+</html>

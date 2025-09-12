@@ -1,0 +1,26 @@
+<div class="card carte-etape">
+    <div class="card-content">
+    
+    <div class="principal">
+        <span class="numero-etape">{{ etape.numero }}</span>
+        <h3>{{ etape.titre }}</h3>
+        <span class="tag is-pink">{{ etape.type }}</span>
+    </div>
+
+    <div class="cle">{{ etape.cle }}</div>
+
+    <div class="has-text-centered">
+        <button class="plus" aria-label="plus" aria-expanded="false">
+        <span class="icon">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </span>
+        </button>
+    </div>
+
+    <div class="secondaire content is-hidden" aria-hidden="true">
+        <p><strong>Intention :</strong> {{ etape.intention }}</p>
+        <p><strong>Outils :</strong> {{ etape.outils }}</p>
+    </div>
+
+    </div>
+</div>

@@ -1,0 +1,63 @@
+{% assign current = page.url | default: page.permalink | default: '' %}
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+  <!-- Ligne mobile: Marque seule (hors bloc blanc) -->
+  <div class="container nav-mobile-top is-hidden-desktop">
+    <a href="{{ '/' | relative_url }}"
+       class="brand"
+       role="menuitem" {% if current == '/' %}aria-current="page"{% endif %}
+       aria-label="Accueil — Le Seuil">
+      <span class="main-icon icon-text">
+        <i class="icon icon-key"></i>
+        <span class="brand-text">Le Seuil</span>
+      </span>
+    </a>
+  </div>
+
+<nav class="floating-nav" role="navigation" aria-label="Menu principal">
+  <!-- Bloc compact blanc-translucide (desktop+mobile) -->
+  <div class="container nav-shell" role="menubar">
+    <!-- Desktop: marque + liens à gauche, CTA à droite (inchangé) -->
+    <div class="nav-row is-hidden-touch">
+      <div class="nav-left">
+        <a href="{{ '/' | relative_url }}"
+           class="brand nav-chip {% if current == '/' %}is-active{% endif %}"
+           role="menuitem" {% if current == '/' %}aria-current="page"{% endif %}>
+          <span class="main-icon icon-text">
+            <i class="icon icon-key"></i><span class="brand-text">Le Seuil</span>
+          </span>
+        </a>
+        <div class="nav-links" role="menubar">
+          <a href="{{ '/programme/' | relative_url }}" class="nav-chip {% if current == '/programme/' %}is-active{% endif %}" {% if current == '/programme/' %}aria-current="page"{% endif %}>Programme</a>
+          <a href="{{ '/a-propos/' | relative_url }}" class="nav-chip {% if current == '/a-propos/' %}is-active{% endif %}" {% if current == '/a-propos/' %}aria-current="page"{% endif %}>À propos</a>
+          <a href="{{ '/securite/' | relative_url }}" class="nav-chip {% if current == '/securite/' %}is-active{% endif %}" {% if current == '/securite/' %}aria-current="page"{% endif %}>Cadre & sécurité</a>
+          <a href="{{ '/faq/' | relative_url }}" class="nav-chip {% if current == '/faq/' %}is-active{% endif %}" {% if current == '/faq/' %}aria-current="page"{% endif %}>FAQ</a>
+        </div>
+      </div>
+      <div class="nav-cta">
+        <a href="{{ '/adequation/' | relative_url }}" class="button is-primary cta-pill" onclick="track('click_cta_header')">{{ site.cta_label | default: "Vérifier l’adéquation" }}</a>
+      </div>
+    </div>
+
+    <!-- Mobile: barre Menu + CTA -->
+    <div class="nav-mobile-bar is-hidden-desktop">
+      <button class="button nav-menu-button" aria-controls="mobile-overlay" aria-expanded="false">Menu</button>
+      <a href="{{ '/adequation/' | relative_url }}" class="button is-primary cta-pill" onclick="track('click_cta_header')">{{ site.cta_label | default: "Vérifier l’adéquation" }}</a>
+    </div>
+  
+    <!-- Overlay mobile: liens (en dehors du nav-shell) -->
+    <div id="mobile-overlay" class="mobile-overlay is-hidden is-hidden-desktop" aria-hidden="true">
+      <div class="container">
+        <div class="mobile-panel">
+          <a href="{{ '/' | relative_url }}" class="nav-chip {% if current == '/' %}is-active{% endif %}">Accueil</a>
+          <a href="{{ '/programme/' | relative_url }}" class="nav-chip {% if current == '/programme/' %}is-active{% endif %}">Programme</a>
+          <a href="{{ '/a-propos/' | relative_url }}" class="nav-chip {% if current == '/a-propos/' %}is-active{% endif %}">À propos</a>
+          <a href="{{ '/securite/' | relative_url }}" class="nav-chip {% if current == '/securite/' %}is-active{% endif %}">Cadre & sécurité</a>
+          <a href="{{ '/faq/' | relative_url }}" class="nav-chip {% if current == '/faq/' %}is-active{% endif %}">FAQ</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+</nav>

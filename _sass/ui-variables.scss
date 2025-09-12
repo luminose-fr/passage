@@ -1,0 +1,30 @@
+@use "sass:color";
+
+// Set your brand colors
+$prune: #6E3855;
+$prune-500: #975277; // texte inactif nav
+
+
+$gold: #EEAA47;
+$gold-medium: #fce1b5;
+$gold-light: #FFF4E2;
+
+$orange: #DE6129;
+$orange-medium: #F28D60;
+$orange-light: #FEEAE1;
+
+$pink: #FEE1F1;
+$pink-light: #FFF4F6;
+
+$family-sans-serif: 'Futura LT W05 Book', sans-serif;
+$family-serif: 'Abril Display W05 Italic', serif;
+
+
+// Nav/gradient tokens (utilisés par ui-shared)
+$nav-padding: 0.5rem 0.75rem;    // padding interne ET gap entre boutons
+$rounded-radius: 34px;
+$nav-radius-open: 31px;
+$nav-shadow: 0 10px 30px rgba(229,199,205,.70);
+$panel-shadow: 0 16px 32px rgba(229,199,205,.70);
+
+$gradient: linear-gradient(180deg,#E5C7CD,#E8C6BD,#F8D2B6,#FCDFB9,#FFDDAA);
