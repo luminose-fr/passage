@@ -1,19 +1,6 @@
 {% assign current = page.url | default: page.permalink | default: '' %}
 <a class="skip-link" href="#main">Aller au contenu</a>
 
-  <!-- Ligne mobile: Marque seule (hors bloc blanc) -->
-  <div class="container nav-mobile-top is-hidden-desktop">
-    <a href="{{ '/' | relative_url }}"
-       class="brand"
-       role="menuitem" {% if current == '/' %}aria-current="page"{% endif %}
-       aria-label="Accueil — Le Seuil">
-      <span class="main-icon icon-text">
-        <i class="icon icon-key"></i>
-        <span class="brand-text">Le Seuil</span>
-      </span>
-    </a>
-  </div>
-
 <nav class="floating-nav" role="navigation" aria-label="Menu principal">
   <!-- Bloc compact blanc-translucide (desktop+mobile) -->
   <div class="container nav-shell" role="menubar">
@@ -41,8 +28,17 @@
 
     <!-- Mobile: barre Menu + CTA -->
     <div class="nav-mobile-bar is-hidden-desktop">
-      <button class="button nav-menu-button" aria-controls="mobile-overlay" aria-expanded="false">Menu</button>
-      <a href="{{ '/adequation/' | relative_url }}" class="button is-primary cta-pill" onclick="track('click_cta_header')">{{ site.cta_label | default: "Vérifier l’adéquation" }}</a>
+      <div class="nav-left">
+        <a href="{{ '/' | relative_url }}" class="brand nav-chip {% if current == '/' %}is-active{% endif %}" role="menuitem" {% if current == '/' %}aria-current="page"{% endif %}>
+          <span class="main-icon icon-text">
+            <i class="icon icon-key"></i><span class="brand-text">Le Seuil</span>
+          </span>
+        </a>
+        <button class="button nav-chip nav-menu-button" aria-controls="mobile-overlay" aria-expanded="false">Menu</button>
+      </div>
+      <div class="nav-cta">
+        <a href="{{ '/adequation/' | relative_url }}" class="button nav-chip is-primary cta-pill" onclick="track('click_cta_header')">{{ site.cta_label | default: "Vérifier l’adéquation" }}</a>
+      </div>
     </div>
   
     <!-- Overlay mobile: liens (en dehors du nav-shell) -->

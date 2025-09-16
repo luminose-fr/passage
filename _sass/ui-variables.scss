@@ -1,9 +1,9 @@
 @use "sass:color";
 
 // Set your brand colors
-$prune: #6E3855;
-$prune-500: #975277; // texte inactif nav
-
+$prune: #780041;
+$prune-vivid: #86285A;
+$prune-neutral:  #6E3855;
 
 $gold: #EEAA47;
 $gold-medium: #fce1b5;
@@ -21,9 +21,9 @@ $family-serif: 'Abril Display W05 Italic', serif;
 
 
 // Nav/gradient tokens (utilisés par ui-shared)
-$nav-padding: 0.5rem 0.75rem;    // padding interne ET gap entre boutons
-$rounded-radius: 34px;
-$nav-radius-open: 31px;
+$nav-padding: 0.65rem 0.75rem;    // padding interne ET gap entre boutons
+$rounded-radius: 38px;
+$nav-radius-open: 34px;
 $nav-shadow: 0 10px 30px rgba(229,199,205,.70);
 $panel-shadow: 0 16px 32px rgba(229,199,205,.70);
 

@@ -66,8 +66,11 @@ p.illustration,
 
   .button.is-primary{
     background-color: #fff;
-    border-color: #fff;
     color: v.$prune;
+  }
+  .button.is-primary:hover{
+    background-color: v.$pink;
+    color: v.$prune-vivid;
   }
 }
 
@@ -199,8 +202,18 @@ img.has-rounded-corners{
 }
 
 .button.is-primary {
+  background-color: v.$prune-vivid;
+  -webkit-transition: background-color .25s ease;
+  -ms-transition: background-color .25s ease;
+  transition: background-color .25s ease;
+  border:none;
+  color: #fff;
+}
+.button.is-primary:hover {
   background-color: v.$prune;
-  border-color: v.$prune;
+  background-color: linear-gradient(135deg, v.$prune-vivid 0%, v.$prune 100%);
+  background-color: -webkit-linear-gradient(135deg, v.$prune-vivid 0%, v.$prune 100%);
+  border: none;
   color: #fff;
 }
 
@@ -214,6 +227,11 @@ img.has-rounded-corners{
     padding:0 0.25rem;
   }
 }
+
+.button.is-secondary:hover{
+    background-color: v.$pink;
+    color: v.$prune-vivid;
+  }
 
 /* Compensation du menu fixe (prend en compte marque + bloc blanc) */
 .has-floating-nav .site-main {
@@ -352,29 +370,32 @@ img.has-rounded-corners{
 
 /* Brand chip (clé + Le Seuil) */
 .brand.nav-chip,
-.nav-chip {
+.nav-chip,
+button.nav-chip {
+  box-shadow: none;
   display: inline-flex;
   align-items: center;
   gap: .5rem;
-  padding: .25rem .875rem;
+  padding: .45rem .875rem;
   border-radius: v.$rounded-radius;
   background: #fff;
-  color: v.$prune-500;
-  border: 1px solid transparent;
+  color: v.$prune-neutral;
+  border: 2px solid #fff;
   text-decoration: none;
-  transition: color .15s ease, background .15s ease, border-color .15s ease;
+  transition: color .25s ease, background .25s ease, border-color 0.25s ease;
 }
 
 .brand.nav-chip:hover,
 .nav-chip:hover {
   color: v.$prune;
-  background: v.$pink-light;
+  border: 2px solid v.$pink;
 }
 
 .nav-chip.is-active,
 .nav-chip[aria-current="page"] {
   background: v.$pink;
-  color: v.$prune;
+  color: v.$prune-vivid;
+  border: 2px solid v.$pink;
 }
 
 .key-ico {
@@ -428,6 +449,13 @@ img.has-rounded-corners{
   align-items: center;
   justify-content: space-between;
   gap: v.$nav-padding;
+
+  a.brand {
+    // padding:0.25rem;
+
+    .icon.icon-key {
+    }
+  }
 }
 
 /* Overlay fixe pour le menu mobile déplié: recouvre sans pousser le contenu */
@@ -437,7 +465,7 @@ img.has-rounded-corners{
   left: 0;
   right: 0;
   background: white;
-  top: 3.60rem;
+  top: 4rem;
   z-index: 1099;
   pointer-events: none;
   border-bottom-left-radius: v.$rounded-radius;
@@ -504,9 +532,9 @@ img.has-rounded-corners{
   padding: 1.5rem;
 
   h1 {
-    font-family: v.$family-serif;
-    font-size: var(--bulma-size-4);
-    line-height: 2rem;
+    font-family: v.$family-sans-serif;
+    font-size: var(--bulma-size-5);
+    line-height: var(--bulma-size-4);
     margin-bottom: 2.3rem;
   }
 
@@ -516,7 +544,17 @@ img.has-rounded-corners{
   }
 
   h2:not(:first-child) {
-    margin-top: 0.5rem;
+    margin-top: 0;
+  }
+
+  h3 {
+    font-family: v.$family-sans-serif;
+    font-size: var(--bulma-size-5);
+  }
+  .benefices .benefice {
+    background-color: v.$pink;
+    border-radius: var(--bulma-radius);
+    padding: 0.75rem;
   }
 
   .box {

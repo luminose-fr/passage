@@ -7,7 +7,7 @@
 <body class="gradient-fixed has-floating-nav">
   {% include header.html %}
   <main id="main" role="main" class="site-main">
-    {{ content }}
+    {{ content | french_typography }}
   </main>
   {% include footer.html %}
   <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>

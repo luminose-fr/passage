@@ -71,6 +71,10 @@
 }
 
 @include mixins.touch {
+    .is-centered-touch {
+        text-align: center;
+        justify-content: center;
+    }
     .nav-mobile-top {
         padding-top:0.75rem;
     }
@@ -81,7 +85,7 @@
         top: 0.75rem;
     }
     .nav-shell {
-        padding: 0.6rem;
+        padding: 0.7rem;
     }
 
     /* État ouvert: le nav-shell joint visuellement avec l’overlay */
@@ -143,8 +147,38 @@
     .avant-pendant-apres .column:not(:first-child) {
         border-top: 2px v.$gold-medium solid;
     }
+    .nav-mobile-bar {
+        gap:0rem;
+    }
+    .brand.nav-chip,
+    .nav-chip,
+    .button.nav-chip {
+        gap: .5rem;
+        padding: .45rem 2.7vw;
+    }
 
 }
+@media screen and (max-width: 444px) {
+    a.brand.nav-chip {
+        padding:0.45rem 0.65rem 0.45rem 0.85rem;
+
+        .brand-text {
+            display: none;
+        }
+    }
+}
+@media screen and (max-width: 388px) {
+    .nav-left {
+        gap: .5rem .65rem;
+    }
+    .brand.nav-chip,
+    .nav-chip,
+    button.nav-chip {
+        padding: .45rem .65rem;
+    }
+}
+
+
 
 @keyframes fadeIn {
   from {opacity: 0; transform: translateX(20px);}
