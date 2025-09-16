@@ -4,6 +4,27 @@
 :root {
   --overlay-bottom: env(safe-area-inset-bottom, 0px);
 }
+// html, body {
+//     overscroll-behavior-y: none;
+//     -webkit-overscroll-behavior-y: none;
+// }
+// html {
+//     background: v.$gradient;
+// }
+
+html {
+  background: v.$gradient !important;
+}
+
+/* Fond gradient fixe qui ne bouge pas au scroll (y compris iOS) */
+.gradient-fixed::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: v.$gradient;
+  transform: translateZ(0);
+}
 
 /* Typo globale 19px (au cas où Bulma ne prend pas le $body-size) */
 
@@ -184,16 +205,6 @@ img.has-rounded-corners{
 .illustration i.icon {
   font-size: 3rem;
   color: inherit;
-}
-
-/* Fond gradient fixe qui ne bouge pas au scroll (y compris iOS) */
-.gradient-fixed::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: v.$gradient;
-  transform: translateZ(0);
 }
 
 /* Boutons pilules partout + CTA texte blanc */
