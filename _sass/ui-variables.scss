@@ -27,4 +27,5 @@ $nav-radius-open: 34px;
 $nav-shadow: 0 10px 30px rgba(229,199,205,.70);
 $panel-shadow: 0 16px 32px rgba(229,199,205,.70);
 
-$gradient: linear-gradient(180deg,#E5C7CD,#E8C6BD,#F8D2B6,#FCDFB9,#FFDDAA);
+$main-gradient: linear-gradient(180deg,#E5C7CD,#E8C6BD,#F8D2B6,#FCDFB9,#FFDDAA);
+$hero-gradient: linear-gradient(135deg, $prune-vivid 0%, $prune 100%);

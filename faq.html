@@ -31,9 +31,9 @@ permalink: /faq/
 
         <!-- PANEL -->
         <section class="faq-panel">
-          <button class="faq-back button is-light is-small">
+          <button class="faq-back button is-light">
             <span class="icon"><i class="fas fa-chevron-left"></i></span>
-            Retour
+            <span>Retour</span>
           </button>
           {% for item in site.data.faq %}
           <article class="faq-answer content" data-index="{{ forloop.index0 }}">
@@ -50,17 +50,19 @@ permalink: /faq/
 
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"FAQPage",
-  "mainEntity":[
-    {"@type":"Question","name":"Pourquoi le tarif n’est‑il pas affiché ?","acceptedAnswer":{"@type":"Answer","text":"Le Seuil est une offre premium, individuelle et exigeante. L’investissement est présenté en fin d’entretien gratuit, une fois l’adéquation vérifiée. Paiement échelonné possible."}},
-    {"@type":"Question","name":"La respiration holotropique est‑elle sûre ?","acceptedAnswer":{"@type":"Answer","text":"Elle peut être intense. La sécurité repose sur la sélection, la préparation, le cadre en présentiel à Villefranche‑de‑Lauragais, des signaux clairs et la possibilité d’arrêter à tout moment. Une intégration est toujours prévue."}},
-    {"@type":"Question","name":"Vais‑je perdre le contrôle en hypnose ?","acceptedAnswer":{"@type":"Answer","text":"Non. L’hypnose respecte votre libre arbitre. Vous restez acteur·rice; protocoles, consentement et intégration font partie du cadre."}},
-    {"@type":"Question","name":"Quel est le rythme du parcours ?","acceptedAnswer":{"@type":"Answer","text":"4 mois, 7 séances: 3 en visio (30 min) et 4 en présentiel (1h30), dont deux respirations holotropiques (séances 2 et 5). Entre les séances: 1–2 h d’intégration hebdomadaire."}},
-    {"@type":"Question","name":"Y a‑t‑il des tâches à domicile ?","acceptedAnswer":{"@type":"Answer","text":"Oui: journal, lecture brève, dessin, rituels simples. Objectif: transformer l’expérience en changement durable."}},
-    {"@type":"Question","name":"Quelles sont les principales contre‑indications ?","acceptedAnswer":{"@type":"Answer","text":"Troubles psychotiques, épilepsie, pathologies cardio‑respiratoires non stabilisées, grossesse, certaines atteintes ophtalmiques, post‑chirurgie récente, traumatisme récent."}},
-    {"@type":"Question","name":"Puis‑je payer en plusieurs fois ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Les modalités d’échelonnement sont proposées à l’issue de l’entretien gratuit, dans un cadre contractuel."}},
-    {"@type":"Question","name":"Quelle est votre politique d’annulation ?","acceptedAnswer":{"@type":"Answer","text":"Entretien: report possible jusqu’à 24–48 h avant. Séances: délais et modalités précisés sur la page dédiée."}}
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for item in site.data.faq %}
+    {
+      "@type": "Question",
+      "name": {{ item.question | jsonify }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ item.reponse | strip_html | strip_newlines | jsonify }}
+      }
+    }{% if forloop.last == false %},{% endif %}
+    {% endfor %}
   ]
 }
 </script>

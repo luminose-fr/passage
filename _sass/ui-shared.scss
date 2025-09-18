@@ -4,17 +4,6 @@
 :root {
   --overlay-bottom: env(safe-area-inset-bottom, 0px);
 }
-// html, body {
-//     overscroll-behavior-y: none;
-//     -webkit-overscroll-behavior-y: none;
-// }
-// html {
-//     background: v.$gradient;
-// }
-
-html {
-  background: v.$gradient !important;
-}
 
 /* Fond gradient fixe qui ne bouge pas au scroll (y compris iOS) */
 .gradient-fixed::before {
@@ -22,7 +11,7 @@ html {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: v.$gradient;
+  background: v.$main-gradient;
   transform: translateZ(0);
 }
 
@@ -37,6 +26,9 @@ strong {
 }
 .has-gold-contrast strong {
   background-color: v.$gold-medium;
+}
+.section.intro strong {
+  background: transparent;
 }
 
 .is-simple,
@@ -60,15 +52,23 @@ h3,
 }
 .section.intro {
   padding-bottom:0;
+  
+  .container:not(.is-max-tablet):not(.is-max-desktop):not(.is-max-widescreen) {
+    max-width: 700px;
+  }
+
   h2.is-simple:last-child {
     margin-bottom: 0;
   }
-  *:not(:last-child):not(:first-child) {
+  *:not(:last-child):not(:first-child):not(hr) {
     margin-bottom: 0.25rem;
   }
-  // h1:not(:last-child) {
-  //   margin-bottom: var(--bulma-content-block-margin-bottom);
-  // }
+  hr {
+    background-color: v.$prune-neutral;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 p.illustration,
@@ -78,11 +78,14 @@ p.illustration,
 }
 
 .has-hero-contrast {
-  background-color: v.$prune;
+  background: v.$hero-gradient;
   color: #fff;
   
   h2, h3 {
     color: #fff;
+  }
+  h2:not(:first-child) {
+    margin-top: 0;
   }
 
   .button.is-primary{
@@ -214,16 +217,13 @@ img.has-rounded-corners{
 
 .button.is-primary {
   background-color: v.$prune-vivid;
-  -webkit-transition: background-color .25s ease;
-  -ms-transition: background-color .25s ease;
   transition: background-color .25s ease;
   border:none;
   color: #fff;
 }
 .button.is-primary:hover {
   background-color: v.$prune;
-  background-color: linear-gradient(135deg, v.$prune-vivid 0%, v.$prune 100%);
-  background-color: -webkit-linear-gradient(135deg, v.$prune-vivid 0%, v.$prune 100%);
+  background-color: v.$hero-gradient;
   border: none;
   color: #fff;
 }
@@ -560,12 +560,13 @@ button.nav-chip {
 
   h3 {
     font-family: v.$family-sans-serif;
-    font-size: var(--bulma-size-5);
+    font-size: var(--bulma-size-6);
+    font-weight: 600;
   }
   .benefices .benefice {
     background-color: v.$pink;
     border-radius: var(--bulma-radius);
-    padding: 0.75rem;
+    padding: 0.85rem;
   }
 
   .box {
@@ -586,6 +587,10 @@ button.nav-chip {
 }
 
 .box.programme {
+  h2 {
+    font-family: v.$family-serif;
+    font-size: var(--bulma-size-4);
+  }
   h3:not(:first-child) {
     margin-top: 0;
   }
@@ -715,10 +720,33 @@ button.nav-chip {
 
 /* bloc global */
 /* Bloc global */
-.faq-block {
+.faq-container {
+
+  .menu-list a {
+    border: 2px solid transparent;
+    background-color: transparent;
+    transition: color .25s ease, background .25s ease, border-color 0.25s ease;
+  }
+
+  .menu-list a:hover {
+    background-color: transparent;
+    color: v.$prune;
+    border: 2px solid v.$pink;
+  }
+  .menu-list a.is-active {
+    color: v.$prune-vivid;
+    background-color: v.$pink;
+  }
 
 }
 
 /* Panel + Answers */
-.faq-answer { display: none; }
-.faq-answer.is-active { display: block; }
+.faq-answer { 
+  display: none; 
+}
+.faq-answer.is-active { 
+  display: block; 
+}
+.faq-back {
+  margin-bottom: 1.5rem;
+}
