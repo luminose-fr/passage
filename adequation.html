@@ -7,152 +7,44 @@ permalink: /adequation/
 <section class="section intro">
   <div class="container content has-text-centered">
     <h1 class="title is-3">Vérifier l’adéquation</h1>    
-    <h2 class="is-simple">XXXXX</h2>
     <p>Ce formulaire protège votre sécurité et la qualité du travail. Vos données de santé sont traitées avec consentement explicite et confidentialité.</p>
+    <p><span class="tag">Nécessite environ 5 à 8 minutes</span></p>
   </div>
 </section>
 
-<section class="section">
-  <div class="container content">
-    <div class="box">
-      <h3>Questions qui invalident la participation :</h3>
-      <ul>
-        <li>Questions de santé pour contre-indication RH (7-8) : lister uniquement pour ejecter les gens et si KO, ejecter avec message.
-          <ul>
-            <li>Diagnostic actuel de trouble psychotique, bipolarité non stabilisée, épilepsie, ou antécédent de convulsions ?</li>
-            <li>Pathologie cardiaque ou respiratoire significative non stabilisée ?</li>
-            <li>Grossesse ou post‑partum immédiat (< 3 mois) ?</li>
-            <li>Glaucome, décollement de rétine, chirurgie récente (< 3 mois), traumatisme crânien récent, fracture non consolidée ?</li>
-            <li>Traitement psychotrope lourd ou sevrage en cours ?</li>
-            <li>Traumatisme aigu très récent (< 6 semaines) nécessitant un suivi médical/psy ?</li>
-          </ul>
-        </li>
-        <li>Disponibilité temporelle / materielle (caler les séances, venir, visio, travail inter-séances) : si ko, ejecter avec message.
-          <ul>
-            <li>Capacité à se rendre à Villefranche-de-Lauragais pour les séances 2 et 5 (présentiel obligatoire) ?</li>
-            <li>Ordinateur avec caméra, visio, lieu calme ?</li>
-            <li>Avez‑vous des créneaux réguliers pour les visios et de la souplesse pour les présentielles ?</li>
-            <li>Pouvez‑vous vous engager sur 1–2 h d’intégration personnelle par semaine ?</li>
-          </ul>
-        </li>
-      </ul>
-      <h3>Questions qui renseignent sur la motivation, le parcours et la situation actuelle :</h3>
-      <ul>
-        <li>Pourquoi maintenant ? Quelle transition ou question vous amène vers Le Seuil ?</li>
-        <li>Qu’avez‑vous déjà exploré (thérapie, méditation, retraites, respiration, etc.) et qu’en avez‑vous retiré ?</li>
-        <li>Comment vous sentez‑vous avec les états modifiés de conscience ? Par expérience ou la représentation que vous vous en faites</li>
-        <li>Si vous deviez nommer une intention pour ce parcours, quelle serait‑elle ?</li>
-      </ul>
-      <h3>Coordonnées</h3>
-      <ul>
-        <li>Nom, prénom, email, âge, travail</li>
-      </ul>
-      <h3>Consentement pour les données</h3>
-      <h3>Choix d'un créneau de RDV</h3>
-      <p>Email de confirmation -> lien vers vidéo intro RH et diagramme auto-évaluation d'où j'en suis</p>
-    </div>
-  </div>
-</section>
+<section class="section adequation">
+  <div class="container">
+    <div class="box content">
 
-<section class="section">
-  <div class="container content">
+      <form id="adequation-form" novalidate>
 
-    <div id="form-error-summary" class="notification is-warning mt-4" role="alert" hidden>
-      Merci de compléter les champs requis. Les champs incomplets sont indiqués ci‑dessous.
-    </div>
+        {% include questionnaire/etape-1-sante.html %}
 
-    <form id="adequation-form" class="box is-glassy mt-4" novalidate aria-describedby="form-note">
-      <p id="form-note" class="help is-micro">Ce formulaire ne constitue pas un dispositif d’urgence. En cas d’urgence, composez le 112/15.</p>
+        {% include questionnaire/etape-2-logistique.html %}
 
-      <h3 class="title is-4">Coordonnées</h3>
-      <div class="columns is-multiline">
-        <div class="column is-6">
-          <div class="field"><label class="label" for="nom">Nom</label><div class="control"><input class="input" id="nom" name="nom" required></div></div>
-        </div>
-        <div class="column is-6">
-          <div class="field"><label class="label" for="prenom">Prénom</label><div class="control"><input class="input" id="prenom" name="prenom" required></div></div>
-        </div>
-        <div class="column is-6">
-          <div class="field"><label class="label" for="email">Email</label><div class="control"><input class="input" id="email" name="email" type="email" required></div></div>
-        </div>
-        <div class="column is-6">
-          <div class="field"><label class="label" for="tel">Téléphone</label><div class="control"><input class="input" id="tel" name="tel" type="tel" required></div></div>
-        </div>
-        <div class="column is-6">
-          <div class="field"><label class="label" for="ville">Ville / Pays</label><div class="control"><input class="input" id="ville" name="ville"></div></div>
-        </div>
-        <div class="column is-6">
-          <div class="field"><label class="label" for="age">Âge</label><div class="control"><input class="input" id="age" name="age" type="number" min="16" max="100"></div></div>
-        </div>
-      </div>
+        {% include questionnaire/etape-3-parcours.html %}
 
-      <h3 class="title is-4 mt-5">Contre‑indications (sécurité)</h3>
-      {% assign ci = "ci_psychose:Diagnostic actuel de trouble psychotique, bipolarité non stabilisée, épilepsie, ou antécédent de convulsions ?|ci_cardio:Pathologie cardiaque ou respiratoire significative non stabilisée ?|ci_grossesse:Grossesse ou post‑partum immédiat (< 3 mois) ?|ci_yeux_chir:Glaucome, décollement de rétine, chirurgie récente (< 3 mois), traumatisme crânien récent, fracture non consolidée ?|ci_psychotrope:Traitement psychotrope lourd ou sevrage en cours ?|ci_trauma:Traumatisme aigu très récent (< 6 semaines) nécessitant un suivi médical/psy ?|ci_deplacement:Capacité à se rendre à Villefranche-de-Lauragais pour les séances 2 et 5 (présentiel obligatoire) ?" | split: "|" %}
-      {% for item in ci %}
-        {% assign parts = item | split: ":" %}
-        <div class="field">
-          <label class="label">{{ parts[1] }}</label>
-          <div class="control" role="radiogroup" aria-label="{{ parts[1] }}">
-            <label class="radio mr-3"><input type="radio" name="{{ parts[0] }}" value="non" required> Non</label>
-            <label class="radio"><input type="radio" name="{{ parts[0] }}" value="oui"> Oui</label>
+        {% include questionnaire/etape-4-coordonnees.html %}
+
+        <!-- Exclusion panel -->
+        <div id="ade-exclusion" class="notification is-danger is-hidden" role="alert">
+          <h4 class="title is-6">Merci pour votre franchise</h4>
+          <p id="ade-exclusion-reason">Pour des raisons de sécurité, ce parcours ne nous semble pas adapté à votre situation actuelle.</p>
+          <p class="small-note">Vous pouvez demander un examen manuel si vous pensez qu'il y a une erreur.</p>
+          <div class="buttons">
+            <button type="button" class="button is-light" id="ade-request-review">Demander un examen manuel</button>
+            <a class="button is-text" href="/securite/">Voir la page cadre & sécurité</a>
           </div>
-          {% if parts[0] == "ci_deplacement" %}
-            <p class="help is-micro">Les respirations holotropiques se déroulent en présentiel, pour des raisons de sécurité.</p>
-          {% endif %}
         </div>
-      {% endfor %}
 
-      <h3 class="title is-4 mt-5">Alignement (motivation, disponibilité, attentes)</h3>
-      <div class="field">
-        <label class="label">Pourquoi maintenant ? Quelle transition ou question vous amène vers Le Seuil ?</label>
-        <div class="control"><textarea class="textarea" name="why" required></textarea></div>
-      </div>
-      <div class="field">
-        <label class="label">Quel changement profond souhaitez‑vous engager dans les 4 prochains mois ?</label>
-        <div class="control"><textarea class="textarea" name="change" required></textarea></div>
-      </div>
-      <div class="field">
-        <label class="label">Qu’avez‑vous déjà exploré (thérapie, méditation, retraites, respiration, etc.) et qu’en avez‑vous retiré ?</label>
-        <div class="control"><textarea class="textarea" name="explored" required></textarea></div>
-      </div>
-      <div class="field">
-        <label class="label">Pouvez‑vous vous engager sur 1–2 h d’intégration personnelle par semaine ?</label>
-        <div class="control">
-          <label class="radio mr-3"><input type="radio" name="integr" value="oui" required> Oui</label>
-          <label class="radio"><input type="radio" name="integr" value="non"> Non</label>
+        <!-- Success / Calendly wrapper (hidden until pass) -->
+        <div id="ade-success" class="box is-hidden" aria-live="polite">
+          <h4 class="title is-6">Votre dossier est admissible</h4>
+          <p class="small-note">Choisissez un créneau pour l'entretien d'1h (sélection ci-dessous) — ou vous recevrez un lien par email.</p>
+          <div id="ade-calendly" class="calendly-wrapper"></div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Comment vous sentez‑vous avec les états modifiés de conscience (hypnose/respiration) ?</label>
-        <div class="control"><textarea class="textarea" name="emc"></textarea></div>
-      </div>
-      <div class="field">
-        <label class="label">Avez‑vous des créneaux réguliers pour les visios et de la souplesse pour les présentielles ?</label>
-        <div class="control"><textarea class="textarea" name="dispos"></textarea></div>
-      </div>
-      <div class="field">
-        <label class="label">Si vous deviez nommer une intention pour ce parcours, quelle serait‑elle ?</label>
-        <div class="control"><input class="input" type="text" name="intention"></div>
-      </div>
 
-      <h3 class="title is-4 mt-5">Consentements</h3>
-      <div class="field">
-        <label class="checkbox"><input type="checkbox" name="rgpd" required> Je consens au traitement de mes données (incluant des données de santé) pour vérifier l’adéquation, selon la <a href="{{ '/mentions/#rgpd' | relative_url }}">politique de confidentialité</a>.</label>
-      </div>
-      <div class="field">
-        <label class="checkbox"><input type="checkbox" name="nonurgence" required> Je comprends que ce formulaire n’est pas un dispositif d’urgence médicale.</label>
-      </div>
-
-      <div class="field is-grouped mt-4">
-        <div class="control"><button type="submit" class="button is-primary">Envoyer ma demande d’entretien</button></div>
-        <p class="help is-micro">Tarif communiqué à l’issue de l’entretien gratuit.</p>
-      </div>
-    </form>
-
-    <div id="form-result" class="box is-glassy mt-4" hidden aria-live="polite">
-      <h3 id="form-result-title" class="title is-4"></h3>
-      <p id="form-result-text"></p>
-      <div id="form-result-actions" class="buttons mt-3"></div>
+      </form>
     </div>
   </div>
 </section>

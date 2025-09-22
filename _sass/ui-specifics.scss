@@ -209,6 +209,55 @@
         }
     }
 
+    .adequation .columns.field.is-horizontal .column.is-9 {
+        .field.is-grouped {
+            flex-direction: column;
+            gap: 1rem;
+            
+            p:not(:last-child) {
+                margin-bottom:0;
+            }
+        }
+        
+        .grille-sante,
+        .grille-logistique {
+
+            display: block;
+
+            tbody { 
+                display: block; 
+            }
+            td {
+                border: none;
+            }
+
+            tr {
+                display: grid;
+                grid-template-columns: 1fr;
+                padding: 0;
+                border-bottom: 2px #fff solid;
+            }
+
+            td.no-wrap {
+                order: 2; /* radios flow under the question */
+            }
+
+            td:first-child { 
+                order: 1; 
+            }
+        }
+        .radios-inline {
+            label {
+                display: block;
+                // margin-right: 0;
+            }
+            .is-checkradio[type=checkbox]+label, 
+            .is-checkradio[type=radio]+label {
+                margin-left:0;
+            }
+        }
+    }
+
 }
 @media screen and (max-width: 444px) {
     a.brand.nav-chip {

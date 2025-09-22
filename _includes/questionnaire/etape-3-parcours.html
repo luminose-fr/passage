@@ -1,0 +1,72 @@
+<!-- STEP 2 (Motivation & parcours) -->
+        <div class="form-step is-hidden" data-step="3">
+          <div class="columns field is-horizontal">
+            
+            <!-- Colonne gauche -->
+            <div class="column is-3">
+              <div class="progress-wrap">
+                <progress id="adequation-progress" class="progress" value="66" max="100"></progress>
+                <div class="progress-label" id="adequation-progress-label-3">Étape 3 / 4</div>
+              </div>
+              <label class="label">Motivation & parcours</label>
+            </div>
+
+            <!-- Colonne droite -->
+            <div class="column is-9 info-style">
+
+              <div class="field">
+                <label class="label sr-only" for="why_now">Pourquoi maintenant ?</label>
+                <p class="control has-icons-right">
+                  <textarea name="parcours[why_now]" id="why_now" class="textarea"
+                    placeholder="Pourquoi maintenant ? Quelle transition ou question vous amène vers Le Seuil ?"
+                    maxlength="800" required></textarea>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+              </div>
+
+              <div class="field">
+                <label class="label sr-only" for="explored">Qu’avez-vous déjà exploré ?</label>
+                <p class="control has-icons-right">
+                  <input type="text" name="parcours[explored]" id="explored" class="input"
+                    placeholder="Qu’avez-vous déjà exploré (thérapie, méditation, retraites, respiration…)" maxlength="300" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+              </div>
+
+              <div class="field">
+                <label class="label">Comment vous sentez-vous avec les états modifiés de conscience ?</label>
+                <div class="control radios-inline">
+                  <input class="is-checkradio" id="states-fam" type="radio" name="parcours[q_states]" value="familier" required>
+                  <label for="states-fam">Très familier(ère)</label>
+
+                  <input class="is-checkradio" id="states-assez" type="radio" name="parcours[q_states]" value="assez">
+                  <label for="states-assez">Assez familier(ère)</label>
+
+                  <input class="is-checkradio" id="states-curieux" type="radio" name="parcours[q_states]" value="curieux">
+                  <label for="states-curieux">Curieux(se) / prudent(e)</label>
+
+                  <input class="is-checkradio" id="states-inquiet" type="radio" name="parcours[q_states]" value="inquiet">
+                  <label for="states-inquiet">Inquiet(ète)</label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label sr-only" for="intention">Intention</label>
+                <p class="control has-icons-right">
+                  <input type="text" name="parcours[intention]" id="intention" class="input"
+                    placeholder="Si vous deviez nommer une intention pour ce parcours (une phrase)" maxlength="250" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+              </div>
+
+              <div class="buttons">
+                <button type="button" class="button is-secondary ade-prev">Précédent</button>
+                <button type="button" class="button is-primary ade-next">Étape suivante</button>
+              </div>
+
+            </div>
+
+            
+          </div>
+
+        </div> <!-- step 3 -->

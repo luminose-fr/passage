@@ -1,0 +1,96 @@
+<!-- STEP 1B - LOGISTIQUE & DISPONIBILITÉ -->
+        <div class="form-step columns field is-horizontal is-hidden" data-step="2">
+          <div class="column is-3">
+            <!-- Progress -->
+              <div class="progress-wrap">
+                <progress id="adequation-progress" class="progress" value="33" max="100"></progress>
+                <div class="progress-label" id="adequation-progress-label-2">Étape 2 / 4</div>
+              </div>
+              <label class="label">Logistique & disponibilité</label>
+          </div>
+
+          <div class="column is-9">
+            <table class="table is-fullwidth grille-logistique">
+              <tbody>
+
+                <tr tabindex="0">
+                  <td>Disponibilité matérielle & temporelle (caler les séances, venir en présentiel, travail inter-séances 1–2 h/semaine)</td>
+                  <td class="no-wrap">
+                    <div class="field is-narrow">
+                      <div class="control">
+                        <input class="is-checkradio" id="log-q_availability1" type="radio" name="logistique[q_availability]" value="oui" required>
+                        <label for="log-q_availability1">Oui</label>
+                        <input class="is-checkradio" id="log-q_availability2" type="radio" name="logistique[q_availability]" value="non">
+                        <label for="log-q_availability2">Non</label>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr tabindex="0">
+                  <td>Capacité à se rendre à Villefranche-de-Lauragais pour les séances en présentiel (séances 2 &amp; 5)</td>
+                  <td class="no-wrap">
+                    <div class="field is-narrow">
+                      <div class="control">
+                        <input class="is-checkradio" id="log-q_travel1" type="radio" name="logistique[q_travel]" value="oui" required>
+                        <label for="log-q_travel1">Oui</label>
+                        <input class="is-checkradio" id="log-q_travel2" type="radio" name="logistique[q_travel]" value="non">
+                        <label for="log-q_travel2">Non</label>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr tabindex="0">
+                  <td>Ordinateur avec caméra, visio et lieu calme pour les séances en ligne</td>
+                  <td class="no-wrap">
+                    <div class="field is-narrow">
+                      <div class="control">
+                        <input class="is-checkradio" id="log-q_tech1" type="radio" name="logistique[q_tech]" value="oui" required>
+                        <label for="log-q_tech1">Oui</label>
+                        <input class="is-checkradio" id="log-q_tech2" type="radio" name="logistique[q_tech]" value="non">
+                        <label for="log-q_tech2">Non</label>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr tabindex="0">
+                  <td>Avez-vous des créneaux réguliers pour les visios et de la souplesse pour les présentielles</td>
+                  <td class="no-wrap">
+                    <div class="field is-narrow">
+                      <div class="control">
+                        <input class="is-checkradio" id="log-q_slots1" type="radio" name="logistique[q_slots]" value="oui" required>
+                        <label for="log-q_slots1">Oui</label>
+                        <input class="is-checkradio" id="log-q_slots2" type="radio" name="logistique[q_slots]" value="non">
+                        <label for="log-q_slots2">Non</label>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr tabindex="0">
+                  <td>Pouvez-vous vous engager sur 1–2 h d’intégration personnelle par semaine ?</td>
+                  <td class="no-wrap">
+                    <div class="field is-narrow">
+                      <div class="control">
+                        <input class="is-checkradio" id="log-q_commit1" type="radio" name="logistique[q_commit]" value="oui" required>
+                        <label for="log-q_commit1">Oui</label>
+                        <input class="is-checkradio" id="log-q_commit2" type="radio" name="logistique[q_commit]" value="non">
+                        <label for="log-q_commit2">Non</label>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+
+            <div class="buttons">
+              <!-- navs maintenant en classes (plus d'ID) -->
+              <button type="button" class="button is-secondary ade-prev">Précédent</button>
+              <button type="button" class="button is-primary ade-next">Étape suivante</button>
+            </div>
+          </div>
+
+        </div> <!-- step 2 -->

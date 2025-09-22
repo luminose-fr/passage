@@ -243,104 +243,472 @@ const Carousel = (() => {
     return { init };
   })();
 
+   /* ------------ ADEQUATION MODULE – v9 ------------ */
+    const Adequation = (() => {
+      const WEBHOOK_URL = ""; // <-- renseigne si besoin
+      const CALENDLY_URL = ""; // <-- renseigne si besoin
+      const DRAFT_KEY = "leSeuil_draft_v9";
 
-  /* ------------ ADEQUATION FORM ------------ */
-  const AdequationForm = (() => {
-    let form, errorSummary;
+      let rootForm, steps;
+      let currentStep = 0;
 
-    const validateRequiredFields = () => {
-      let firstInvalid = null;
-      const requiredFields = form.querySelectorAll('[required]');
-      requiredFields.forEach(el => {
-        const invalid =
-          (el.type === 'checkbox' && !el.checked) ||
-          (el.type === 'radio' && !form.querySelector(`input[name="${el.name}"]:checked`)) ||
-          (!['checkbox','radio'].includes(el.type) && !el.value.trim());
+      // helpers
+      const $ = (s, ctx = document) => ctx.querySelector(s);
+      const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
+      const show = (el) => el && el.classList.remove("is-hidden");
+      const hide = (el) => el && el.classList.add("is-hidden");
 
-        if (invalid) {
-          el.setAttribute('aria-invalid','true');
-          if (!firstInvalid) firstInvalid = el;
-        } else {
-          el.removeAttribute('aria-invalid');
+      const EXCLUSION_MAP = {
+        "sante[q_psychotic]": "Diagnostic psychotique, épilepsie ou antécédent de convulsions.",
+        "sante[q_cardio]": "Pathologie cardiaque ou respiratoire significative non stabilisée.",
+        "sante[q_pregnancy]": "Grossesse / post-partum immédiat (<3 mois).",
+        "sante[q_eye_trauma]": "Glaucome / chirurgie oculaire récente / traumatisme crânien / fracture non consolidée.",
+        "sante[q_psychotrop]": "Traitement psychotrope lourd ou sevrage en cours.",
+        "sante[q_recent_trauma]": "Traumatisme aigu très récent nécessitant un suivi médical/psy (<6 semaines).",
+        "logistique[q_availability]": "Disponibilité matérielle / temporelle insuffisante.",
+        "logistique[q_travel]": "Impossibilité de se rendre en présentiel (séance 2 & 5).",
+        "logistique[q_slots]": "Absence de créneaux réguliers pour les visios / présentielles.",
+        "logistique[q_commit]": "Impossible de s'engager sur 1–2 h d'intégration par semaine.",
+      };
+
+      /* ---------- init ---------- */
+      function initDOM() {
+        rootForm = document.getElementById("adequation-form");
+        if (!rootForm) return;
+        steps = $$("[data-step]", rootForm);
+
+        // nav buttons via classes (no IDs)
+        rootForm.querySelectorAll(".ade-next").forEach((btn) => btn.addEventListener("click", handleNextClick));
+        rootForm.querySelectorAll(".ade-prev").forEach((btn) => btn.addEventListener("click", handlePrevClick));
+
+        // manual review
+        const reviewBtn = document.getElementById("ade-request-review");
+        if (reviewBtn) {
+          reviewBtn.addEventListener("click", () => {
+            window.location.href =
+              "mailto:hello@luminose.fr?subject=Demande%20examen%20manuel%20-%20Le%20Seuil";
+          });
         }
-      });
 
-      if (firstInvalid) {
-        if (errorSummary) { errorSummary.hidden = false; errorSummary.focus(); }
-        return false;
-      }
-      return true;
-    };
+        // form submit
+        rootForm.addEventListener("submit", handleSubmit);
 
-    const handleSubmit = e => {
-      e.preventDefault();
-      if (!validateRequiredFields()) return;
+        // attach validation behaviour + autosave
+        attachValidationFeedback();
 
-      const fd = new FormData(form);
-      const yes = v => v === 'oui';
+        // populate draft if exists
+        loadDraft();
 
-      const ciAny = ['ci_psychose','ci_cardio','ci_grossesse','ci_yeux_chir','ci_psychotrope','ci_trauma'].some(n => yes(fd.get(n)));
-      const canTravel = yes(fd.get('ci_deplacement'));
-      const age = parseInt(fd.get('age')||'0',10);
-
-      const missingLong = ['why','change','explored']
-        .map(n => (fd.get(n)||'').trim())
-        .some(txt => txt.length < 40);
-
-      const result  = document.getElementById('form-result');
-      const title   = document.getElementById('form-result-title');
-      const text    = document.getElementById('form-result-text');
-      const actions = document.getElementById('form-result-actions');
-      const show    = () => { result.hidden = false; result.scrollIntoView({behavior:'smooth'}); };
-
-      // --- Decision tree ---
-      if (ciAny || !canTravel) {
-        localStorage.removeItem('leSeuilAdmissible');
-        title.textContent = "Merci. Pour votre sécurité, Le Seuil n’est pas indiqué aujourd’hui.";
-        text.innerHTML    = "Certaines réponses indiquent des contre‑indications aux états modifiés de conscience, ou une impossibilité logistique. Nous vous invitons à consulter un professionnel de santé. Ressources et précisions sur la page Sécurité.";
-        actions.innerHTML = `<a class="button is-primary" href="{{ '/securite/' | relative_url }}">Voir la page Sécurité</a>`;
-        show(); track('form_blocked'); return;
+        // initial display
+        goToStep(0);
       }
 
-      if ((age>0 && age<21) || missingLong) {
-        localStorage.removeItem('leSeuilAdmissible');
-        title.textContent = "Merci. Votre demande nécessite une courte relecture.";
-        text.textContent  = "Nous revenons vers vous sous 48 h pour confirmer l’entretien gratuit. Aucun prix n’est affiché en ligne; l’investissement est communiqué en fin d’entretien. Paiement échelonné possible.";
-        actions.innerHTML = `<a class="button is-light" href="{{ '/' | relative_url }}">Retour à l’accueil</a>`;
-        show(); track('form_review'); return;
+      function handleNextClick(e) {
+        e.preventDefault();
+        if (!validateStep(currentStep)) {
+          focusFirstInvalid(currentStep);
+          return;
+        }
+        // exclusions early
+        if (currentStep <= 1) {
+          const excl = checkExclusions();
+          if (excl.excluded) {
+            handleExclusion(excl);
+            return;
+          }
+        }
+        if (currentStep < steps.length - 1) goToStep(currentStep + 1);
       }
 
-      // Pre-admissible
-      localStorage.setItem('leSeuilAdmissible','1');
-      track('form_submit', {status:'admissible'});
-      window.location.href = "{{ '/entretien/' | relative_url }}";
-    };
+      function handlePrevClick(e) {
+        e.preventDefault();
+        if (currentStep > 0) goToStep(Math.max(0, currentStep - 1));
+      }
 
-    const init = () => {
-      form = document.querySelector('#adequation-form');
-      if (!form) return;
-      errorSummary = document.getElementById('form-error-summary');
-      form.addEventListener('submit', handleSubmit);
-    };
+      function goToStep(index) {
+        steps.forEach((s, i) =>
+          i === index ? s.classList.remove("is-hidden") : s.classList.add("is-hidden")
+        );
+        currentStep = index;
+        const first = steps[index].querySelector("input,textarea,select,button");
+        if (first) first.focus({ preventScroll: true });
+      }
 
-    return { init };
-  })();
+      /* ---------- validation UI behaviours ---------- */
+      function attachValidationFeedback() {
+        const controls = $$("input,textarea,select", rootForm);
+        controls.forEach((el) => {
+          el.dataset.touched = el.dataset.touched || "0";
+          el.dataset.everValid =
+            el.value && el.value.toString().trim().length > 0 ? "1" : "0";
 
+          // autosave on every change
+          el.addEventListener("input", saveDraft);
+          el.addEventListener("change", saveDraft);
 
-  /* ------------ CALENDLY GATE ------------ */
-  const CalendlyGate = (() => {
-    const init = () => {
-      const gate = document.getElementById('entretien-gate');
-      const cal  = document.getElementById('calendly-embed');
-      if (!gate || !cal) return;
+          if (el.type === "radio") {
+            const radios = $$(`[name="${el.name}"]`, rootForm);
+            radios.forEach((r) => {
+              r.addEventListener("change", () => {
+                radios.forEach((rr) => {
+                  rr.classList.remove("is-success", "is-danger");
+                  rr.removeAttribute("aria-invalid");
+                });
+                const checked = rootForm.querySelector(
+                  `[name="${el.name}"]:checked`
+                );
+                if (checked) {
+                  checked.classList.add("is-success");
+                  checked.dataset.touched = "1";
+                  const parent = checked.closest("td") || checked.closest(".control");
+                  updateIcon(parent, true);
+                }
+              });
+            });
+          } else if (el.type === "checkbox") {
+            el.addEventListener("change", () => {
+              el.dataset.touched = "1";
+              if (el.checked) {
+                el.classList.add("is-success");
+                el.classList.remove("is-danger");
+                updateIcon(el.closest(".control") || el.parentNode, true);
+                el.dataset.everValid = "1";
+              } else {
+                if (el.dataset.everValid === "1") {
+                  el.classList.remove("is-success");
+                  el.classList.add("is-danger");
+                  updateIcon(el.closest(".control") || el.parentNode, false);
+                } else {
+                  el.classList.remove("is-success", "is-danger");
+                  updateIcon(el.closest(".control") || el.parentNode, null);
+                }
+              }
+            });
+          } else {
+            // text / textarea / select
+            el.addEventListener("input", () => {
+              const val = (el.value || "").toString().trim();
+              if (val.length > 0) {
+                el.dataset.everValid = "1";
+                el.classList.add("is-success");
+                el.classList.remove("is-danger");
+                updateIcon(el.closest(".control") || el.parentNode, true);
+              } else {
+                el.classList.remove("is-success", "is-danger");
+                updateIcon(el.closest(".control") || el.parentNode, null);
+              }
+            });
 
-      const ok = localStorage.getItem('leSeuilAdmissible') === '1';
-      gate.hidden = ok;
-      cal.hidden  = !ok;
-      track('calendly_view', {allowed: ok});
-    };
-    return { init };
-  })();
+            el.addEventListener("blur", () => {
+              el.dataset.touched = "1";
+              const val = (el.value || "").toString().trim();
+              if (val.length > 0) {
+                el.dataset.everValid = "1";
+                el.classList.add("is-success");
+                el.classList.remove("is-danger");
+                updateIcon(el.closest(".control") || el.parentNode, true);
+              } else {
+                // 🔧 nouvelle règle : si déjà en erreur => rester rouge
+                if (el.classList.contains("is-danger")) {
+                  updateIcon(el.closest(".control") || el.parentNode, false);
+                } else if (el.dataset.everValid === "1") {
+                  el.classList.remove("is-success");
+                  el.classList.add("is-danger");
+                  updateIcon(el.closest(".control") || el.parentNode, false);
+                } else {
+                  el.classList.remove("is-success", "is-danger");
+                  updateIcon(el.closest(".control") || el.parentNode, null);
+                }
+              }
+            });
+          }
+        });
+      }
+
+      // update icon
+      function updateIcon(container, valid) {
+        if (!container) return;
+        const iconEl =
+          container.querySelector(".icon.is-small.is-right i.fas") ||
+          container.querySelector(".icon i.fas");
+        if (!iconEl) return;
+        iconEl.classList.remove("fa-check", "fa-exclamation-triangle");
+        if (valid === true) iconEl.classList.add("fa-check");
+        else if (valid === false) iconEl.classList.add("fa-exclamation-triangle");
+      }
+
+      /* ---------- step validation ---------- */
+      function validateStep(index) {
+        const step = steps[index];
+        if (!step) return true;
+        const requiredEls = Array.from(step.querySelectorAll("[required]"));
+        let ok = true;
+        const processedRadioNames = new Set();
+
+        for (const el of requiredEls) {
+          if (!el.name) continue;
+          if (el.type === "radio") {
+            if (processedRadioNames.has(el.name)) continue;
+            processedRadioNames.add(el.name);
+            const checked = rootForm.querySelector(`[name="${el.name}"]:checked`);
+            const radios = Array.from(rootForm.querySelectorAll(`[name="${el.name}"]`));
+            if (!checked) {
+              radios.forEach((r) => r.classList.add("is-danger"));
+              const parent = radios[0] && (radios[0].closest("td") || radios[0].closest(".control"));
+              updateIcon(parent, false);
+              ok = false;
+            } else {
+              radios.forEach((r) => r.classList.remove("is-danger"));
+              checked.classList.add("is-success");
+              const parent = checked.closest("td") || checked.closest(".control");
+              updateIcon(parent, true);
+            }
+          } else if (el.type === "checkbox") {
+            if (!el.checked) {
+              el.classList.add("is-danger");
+              el.classList.remove("is-success");
+              updateIcon(el.closest(".control") || el.parentNode, false);
+              ok = false;
+            } else {
+              el.classList.add("is-success");
+              el.classList.remove("is-danger");
+              updateIcon(el.closest(".control") || el.parentNode, true);
+            }
+          } else {
+            const val = (el.value || "").toString().trim();
+            if (val.length === 0) {
+              el.classList.add("is-danger");
+              el.classList.remove("is-success");
+              updateIcon(el.closest(".control") || el.parentNode, false);
+              ok = false;
+            } else {
+              el.classList.add("is-success");
+              el.classList.remove("is-danger");
+              updateIcon(el.closest(".control") || el.parentNode, true);
+            }
+          }
+        }
+
+        return ok;
+      }
+
+      function focusFirstInvalid(index) {
+        const step = steps[index];
+        if (!step) return;
+        const firstError = step.querySelector(".is-danger, :invalid");
+        if (firstError) {
+          firstError.focus({ preventScroll: true });
+          return;
+        }
+        const firstReq = step.querySelector("[required]");
+        if (firstReq) firstReq.focus({ preventScroll: true });
+      }
+
+      /* ---------- exclusions ---------- */
+      function checkExclusions() {
+        const healthKeys = [
+          "sante[q_psychotic]",
+          "sante[q_cardio]",
+          "sante[q_pregnancy]",
+          "sante[q_eye_trauma]",
+          "sante[q_psychotrop]",
+          "sante[q_recent_trauma]",
+        ];
+        for (let k of healthKeys) {
+          const sel = rootForm.querySelector(`[name="${k}"]:checked`);
+          if (sel && sel.value === "oui") return { excluded: true, key: k, reason: EXCLUSION_MAP[k] };
+        }
+        const logiKeys = [
+          "logistique[q_availability]",
+          "logistique[q_travel]",
+          "logistique[q_slots]",
+          "logistique[q_commit]",
+        ];
+        for (let k of logiKeys) {
+          const sel = rootForm.querySelector(`[name="${k}"]:checked`);
+          if (sel && sel.value === "non") return { excluded: true, key: k, reason: EXCLUSION_MAP[k] };
+        }
+        return { excluded: false };
+      }
+
+      function handleExclusion(obj) {
+        const panel = document.getElementById("ade-exclusion");
+        const reasonEl = document.getElementById("ade-exclusion-reason");
+        if (reasonEl) reasonEl.textContent = obj.reason || "Pour des raisons de sécurité, ce parcours n'est pas adapté.";
+        show(panel);
+        steps.forEach((s) => s.classList.add("is-hidden"));
+        panel.scrollIntoView({ behavior: "smooth" });
+        saveDraft({ minimal: true, reason: obj.reason });
+      }
+
+      /* ---------- data & draft ---------- */
+      function collectState() {
+        const fd = new FormData(rootForm);
+        const flat = {};
+        for (const [k, v] of fd.entries()) {
+          if (flat[k] === undefined) flat[k] = v;
+          else if (Array.isArray(flat[k])) flat[k].push(v);
+          else flat[k] = [flat[k], v];
+        }
+        flat._submitted_at = new Date().toISOString();
+        return nestObjectFromFlat(flat);
+      }
+
+      function nestObjectFromFlat(flat) {
+        const nested = {};
+        for (const key in flat) {
+          if (key.startsWith("_")) {
+            nested[key] = flat[key];
+            continue;
+          }
+          const parts = key.split(/\[|\]/).filter(Boolean);
+          let cur = nested;
+          for (let i = 0; i < parts.length; i++) {
+            const p = parts[i];
+            if (i === parts.length - 1) {
+              cur[p] = flat[key];
+            } else {
+              if (!cur[p] || typeof cur[p] !== "object") cur[p] = {};
+              cur = cur[p];
+            }
+          }
+        }
+        return nested;
+      }
+
+      function saveDraft(opts = {}) {
+        try {
+          if (opts.minimal) {
+            const minimal = { ts: new Date().toISOString(), reason: opts.reason || null };
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(minimal));
+          } else {
+            const s = collectState();
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(s));
+          }
+        } catch (e) {
+          console.warn("draft save err", e);
+        }
+      }
+
+      function loadDraft() {
+        try {
+          const raw = localStorage.getItem(DRAFT_KEY);
+          if (!raw) return;
+          const data = JSON.parse(raw);
+
+          // Aplatir les objets imbriqués → { "sante[q_psychotic]": "oui", "first_name": "Jean" }
+          const flatData = flattenObject(data);
+
+          Object.keys(flatData).forEach(k => {
+            if (k.startsWith('_') || k === 'ts') return;
+            const els = rootForm.querySelectorAll(`[name="${k}"]`);
+            if (!els || els.length === 0) return;
+            const val = flatData[k];
+            els.forEach(el => {
+              if (el.type === 'radio') {
+                if (el.value === val) el.checked = true;
+                el.classList.toggle('is-success', el.checked);
+                if (el.checked) el.dataset.everValid = "1";
+              } else if (el.type === 'checkbox') {
+                el.checked = Array.isArray(val) ? val.includes(el.value) : !!val;
+                el.classList.toggle('is-success', el.checked);
+                if (el.checked) el.dataset.everValid = "1";
+              } else {
+                el.value = val;
+                const valid = (el.value||'').toString().trim().length > 0;
+                el.classList.toggle('is-success', valid);
+                if (valid) {
+                  el.dataset.everValid = "1";
+                  updateIcon(el.closest('.control') || el.parentNode, true);
+                }
+              }
+            });
+          });
+        } catch(e) { /* ignore */ }
+      }
+
+      function flattenObject(obj, parentKey = '', res = {}) {
+        for (const key in obj) {
+          if (!Object.hasOwn(obj,key)) continue;
+          const newKey = parentKey ? `${parentKey}[${key}]` : key;
+          if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+            flattenObject(obj[key], newKey, res);
+          } else {
+            res[newKey] = obj[key];
+          }
+        }
+        return res;
+      }
+
+      /* ---------- submit ---------- */
+      async function handleSubmit(e) {
+        e.preventDefault();
+
+        let allValid = true;
+        steps.forEach((_, i) => {
+          if (!validateStep(i)) allValid = false;
+        });
+
+        if (!allValid) {
+          focusFirstInvalid(currentStep);
+          return;
+        }
+
+        const excl = checkExclusions();
+        if (excl.excluded) {
+          handleExclusion(excl);
+          return;
+        }
+
+        const payload = collectState();
+        saveDraft();
+
+        if (WEBHOOK_URL && WEBHOOK_URL.length > 5) {
+          try {
+            await fetch(WEBHOOK_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+          } catch (err) {
+            console.warn("webhook error", err);
+          }
+        }
+
+        const success = document.getElementById("ade-success");
+        show(success);
+        injectCalendly(CALENDLY_URL);
+        success.scrollIntoView({ behavior: "smooth" });
+      }
+
+      function injectCalendly(url) {
+        const wrap = document.getElementById("ade-calendly");
+        if (!wrap) return;
+        if (!url || url.length < 5) {
+          wrap.innerHTML = `<p class="small-note">Calendly non configuré — vous recevrez un lien par email.</p>`;
+          return;
+        }
+        if (wrap.dataset.loaded === "1") return;
+        const iframe = document.createElement("iframe");
+        iframe.src =
+          url +
+          "?embed_domain=" +
+          encodeURIComponent(location.hostname) +
+          "&embed_type=Widget";
+        iframe.style.width = "100%";
+        iframe.style.border = "0";
+        iframe.style.minHeight = "600px";
+        wrap.appendChild(iframe);
+        wrap.dataset.loaded = "1";
+      }
+
+      /* ---------- public init ---------- */
+      function init() {
+        initDOM();
+      }
+
+      return { init };
+    })();
 
 
   /* ------------ APP INIT ------------ */
@@ -350,8 +718,7 @@ const Carousel = (() => {
     FAQ.init();
     Carousel.init();
     CookieBanner.init();
-    AdequationForm.init();
-    CalendlyGate.init();
+    Adequation.init();
     // console.log('App initialised');
   };
 

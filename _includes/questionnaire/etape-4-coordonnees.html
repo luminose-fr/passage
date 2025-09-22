@@ -1,0 +1,99 @@
+<!-- STEP 3 (Coordonnées & RGPD) -->
+        <div class="form-step is-hidden" data-step="4">
+          <div class="columns field is-horizontal">
+            
+            <!-- Colonne gauche -->
+            <div class="column is-3">
+              <div class="progress-wrap">
+                <progress id="adequation-progress" class="progress" value="100" max="100"></progress>
+                <div class="progress-label" id="adequation-progress-label-4">Étape 4 / 4</div>
+              </div>
+              <label class="label">Coordonnées</label>
+            </div>
+
+            <!-- Colonne droite -->
+            <div class="column is-9">
+
+              <div class="field is-grouped">
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select name="coordonnees[genre]" required>
+                      <option value=""></option>
+                      <option value="Mme">Mme</option>
+                      <option value="M.">M.</option>
+                      <option value="Autre">Autre</option>
+                    </select>
+                  </div>
+                </div>
+                <p class="control is-expanded has-icons-right">
+                  <input type="text" name="coordonnees[first_name]" class="input" placeholder="Prénom" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+                <p class="control is-expanded has-icons-right">
+                  <input type="text" name="coordonnees[last_name]" class="input" placeholder="Nom" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+              </div>
+
+              <div class="field">
+                <p class="control is-expanded has-icons-right">
+                  <input type="text" name="coordonnees[address]" class="input" placeholder="Adresse" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+              </div>
+
+              <div class="field is-grouped">
+                <p class="control is-narrow has-icons-right">
+                  <input type="text" name="coordonnees[zipcode]" class="input" placeholder="Code postal" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+                <p class="control is-expanded has-icons-right">
+                  <input type="text" name="coordonnees[city]" class="input" placeholder="Ville" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+              </div>
+
+              <div class="field is-grouped">
+                <p class="control is-expanded has-icons-right">
+                  <input type="email" name="coordonnees[email]" class="input" placeholder="E-mail" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+                <p class="control is-expanded has-icons-right">
+                  <input type="text" name="coordonnees[birthdate]" class="input" placeholder="Date de naissance" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+              </div>
+
+              <div class="field">
+                <p class="control is-expanded has-icons-right">
+                  <input type="text" name="coordonnees[job]" class="input" placeholder="Profession" required>
+                  <span class="icon is-small is-right"><i class="fas"></i></span>
+                </p>
+              </div>
+
+              <p><strong>Veuillez lire et valider les déclarations suivantes :</strong></p>
+
+              <div class="field-body">
+                <div class="field">
+                  <div class="control has-pink-contrast has-rounded-corners-small"  tabindex="0">
+                    <input class="is-checkradio" id="declarations-declaration_sante" type="checkbox" name="declarations[declaration_sante]" required>
+                    <label for="declarations-declaration_sante">Je confirme par la présente que j'ai répondu à toutes les questions de manière complète et honnête et que je n'ai dissimulé aucune information. Pour autant que je sache, mon état de santé générale est bon.</label>
+                  </div>
+                </div>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control has-pink-contrast has-rounded-corners-small"  tabindex="0">
+                    <input class="is-checkradio" id="declarations-rgpd" type="checkbox" name="declarations[rgpd]" required>
+                    <label for="declarations-rgpd">Je confirme que mes données peuvent être utilisées pour l’évaluation de ma candidature et la prise de contact.</label>
+                  </div>
+                </div>
+              </div>
+              <div class="buttons">
+                <!-- nav previous as class only -->
+                <button type="button" class="button is-secondary ade-prev">Précédent</button>
+                <button type="submit" class="button is-primary" id="ade-submit">Soumettre et voir RDV</button>
+              </div>
+            </div>
+          </div>
+        </div> <!-- step 4 -->
