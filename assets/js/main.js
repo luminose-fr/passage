@@ -243,21 +243,28 @@ const Carousel = (() => {
     return { init };
   })();
 
-   /* ------------ ADEQUATION MODULE – v9 ------------ */
+    /* ------------ ADEQUATION MODULE – v10 (préambule / reprise / fullscreen mobile / autosave + expiry J+3) ------------ */
     const Adequation = (() => {
-      const WEBHOOK_URL = ""; // <-- renseigne si besoin
-      const CALENDLY_URL = ""; // <-- renseigne si besoin
-      const DRAFT_KEY = "leSeuil_draft_v9";
+      // CONFIG — <--- remplace si souhaité
+      const WEBHOOK_URL = "https://hook.eu1.make.com/98lq6so7rouba4l94h7god7copua3kpu"; // ex: "https://hook.eu1.make.com/xxxx"
+      const CALENDLY_URL = "https://calendly.com/luminose/le-seuil-la-rencontre"; // ex: "https://calendly.com/luminose/le-seuil-la-rencontre"
+      const DRAFT_KEY = "leSeuil_draft_v10";
+      const DRAFT_TTL_MS = 3 * 24 * 60 * 60 * 1000; // 3 jours
 
-      let rootForm, steps;
-      let currentStep = 0;
+      // DOM
+      let rootForm, steps, sectionEl, closeBtn;
+      let currentStepIndex = 0;
+      let autosaveTimer = null;
 
       // helpers
       const $ = (s, ctx = document) => ctx.querySelector(s);
       const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
-      const show = (el) => el && el.classList.remove("is-hidden");
-      const hide = (el) => el && el.classList.add("is-hidden");
+      const show = el => el && el.classList.remove("is-hidden");
+      const hide = el => el && el.classList.add("is-hidden");
+      const isMobile = () => window.matchMedia("(max-width: 820px)").matches; // ajustable breakpoint
+      const nowISO = () => (new Date()).toISOString();
 
+      // messages d'exclusion
       const EXCLUSION_MAP = {
         "sante[q_psychotic]": "Diagnostic psychotique, épilepsie ou antécédent de convulsions.",
         "sante[q_cardio]": "Pathologie cardiaque ou respiratoire significative non stabilisée.",
@@ -265,103 +272,234 @@ const Carousel = (() => {
         "sante[q_eye_trauma]": "Glaucome / chirurgie oculaire récente / traumatisme crânien / fracture non consolidée.",
         "sante[q_psychotrop]": "Traitement psychotrope lourd ou sevrage en cours.",
         "sante[q_recent_trauma]": "Traumatisme aigu très récent nécessitant un suivi médical/psy (<6 semaines).",
-        "logistique[q_availability]": "Disponibilité matérielle / temporelle insuffisante.",
         "logistique[q_travel]": "Impossibilité de se rendre en présentiel (séance 2 & 5).",
         "logistique[q_slots]": "Absence de créneaux réguliers pour les visios / présentielles.",
-        "logistique[q_commit]": "Impossible de s'engager sur 1–2 h d'intégration par semaine.",
+        "logistique[q_commit]": "Impossible de s'engager sur 1–2 h d'intégration par semaine."
       };
 
-      /* ---------- init ---------- */
+      /* ---------- INIT ---------- */
       function initDOM() {
         rootForm = document.getElementById("adequation-form");
         if (!rootForm) return;
         steps = $$("[data-step]", rootForm);
+        sectionEl = document.querySelector(".section.adequation");
+        closeBtn = sectionEl ? sectionEl.querySelector(".ade-close") : null;
 
-        // nav buttons via classes (no IDs)
-        rootForm.querySelectorAll(".ade-next").forEach((btn) => btn.addEventListener("click", handleNextClick));
-        rootForm.querySelectorAll(".ade-prev").forEach((btn) => btn.addEventListener("click", handlePrevClick));
+        // navigation via classes
+        rootForm.querySelectorAll(".ade-next").forEach(btn => btn.addEventListener("click", handleNextClick));
+        rootForm.querySelectorAll(".ade-prev").forEach(btn => btn.addEventListener("click", handlePrevClick));
 
-        // manual review
-        const reviewBtn = document.getElementById("ade-request-review");
-        if (reviewBtn) {
-          reviewBtn.addEventListener("click", () => {
-            window.location.href =
-              "mailto:hello@luminose.fr?subject=Demande%20examen%20manuel%20-%20Le%20Seuil";
+        // resume/reset buttons (present only if HTML added)
+        const resumeBtn = document.getElementById("ade-resume");
+        const resetBtn = document.getElementById("ade-reset");
+        if (resumeBtn) resumeBtn.addEventListener("click", handleResume);
+        if (resetBtn) resetBtn.addEventListener("click", handleReset);
+
+        // close fullscreen
+        if (closeBtn) {
+          closeBtn.addEventListener("click", () => {
+            removeFullscreen();
+            // return to preamble (step 0)
+            goToStepByName("0", { scrollTop:true });
           });
         }
 
-        // form submit
+        // manual review
+        const reviewBtn = document.getElementById("ade-request-review");
+        if (reviewBtn) reviewBtn.addEventListener("click", () => {
+          window.location.href = "mailto:hello@luminose.fr?subject=Demande%20examen%20manuel%20-%20Le%20Seuil";
+        });
+
+        // submit
         rootForm.addEventListener("submit", handleSubmit);
 
-        // attach validation behaviour + autosave
+        // attach validation & autosave
         attachValidationFeedback();
 
-        // populate draft if exists
-        loadDraft();
-
-        // initial display
-        goToStep(0);
+        // load draft and decide whether to show preambule or reprise
+        const draft = loadDraft();
+        if (draft && draft.valid) {
+          // show step 0b (reprise) if present, otherwise go direct to step 1
+          const idx0b = getStepIndexByName("0b");
+          if (idx0b >= 0) {
+            goToStep(idx0b, { scrollTop:true });
+          } else {
+            // fallback: go to preamble (0) then show resume buttons etc.
+            const idx0 = getStepIndexByName("0");
+            goToStep(idx0 >= 0 ? idx0 : 0, { scrollTop:true });
+          }
+        } else {
+          // no draft => show preambule (step 0) (if exists)
+          const idx0 = getStepIndexByName("0");
+          goToStep(idx0 >= 0 ? idx0 : 0, { scrollTop:true });
+        }
       }
 
+      /* ---------- helpers (steps handling) ---------- */
+      function getStepIndexByName(name) {
+        for (let i = 0; i < steps.length; i++) {
+          if (steps[i].dataset.step === String(name)) return i;
+        }
+        return -1;
+      }
+
+      // goToStep by index with options
+      function goToStep(index, opts = { scrollTop:true, fullscreenIfMobile:false }) {
+        steps.forEach((s, i) => {
+          if (i === index) s.classList.remove("is-hidden");
+          else s.classList.add("is-hidden");
+        });
+        currentStepIndex = index;
+
+        // If caller requested fullscreen on mobile, apply it
+        if (opts.fullscreenIfMobile && isMobile()) {
+          applyFullscreen();
+        }
+
+        // scroll to top of the container (works in fullscreen and normal)
+        if (opts.scrollTop) scrollContainerTop();
+
+        // update any progress UI if you want (progress bars in markup update automatically if you target them)
+      }
+
+      function goToStepByName(name, opts = { scrollTop:true, fullscreenIfMobile:false }) {
+        const idx = getStepIndexByName(name);
+        if (idx >= 0) goToStep(idx, opts);
+      }
+
+      /* ---------- fullscreen management ---------- */
+      function applyFullscreen() {
+        if (!sectionEl) return;
+        sectionEl.classList.add("is-fullscreen");
+        document.documentElement.style.overflow = "hidden"; // prevent background scroll on many browsers
+        document.body.style.overflow = "hidden";
+        if (closeBtn) closeBtn.classList.remove("is-hidden");
+      }
+
+      function removeFullscreen() {
+        if (!sectionEl) return;
+        sectionEl.classList.remove("is-fullscreen");
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+        if (closeBtn) closeBtn.classList.add("is-hidden");
+      }
+
+      // scroll to top of the relevant container
+      function scrollContainerTop() {
+        // wait a frame to allow layout changes
+        requestAnimationFrame(() => {
+          if (sectionEl && sectionEl.classList.contains("is-fullscreen")) {
+            // scroll inside the section
+            try {
+              sectionEl.scrollTo({ top: 0, behavior: "smooth" });
+            } catch (err) {
+              sectionEl.scrollTop = 0;
+            }
+          } else {
+            // standard window scroll
+            try {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            } catch (err) {
+              document.documentElement.scrollTop = 0;
+            }
+          }
+        });
+      }
+
+      /* ---------- navigation handlers ---------- */
       function handleNextClick(e) {
         e.preventDefault();
-        if (!validateStep(currentStep)) {
-          focusFirstInvalid(currentStep);
+        // validate current step
+        if (!validateStep(currentStepIndex)) {
+          focusFirstInvalid(currentStepIndex);
           return;
         }
-        // exclusions early
-        if (currentStep <= 1) {
+        // if leaving step 0 (preamble), request fullscreen on mobile
+        const currentName = steps[currentStepIndex].dataset.step;
+        const leavingPreamble = currentName === "0";
+        // early exclusions when leaving health/logistics (steps 1 or 2 depending on your layout)
+        if (currentStepIndex <= 1) {
           const excl = checkExclusions();
-          if (excl.excluded) {
-            handleExclusion(excl);
-            return;
-          }
+          if (excl.excluded) { handleExclusion(excl); return; }
         }
-        if (currentStep < steps.length - 1) goToStep(currentStep + 1);
+        const nextIndex = Math.min(steps.length - 1, currentStepIndex + 1);
+        goToStep(nextIndex, { scrollTop:true, fullscreenIfMobile: leavingPreamble });
       }
 
       function handlePrevClick(e) {
         e.preventDefault();
-        if (currentStep > 0) goToStep(Math.max(0, currentStep - 1));
+        const prevIndex = Math.max(0, currentStepIndex - 1);
+        // when navigating back from fullscreen step to preambule, keep fullscreen until explicit close?
+        // We'll keep fullscreen until user closes via cross.
+        goToStep(prevIndex, { scrollTop:true, fullscreenIfMobile:false });
       }
 
-      function goToStep(index) {
-        steps.forEach((s, i) =>
-          i === index ? s.classList.remove("is-hidden") : s.classList.add("is-hidden")
-        );
-        currentStep = index;
-        const first = steps[index].querySelector("input,textarea,select,button");
-        if (first) first.focus({ preventScroll: true });
+      /* ---------- resume / reset ---------- */
+      function handleResume(e) {
+        e.preventDefault();
+        const draft = loadDraft();
+        if (!draft || !draft.valid) {
+          // fallback: go to start
+          goToStepByName("0", { scrollTop:true });
+          return;
+        }
+        // populate fields with saved flat data
+        populateFromFlat(draft.flat || {});
+        // show fullscreen on mobile and go to step 1
+        applyFullscreen();
+        const idxStep1 = resolveIndexOfFirstRealStep(); // choose appropriate next step (1)
+        goToStep(idxStep1, { scrollTop:true });
       }
 
-      /* ---------- validation UI behaviours ---------- */
+      function handleReset(e) {
+        e.preventDefault();
+        localStorage.removeItem(DRAFT_KEY);
+        // show preamble (normal) - step 0
+        const idx0 = getStepIndexByName("0");
+        goToStep(idx0 >= 0 ? idx0 : 0, { scrollTop:true });
+      }
+
+      // utility: find index of first non-preamble step (usually step "1")
+      function resolveIndexOfFirstRealStep() {
+        // prefer dataset.step == "1"
+        const idx1 = getStepIndexByName("1");
+        if (idx1 >= 0) return idx1;
+        // otherwise first element that isn't 0 or 0b
+        for (let i = 0; i < steps.length; i++) {
+          const s = steps[i].dataset.step;
+          if (s !== "0" && s !== "0b") return i;
+        }
+        return 0;
+      }
+
+      /* ---------- validation UI behaviours & autosave ---------- */
       function attachValidationFeedback() {
         const controls = $$("input,textarea,select", rootForm);
-        controls.forEach((el) => {
-          el.dataset.touched = el.dataset.touched || "0";
-          el.dataset.everValid =
-            el.value && el.value.toString().trim().length > 0 ? "1" : "0";
 
-          // autosave on every change
-          el.addEventListener("input", saveDraft);
-          el.addEventListener("change", saveDraft);
+        controls.forEach(el => {
+          // flags
+          el.dataset.touched = el.dataset.touched || "0";
+          el.dataset.everValid = (el.value && el.value.toString().trim().length > 0) ? "1" : "0";
+
+          // autosave (debounced)
+          el.addEventListener("input", () => debouncedSaveDraft());
+          el.addEventListener("change", () => debouncedSaveDraft());
 
           if (el.type === "radio") {
+            // attach change once per radio option in the group - behaviour only affects that group
             const radios = $$(`[name="${el.name}"]`, rootForm);
-            radios.forEach((r) => {
+            radios.forEach(r => {
               r.addEventListener("change", () => {
-                radios.forEach((rr) => {
+                // clear classes for that group only
+                radios.forEach(rr => {
                   rr.classList.remove("is-success", "is-danger");
                   rr.removeAttribute("aria-invalid");
                 });
-                const checked = rootForm.querySelector(
-                  `[name="${el.name}"]:checked`
-                );
+                const checked = rootForm.querySelector(`[name="${el.name}"]:checked`);
                 if (checked) {
                   checked.classList.add("is-success");
                   checked.dataset.touched = "1";
-                  const parent = checked.closest("td") || checked.closest(".control");
-                  updateIcon(parent, true);
+                  updateIconForGroup(checked, true);
                 }
               });
             });
@@ -369,17 +507,15 @@ const Carousel = (() => {
             el.addEventListener("change", () => {
               el.dataset.touched = "1";
               if (el.checked) {
-                el.classList.add("is-success");
-                el.classList.remove("is-danger");
-                updateIcon(el.closest(".control") || el.parentNode, true);
+                el.classList.add("is-success"); el.classList.remove("is-danger");
                 el.dataset.everValid = "1";
+                updateIcon(el.closest(".control") || el.parentNode, true);
               } else {
                 if (el.dataset.everValid === "1") {
-                  el.classList.remove("is-success");
-                  el.classList.add("is-danger");
+                  el.classList.remove("is-success"); el.classList.add("is-danger");
                   updateIcon(el.closest(".control") || el.parentNode, false);
                 } else {
-                  el.classList.remove("is-success", "is-danger");
+                  el.classList.remove("is-success","is-danger");
                   updateIcon(el.closest(".control") || el.parentNode, null);
                 }
               }
@@ -390,10 +526,10 @@ const Carousel = (() => {
               const val = (el.value || "").toString().trim();
               if (val.length > 0) {
                 el.dataset.everValid = "1";
-                el.classList.add("is-success");
-                el.classList.remove("is-danger");
+                el.classList.add("is-success"); el.classList.remove("is-danger");
                 updateIcon(el.closest(".control") || el.parentNode, true);
               } else {
+                // while typing, remain neutral (no immediate red)
                 el.classList.remove("is-success", "is-danger");
                 updateIcon(el.closest(".control") || el.parentNode, null);
               }
@@ -404,19 +540,15 @@ const Carousel = (() => {
               const val = (el.value || "").toString().trim();
               if (val.length > 0) {
                 el.dataset.everValid = "1";
-                el.classList.add("is-success");
-                el.classList.remove("is-danger");
+                el.classList.add("is-success"); el.classList.remove("is-danger");
                 updateIcon(el.closest(".control") || el.parentNode, true);
               } else {
-                // 🔧 nouvelle règle : si déjà en erreur => rester rouge
-                if (el.classList.contains("is-danger")) {
-                  updateIcon(el.closest(".control") || el.parentNode, false);
-                } else if (el.dataset.everValid === "1") {
-                  el.classList.remove("is-success");
-                  el.classList.add("is-danger");
+                // show error only if field was valid before (everValid === "1") OR if we have attempted submission
+                if (el.dataset.everValid === "1" || rootForm.dataset.submitted === "1") {
+                  el.classList.remove("is-success"); el.classList.add("is-danger");
                   updateIcon(el.closest(".control") || el.parentNode, false);
                 } else {
-                  el.classList.remove("is-success", "is-danger");
+                  el.classList.remove("is-success","is-danger");
                   updateIcon(el.closest(".control") || el.parentNode, null);
                 }
               }
@@ -425,16 +557,25 @@ const Carousel = (() => {
         });
       }
 
-      // update icon
       function updateIcon(container, valid) {
         if (!container) return;
-        const iconEl =
-          container.querySelector(".icon.is-small.is-right i.fas") ||
-          container.querySelector(".icon i.fas");
+        const iconEl = container.querySelector(".icon.is-small.is-right i.fas") || container.querySelector(".icon i.fas");
         if (!iconEl) return;
         iconEl.classList.remove("fa-check", "fa-exclamation-triangle");
         if (valid === true) iconEl.classList.add("fa-check");
         else if (valid === false) iconEl.classList.add("fa-exclamation-triangle");
+      }
+
+      function updateIconForGroup(elInGroup, valid) {
+        // find the parent cell/control for the group and update its icon if present
+        const parent = elInGroup.closest("td") || elInGroup.closest(".control");
+        updateIcon(parent, valid);
+      }
+
+      /* debounce for autosave */
+      function debouncedSaveDraft() {
+        if (autosaveTimer) clearTimeout(autosaveTimer);
+        autosaveTimer = setTimeout(() => saveDraft(), 300);
       }
 
       /* ---------- step validation ---------- */
@@ -453,12 +594,14 @@ const Carousel = (() => {
             const checked = rootForm.querySelector(`[name="${el.name}"]:checked`);
             const radios = Array.from(rootForm.querySelectorAll(`[name="${el.name}"]`));
             if (!checked) {
-              radios.forEach((r) => r.classList.add("is-danger"));
+              // mark group as error (only radios of this group)
+              radios.forEach(r => r.classList.add("is-danger"));
               const parent = radios[0] && (radios[0].closest("td") || radios[0].closest(".control"));
               updateIcon(parent, false);
               ok = false;
             } else {
-              radios.forEach((r) => r.classList.remove("is-danger"));
+              // mark only the checked radio as success, clear danger from group
+              radios.forEach(r => r.classList.remove("is-danger"));
               checked.classList.add("is-success");
               const parent = checked.closest("td") || checked.closest(".control");
               updateIcon(parent, true);
@@ -489,6 +632,13 @@ const Carousel = (() => {
           }
         }
 
+        // mark submit if any error found
+        const submitBtn = rootForm.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          if (!ok) submitBtn.classList.add('is-danger');
+          else submitBtn.classList.remove('is-danger');
+        }
+
         return ok;
       }
 
@@ -496,12 +646,12 @@ const Carousel = (() => {
         const step = steps[index];
         if (!step) return;
         const firstError = step.querySelector(".is-danger, :invalid");
-        if (firstError) {
+        if (firstError && typeof firstError.focus === "function") {
           firstError.focus({ preventScroll: true });
           return;
         }
         const firstReq = step.querySelector("[required]");
-        if (firstReq) firstReq.focus({ preventScroll: true });
+        if (firstReq && typeof firstReq.focus === "function") firstReq.focus({ preventScroll:true });
       }
 
       /* ---------- exclusions ---------- */
@@ -512,23 +662,22 @@ const Carousel = (() => {
           "sante[q_pregnancy]",
           "sante[q_eye_trauma]",
           "sante[q_psychotrop]",
-          "sante[q_recent_trauma]",
+          "sante[q_recent_trauma]"
         ];
         for (let k of healthKeys) {
           const sel = rootForm.querySelector(`[name="${k}"]:checked`);
-          if (sel && sel.value === "oui") return { excluded: true, key: k, reason: EXCLUSION_MAP[k] };
+          if (sel && sel.value === "oui") return { excluded:true, key:k, reason: EXCLUSION_MAP[k] };
         }
         const logiKeys = [
-          "logistique[q_availability]",
           "logistique[q_travel]",
           "logistique[q_slots]",
-          "logistique[q_commit]",
+          "logistique[q_commit]"
         ];
         for (let k of logiKeys) {
           const sel = rootForm.querySelector(`[name="${k}"]:checked`);
-          if (sel && sel.value === "non") return { excluded: true, key: k, reason: EXCLUSION_MAP[k] };
+          if (sel && sel.value === "non") return { excluded:true, key:k, reason: EXCLUSION_MAP[k] };
         }
-        return { excluded: false };
+        return { excluded:false };
       }
 
       function handleExclusion(obj) {
@@ -536,39 +685,44 @@ const Carousel = (() => {
         const reasonEl = document.getElementById("ade-exclusion-reason");
         if (reasonEl) reasonEl.textContent = obj.reason || "Pour des raisons de sécurité, ce parcours n'est pas adapté.";
         show(panel);
-        steps.forEach((s) => s.classList.add("is-hidden"));
+        steps.forEach(s => s.classList.add("is-hidden"));
         panel.scrollIntoView({ behavior: "smooth" });
-        saveDraft({ minimal: true, reason: obj.reason });
+        // save minimal info for debugging
+        localStorage.setItem(DRAFT_KEY + "_excluded", JSON.stringify({ ts: nowISO(), reason: obj.reason }));
       }
 
-      /* ---------- data & draft ---------- */
-      function collectState() {
+      /* ---------- data & draft (flat) ---------- */
+      function collectFlat() {
         const fd = new FormData(rootForm);
         const flat = {};
-        for (const [k, v] of fd.entries()) {
+        for (const [k,v] of fd.entries()) {
           if (flat[k] === undefined) flat[k] = v;
           else if (Array.isArray(flat[k])) flat[k].push(v);
           else flat[k] = [flat[k], v];
         }
-        flat._submitted_at = new Date().toISOString();
-        return nestObjectFromFlat(flat);
+        return flat;
+      }
+
+      function collectStateNested() {
+        const flat = collectFlat();
+        const nested = nestObjectFromFlat(flat);
+        nested._submitted_at = nowISO();
+        return nested;
       }
 
       function nestObjectFromFlat(flat) {
         const nested = {};
         for (const key in flat) {
-          if (key.startsWith("_")) {
-            nested[key] = flat[key];
-            continue;
-          }
+          if (!Object.prototype.hasOwnProperty.call(flat, key)) continue;
+          if (key.startsWith('_')) { nested[key] = flat[key]; continue; }
           const parts = key.split(/\[|\]/).filter(Boolean);
           let cur = nested;
-          for (let i = 0; i < parts.length; i++) {
+          for (let i=0; i<parts.length; i++) {
             const p = parts[i];
             if (i === parts.length - 1) {
               cur[p] = flat[key];
             } else {
-              if (!cur[p] || typeof cur[p] !== "object") cur[p] = {};
+              if (!cur[p] || typeof cur[p] !== 'object') cur[p] = {};
               cur = cur[p];
             }
           }
@@ -578,58 +732,69 @@ const Carousel = (() => {
 
       function saveDraft(opts = {}) {
         try {
-          if (opts.minimal) {
-            const minimal = { ts: new Date().toISOString(), reason: opts.reason || null };
-            localStorage.setItem(DRAFT_KEY, JSON.stringify(minimal));
-          } else {
-            const s = collectState();
-            localStorage.setItem(DRAFT_KEY, JSON.stringify(s));
-          }
+          const flat = collectFlat();
+          const wrapper = { ts: nowISO(), flat };
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(wrapper));
         } catch (e) {
-          console.warn("draft save err", e);
+          console.warn("saveDraft err", e);
         }
       }
 
       function loadDraft() {
         try {
           const raw = localStorage.getItem(DRAFT_KEY);
-          if (!raw) return;
-          const data = JSON.parse(raw);
+          if (!raw) return null;
+          const obj = JSON.parse(raw);
+          // Check ts exists
+          if (!obj || !obj.ts) {
+            // fallback: treat as invalid
+            localStorage.removeItem(DRAFT_KEY);
+            return null;
+          }
+          const age = (new Date()).getTime() - (new Date(obj.ts)).getTime();
+          if (age > DRAFT_TTL_MS) {
+            // expired
+            localStorage.removeItem(DRAFT_KEY);
+            return null;
+          }
+          return { valid:true, ts: obj.ts, flat: obj.flat || {} };
+        } catch (e) {
+          console.warn("loadDraft err", e);
+          return null;
+        }
+      }
 
-          // Aplatir les objets imbriqués → { "sante[q_psychotic]": "oui", "first_name": "Jean" }
-          const flatData = flattenObject(data);
-
-          Object.keys(flatData).forEach(k => {
-            if (k.startsWith('_') || k === 'ts') return;
-            const els = rootForm.querySelectorAll(`[name="${k}"]`);
-            if (!els || els.length === 0) return;
-            const val = flatData[k];
-            els.forEach(el => {
-              if (el.type === 'radio') {
-                if (el.value === val) el.checked = true;
-                el.classList.toggle('is-success', el.checked);
-                if (el.checked) el.dataset.everValid = "1";
-              } else if (el.type === 'checkbox') {
-                el.checked = Array.isArray(val) ? val.includes(el.value) : !!val;
-                el.classList.toggle('is-success', el.checked);
-                if (el.checked) el.dataset.everValid = "1";
+      function populateFromFlat(flatData) {
+        // flatData keys are like "sante[q_psychotic]" or "coordonnees[first_name]"
+        Object.keys(flatData).forEach(k => {
+          const els = rootForm.querySelectorAll(`[name="${k}"]`);
+          if (!els || els.length === 0) return;
+          const val = flatData[k];
+          els.forEach(el => {
+            if (el.type === "radio") {
+              if (el.value === val) {
+                el.checked = true;
+                el.classList.add("is-success");
               } else {
-                el.value = val;
-                const valid = (el.value||'').toString().trim().length > 0;
-                el.classList.toggle('is-success', valid);
-                if (valid) {
-                  el.dataset.everValid = "1";
-                  updateIcon(el.closest('.control') || el.parentNode, true);
-                }
+                el.checked = false;
+                el.classList.remove("is-success","is-danger");
               }
-            });
+            } else if (el.type === "checkbox") {
+              el.checked = Array.isArray(val) ? val.includes(el.value) : !!val;
+              el.classList.toggle("is-success", el.checked);
+            } else {
+              el.value = val;
+              const valid = (el.value||"").toString().trim().length > 0;
+              el.classList.toggle("is-success", valid);
+              if (valid) updateIcon(el.closest(".control") || el.parentNode, true);
+            }
           });
-        } catch(e) { /* ignore */ }
+        });
       }
 
       function flattenObject(obj, parentKey = '', res = {}) {
         for (const key in obj) {
-          if (!Object.hasOwn(obj,key)) continue;
+          if (!Object.hasOwn(obj, key)) continue;
           const newKey = parentKey ? `${parentKey}[${key}]` : key;
           if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
             flattenObject(obj[key], newKey, res);
@@ -644,40 +809,66 @@ const Carousel = (() => {
       async function handleSubmit(e) {
         e.preventDefault();
 
+        // mark that we've attempted submit (affects blur logic)
+        rootForm.dataset.submitted = "1";
+
+        // validate all steps
         let allValid = true;
-        steps.forEach((_, i) => {
+        for (let i = 0; i < steps.length; i++) {
           if (!validateStep(i)) allValid = false;
-        });
-
+        }
         if (!allValid) {
-          focusFirstInvalid(currentStep);
+          focusFirstInvalid(currentStepIndex);
           return;
         }
 
+        // final exclusion check
         const excl = checkExclusions();
-        if (excl.excluded) {
-          handleExclusion(excl);
-          return;
-        }
+        if (excl.excluded) { handleExclusion(excl); return; }
 
-        const payload = collectState();
+        // collect nested payload and save draft (for logs)
+        const payload = collectStateNested();
         saveDraft();
 
+        // send to webhook if configured and wait for response -> then show Calendly on success
         if (WEBHOOK_URL && WEBHOOK_URL.length > 5) {
           try {
-            await fetch(WEBHOOK_URL, {
+            const resp = await fetch(WEBHOOK_URL, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload),
+              body: JSON.stringify(payload)
             });
+            // handle different response codes
+            if (resp.ok) {
+              // success → show calendly
+              showSuccessAndCalendly();
+            } else if (resp.status >= 400 && resp.status < 500) {
+              // validation error
+              alert("Vos réponses semblent poser problème — merci de vérifier et réessayer. Si le problème persiste, contactez hello@luminose.fr");
+              // return to first step
+              goToStepByName("1", { scrollTop:true });
+            } else {
+              // server error
+              alert("Erreur technique lors de l'enregistrement. Merci de réessayer plus tard ou de contacter hello@luminose.fr");
+              goToStepByName("1", { scrollTop:true });
+            }
           } catch (err) {
             console.warn("webhook error", err);
+            alert("Impossible de contacter le serveur. Vérifiez votre connexion. Si le problème persiste, contactez hello@luminose.fr");
+            goToStepByName("1", { scrollTop:true });
           }
+        } else {
+          // no webhook configured — directly show calendly
+          showSuccessAndCalendly();
         }
+      }
 
+      function showSuccessAndCalendly() {
         const success = document.getElementById("ade-success");
         show(success);
         injectCalendly(CALENDLY_URL);
+        // go to success panel and scroll
+        // find index of success panel (not a step), we will scroll it into view
         success.scrollIntoView({ behavior: "smooth" });
       }
 
@@ -690,11 +881,7 @@ const Carousel = (() => {
         }
         if (wrap.dataset.loaded === "1") return;
         const iframe = document.createElement("iframe");
-        iframe.src =
-          url +
-          "?embed_domain=" +
-          encodeURIComponent(location.hostname) +
-          "&embed_type=Widget";
+        iframe.src = url + '?embed_domain=' + encodeURIComponent(location.hostname) + '&embed_type=Widget';
         iframe.style.width = "100%";
         iframe.style.border = "0";
         iframe.style.minHeight = "600px";

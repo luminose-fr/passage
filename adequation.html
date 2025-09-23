@@ -7,24 +7,24 @@ permalink: /adequation/
 <section class="section intro">
   <div class="container content has-text-centered">
     <h1 class="title is-3">Vérifier l’adéquation</h1>    
-    <p>Ce formulaire protège votre sécurité et la qualité du travail. Vos données de santé sont traitées avec consentement explicite et confidentialité.</p>
-    <p><span class="tag">Nécessite environ 5 à 8 minutes</span></p>
   </div>
 </section>
 
 <section class="section adequation">
+  <button type="button" class="adequation-close button is-white" aria-label="Fermer le formulaire" title="Fermer"><i class="fas fa-times"></i></button>
   <div class="container">
     <div class="box content">
 
       <form id="adequation-form" novalidate>
-
+        {% include questionnaire/etape-0-preambule.html %}
         {% include questionnaire/etape-1-sante.html %}
-
         {% include questionnaire/etape-2-logistique.html %}
-
         {% include questionnaire/etape-3-parcours.html %}
-
         {% include questionnaire/etape-4-coordonnees.html %}
+        {% include questionnaire/etape-5-rdv.html %}
+
+        <!-- SERVER / WEBHOOK ERROR MESSAGE (hidden) -->
+        <div id="ade-server-message" class="notification is-hidden" role="alert"></div>
 
         <!-- Exclusion panel -->
         <div id="ade-exclusion" class="notification is-danger is-hidden" role="alert">
@@ -35,13 +35,6 @@ permalink: /adequation/
             <button type="button" class="button is-light" id="ade-request-review">Demander un examen manuel</button>
             <a class="button is-text" href="/securite/">Voir la page cadre & sécurité</a>
           </div>
-        </div>
-
-        <!-- Success / Calendly wrapper (hidden until pass) -->
-        <div id="ade-success" class="box is-hidden" aria-live="polite">
-          <h4 class="title is-6">Votre dossier est admissible</h4>
-          <p class="small-note">Choisissez un créneau pour l'entretien d'1h (sélection ci-dessous) — ou vous recevrez un lien par email.</p>
-          <div id="ade-calendly" class="calendly-wrapper"></div>
         </div>
 
       </form>

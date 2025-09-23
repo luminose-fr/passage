@@ -208,6 +208,91 @@
             margin:0 2rem;
         }
     }
+    /* lock du body pour éviter le scroll de fond lors du mode plein-écran */
+    body.adequation-lock {
+        overflow: hidden !important;
+        height: 100%;
+        touch-action: none;
+    }
+
+    /* quand la section passe en fullscreen */
+    section.adequation.is-fullscreen {
+        position: fixed;
+        inset: 0; /* top:0; right:0; bottom:0; left:0 */
+        z-index: 1200; /* > 1100 (nav) */
+        // background: #fff; /* ou ton background global ; important d'avoir un fond pour masquer la page */
+        background: v.$main-gradient;
+        overflow-y: auto; /* scroll DANS cet élément */
+        -webkit-overflow-scrolling: touch; /* iOS momentum */
+        padding-top:5rem;
+        padding-bottom:5rem;
+    
+        .adequation-close {
+            display: flex;
+        }
+
+        .adequation-close.button.is-white {
+            background: rgba(255,255,255,0.9);
+            color: v.$prune;
+        }
+
+        .column.is-3 {
+            z-index: 1201; /* > 1100 (nav) */
+            position: fixed;
+            top:0;
+            left: 0;
+            right: 0;
+            padding:0.75rem 0.75rem 0 0.75rem ;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.75);
+            -webkit-backdrop-filter: saturate(120%) blur(12px);
+            backdrop-filter: saturate(120%) blur(12px);
+
+            .progress-wrap {
+                display: flex;
+                flex-direction: row-reverse;
+                vertical-align: middle;
+                height:auto;
+                gap:0.75rem;
+                margin-bottom: 0.5rem;
+
+                .progress-label {
+                    display: block;
+                    position: relative;
+                    transform: none;
+                    left:0;
+                    white-space: nowrap;
+                }
+                .progress {
+                    top:0;
+                    display: block;
+                    position: relative;
+                    margin-bottom: 0;
+                    margin-right:3rem;
+                    --bulma-progress-bar-background-color: #fff;
+                }
+            }
+            
+        }
+        .column.is-9 {
+            
+
+            .buttons {
+                z-index: 1201; /* > 1100 (nav) */
+                position: fixed;
+                bottom:0;
+                left: 0;
+                right: 0;
+                padding:0.75rem;
+                justify-content: right;
+                background: rgba(255, 255, 255, 0.75);
+                -webkit-backdrop-filter: saturate(120%) blur(12px);
+                backdrop-filter: saturate(120%) blur(12px);
+            }
+        }
+    }
+
+    
 
     .adequation .columns.field.is-horizontal .column.is-9 {
         .field.is-grouped {

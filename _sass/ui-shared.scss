@@ -756,6 +756,22 @@ button.nav-chip {
 //
 /* Adequation form styles (mobile-first) */
 .adequation {
+  /* bouton croix */
+  .adequation-close {
+      display: none; /* caché par défaut */
+      position: fixed; /* fixe dans la fenêtre */
+      top: 10px;
+      right: 12px;
+      z-index: 1210;
+      width: 40px;
+      height: 40px;
+      padding: 0.35rem 0.45rem;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      align-items: center;
+      justify-content: center;
+  }
+  
   .columns.field.is-horizontal {
     .column.is-3 {
       .label {
