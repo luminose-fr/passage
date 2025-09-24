@@ -243,14 +243,15 @@ const Carousel = (() => {
     return { init };
   })();
 
-    /* ------------ ADEQUATION MODULE – v12 (loader Bulma, webhook handling, autosave TTL 3j) ------------ */
+    /* ------------ ADEQUATION MODULE – v13 (CSS-only fullscreen, loader Bulma, webhook handling, autosave TTL 3j) ------------ */
     const Adequation = (() => {
       // --------- CONFIG ----------
       const WEBHOOK_URL = "https://hook.eu1.make.com/98lq6so7rouba4l94h7god7copua3kpu"; // fourni
-      const CALENDLY_URL = "https://calendly.com/luminose/le-seuil-la-rencontre"; // fourni
-      const DRAFT_KEY = "leSeuil_draft_v12";
+      const CALENDLY_URL = "https://calendly.com/luminose/le-seuil-la-rencontre?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=86285A&text_color=86285A"; // fourni
+      const DRAFT_KEY = "leSeuil_draft_v13";
       const DRAFT_TTL_MS = 3 * 24 * 60 * 60 * 1000; // 3 jours
       const FETCH_TIMEOUT_MS = 30000; // 30s timeout
+      const serverMsgElId = "ade-server-message";
 
       // --------- STATE / DOM ----------
       let rootForm, steps, sectionEl, closeBtn;
@@ -260,25 +261,9 @@ const Carousel = (() => {
       // helpers
       const $ = (s, ctx = document) => ctx.querySelector(s);
       const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
-      const show = (el) => el && el.classList.remove("is-hidden");
-      const hide = (el) => el && el.classList.add("is-hidden");
-      const isMobile = () => window.matchMedia("(max-width: 820px)").matches;
+      const show = el => el && el.classList.remove("is-hidden");
+      const hide = el => el && el.classList.add("is-hidden");
       const nowISO = () => (new Date()).toISOString();
-
-      // server messages container (must exist in your HTML)
-      const serverMsgElId = "ade-server-message";
-
-      const EXCLUSION_MAP = {
-        "sante[q_psychotic]": "Diagnostic psychotique, épilepsie ou antécédent de convulsions.",
-        "sante[q_cardio]": "Pathologie cardiaque ou respiratoire significative non stabilisée.",
-        "sante[q_pregnancy]": "Grossesse / post-partum immédiat (<3 mois).",
-        "sante[q_eye_trauma]": "Glaucome / chirurgie oculaire récente / traumatisme crânien / fracture non consolidée.",
-        "sante[q_psychotrop]": "Traitement psychotrope lourd ou sevrage en cours.",
-        "sante[q_recent_trauma]": "Traumatisme aigu très récent nécessitant un suivi médical/psy (<6 semaines).",
-        "logistique[q_travel]": "Impossibilité de se rendre en présentiel (séance 2 & 5).",
-        "logistique[q_slots]": "Absence de créneaux réguliers pour les visios / présentielles.",
-        "logistique[q_commit]": "Impossible de s'engager sur 1–2 h d'intégration par semaine."
-      };
 
       /* ---------- INIT ---------- */
       function initDOM() {
@@ -286,7 +271,7 @@ const Carousel = (() => {
         if (!rootForm) return;
         steps = $$("[data-step]", rootForm);
         sectionEl = document.querySelector(".section.adequation");
-        closeBtn = sectionEl ? sectionEl.querySelector(".adequation-close") : null; // attention : classe via HTML
+        closeBtn = sectionEl ? sectionEl.querySelector(".adequation-close") : null;
 
         // nav (classes)
         rootForm.querySelectorAll(".ade-next").forEach(btn => btn.addEventListener("click", handleNextClick));
@@ -298,12 +283,10 @@ const Carousel = (() => {
         if (resumeBtn) resumeBtn.addEventListener("click", handleResume);
         if (resetBtn) resetBtn.addEventListener("click", handleReset);
 
-        // close fullscreen (croix)
+        // close button (croix) : simple navigation vers preambule (0)
         if (closeBtn) {
           closeBtn.addEventListener("click", (e) => {
             e.preventDefault();
-            removeFullscreen();
-            // show preamble (0)
             goToStepByName("0", { scrollTop: true });
           });
         }
@@ -323,13 +306,17 @@ const Carousel = (() => {
         // decide starting step based on draft existence/validity
         const draft = loadDraft();
         if (draft && draft.valid) {
-          // if a "0b" step exists, show it, else go to preamble (0)
           const idx0b = getStepIndexByName("0b");
           if (idx0b >= 0) goToStep(idx0b, { scrollTop: true });
           else goToStepByName("0", { scrollTop: true });
         } else {
           goToStepByName("0", { scrollTop: true });
         }
+
+        // optional: handle resize to ensure scrollability remains native (no JS locking)
+        window.addEventListener("resize", () => {
+          // nothing to do here: CSS handles layout
+        });
       }
 
       /* ---------- step helpers ---------- */
@@ -340,48 +327,30 @@ const Carousel = (() => {
         return -1;
       }
 
-      // go to step index (no automatic focus)
-      function goToStep(index, opts = { scrollTop: true, fullscreenIfMobile: false }) {
+      function goToStep(index, opts = { scrollTop: true }) {
         steps.forEach((s, i) => (i === index ? s.classList.remove("is-hidden") : s.classList.add("is-hidden")));
         currentStepIndex = index;
-
-        // fullscreen on mobile if requested (used when leaving preamble)
-        if (opts.fullscreenIfMobile && isMobile()) applyFullscreen();
-
         if (opts.scrollTop) scrollContainerTop();
       }
 
-      function goToStepByName(name, opts = { scrollTop: true, fullscreenIfMobile: false }) {
+      function goToStepByName(name, opts = { scrollTop: true }) {
         const idx = getStepIndexByName(name);
         if (idx >= 0) goToStep(idx, opts);
       }
 
-      /* ---------- fullscreen ----------
-        Adds a class on the section and prevent body scroll on mobile.
-      */
-      function applyFullscreen() {
-        if (!sectionEl) return;
-        sectionEl.classList.add("is-fullscreen");
-        document.documentElement.style.overflow = "hidden";
-        document.body.style.overflow = "hidden";
-        if (closeBtn) closeBtn.classList.remove("is-hidden");
-      }
-      function removeFullscreen() {
-        if (!sectionEl) return;
-        sectionEl.classList.remove("is-fullscreen");
-        document.documentElement.style.overflow = "";
-        document.body.style.overflow = "";
-        if (closeBtn) closeBtn.classList.add("is-hidden");
-      }
-
+      // scroll to top of relevant container:
+      // if the active step is fixed/has its own overflow (CSS mobile fullscreen), scroll that element,
+      // otherwise scroll the window.
       function scrollContainerTop() {
         requestAnimationFrame(() => {
-          if (sectionEl && sectionEl.classList.contains("is-fullscreen")) {
-            try { sectionEl.scrollTo({ top: 0, behavior: "smooth" }); }
-            catch (e) { sectionEl.scrollTop = 0; }
+          const active = steps[currentStepIndex];
+          if (!active) return;
+          const cs = window.getComputedStyle(active);
+          const usesOwnScroll = cs.position === "fixed" || cs.overflowY === "auto" || cs.overflowY === "scroll";
+          if (usesOwnScroll && typeof active.scrollTo === "function") {
+            try { active.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { active.scrollTop = 0; }
           } else {
-            try { window.scrollTo({ top: 0, behavior: "smooth" }); }
-            catch (e) { document.documentElement.scrollTop = 0; }
+            try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { document.documentElement.scrollTop = 0; }
           }
         });
       }
@@ -391,9 +360,6 @@ const Carousel = (() => {
         e.preventDefault();
         if (!validateStep(currentStepIndex)) { focusFirstInvalid(currentStepIndex); return; }
 
-        // leaving preamble (data-step == "0") => ask for fullscreen on mobile
-        const leavingPreamble = String(steps[currentStepIndex].dataset.step) === "0";
-
         // early exclusion check when leaving health/logistics (steps 1/2)
         if (currentStepIndex <= 1) {
           const excl = checkExclusions();
@@ -401,7 +367,7 @@ const Carousel = (() => {
         }
 
         const nextIndex = Math.min(steps.length - 1, currentStepIndex + 1);
-        goToStep(nextIndex, { scrollTop: true, fullscreenIfMobile: leavingPreamble });
+        goToStep(nextIndex, { scrollTop: true });
       }
 
       function handlePrevClick(e) {
@@ -412,20 +378,16 @@ const Carousel = (() => {
 
       /* ---------- resume / reset ---------- */
       function handleResume(e) {
-        e.preventDefault();
+        e && e.preventDefault();
         const draft = loadDraft();
-        if (!draft || !draft.valid) {
-          goToStepByName("0", { scrollTop: true });
-          return;
-        }
+        if (!draft || !draft.valid) { goToStepByName("0", { scrollTop: true }); return; }
         populateFromFlat(draft.flat || {});
-        applyFullscreen();
         const idx = getStepIndexByName("1") >= 0 ? getStepIndexByName("1") : resolveIndexOfFirstRealStep();
         goToStep(idx, { scrollTop: true });
       }
 
       function handleReset(e) {
-        e.preventDefault();
+        e && e.preventDefault();
         localStorage.removeItem(DRAFT_KEY);
         goToStepByName("0", { scrollTop: true });
       }
@@ -454,15 +416,11 @@ const Carousel = (() => {
           el.addEventListener("change", debouncedSaveDraft);
 
           if (el.type === "radio") {
-            // attach change for the group
             const radios = $$(`[name="${el.name}"]`, rootForm);
             radios.forEach(r => {
               r.addEventListener("change", () => {
-                // clear classes only for that group
-                radios.forEach(rr => {
-                  rr.classList.remove("is-success", "is-danger");
-                  rr.removeAttribute("aria-invalid");
-                });
+                // clear classes just for this group
+                radios.forEach(rr => { rr.classList.remove("is-success", "is-danger"); rr.removeAttribute("aria-invalid"); });
                 const checked = rootForm.querySelector(`[name="${el.name}"]:checked`);
                 if (checked) {
                   checked.classList.add("is-success");
@@ -490,7 +448,7 @@ const Carousel = (() => {
               }
             });
           } else {
-            // text / textarea / select
+            // text / textarea / select / email
             el.addEventListener("input", () => {
               const val = (el.value || "").toString().trim();
               if (val.length > 0) {
@@ -500,7 +458,6 @@ const Carousel = (() => {
               } else {
                 // while typing, remain neutral unless already flagged
                 if (el.classList.contains("is-danger")) {
-                  // keep danger visible during typing until corrected
                   updateIcon(el.closest(".control") || el.parentNode, false);
                 } else {
                   el.classList.remove("is-success","is-danger");
@@ -513,15 +470,13 @@ const Carousel = (() => {
               el.dataset.touched = "1";
               const val = (el.value || "").toString().trim();
 
-              // special: email uses HTML5 validity check
               if (el.type === "email") {
-                const validEmail = el.checkValidity(); // uses browser built-in pattern for "type=email"
+                const validEmail = el.checkValidity();
                 if (validEmail) {
                   el.dataset.everValid = "1";
                   el.classList.add("is-success"); el.classList.remove("is-danger");
                   updateIcon(el.closest(".control") || el.parentNode, true);
                 } else {
-                  // keep error if previously invalid or previously valid or on submit
                   if (el.classList.contains("is-danger") || el.dataset.everValid === "1" || rootForm.dataset.submitted === "1") {
                     el.classList.remove("is-success"); el.classList.add("is-danger");
                     updateIcon(el.closest(".control") || el.parentNode, false);
@@ -533,13 +488,11 @@ const Carousel = (() => {
                 return;
               }
 
-              // generic (text/select/textarea)
               if (val.length > 0) {
                 el.dataset.everValid = "1";
                 el.classList.add("is-success"); el.classList.remove("is-danger");
                 updateIcon(el.closest(".control") || el.parentNode, true);
               } else {
-                // if previously flagged as error, keep it
                 if (el.classList.contains("is-danger") || el.dataset.everValid === "1" || rootForm.dataset.submitted === "1") {
                   el.classList.remove("is-success"); el.classList.add("is-danger");
                   updateIcon(el.closest(".control") || el.parentNode, false);
@@ -592,7 +545,6 @@ const Carousel = (() => {
             const radios = Array.from(rootForm.querySelectorAll(`[name="${el.name}"]`));
 
             if (!checked) {
-              // mark group radios as danger (only group)
               radios.forEach(r => r.classList.add("is-danger"));
               const parent = radios[0] && (radios[0].closest("td") || radios[0].closest(".control"));
               updateIcon(parent, false);
@@ -660,6 +612,18 @@ const Carousel = (() => {
       }
 
       /* ---------- exclusions ---------- */
+      const EXCLUSION_MAP = {
+        "sante[q_psychotic]": "Diagnostic psychotique, épilepsie ou antécédent de convulsions.",
+        "sante[q_cardio]": "Pathologie cardiaque ou respiratoire significative non stabilisée.",
+        "sante[q_pregnancy]": "Grossesse / post-partum immédiat (<3 mois).",
+        "sante[q_eye_trauma]": "Glaucome / chirurgie oculaire récente / traumatisme crânien / fracture non consolidée.",
+        "sante[q_psychotrop]": "Traitement psychotrope lourd ou sevrage en cours.",
+        "sante[q_recent_trauma]": "Traumatisme aigu très récent nécessitant un suivi médical/psy (<6 semaines).",
+        "logistique[q_travel]": "Impossibilité de se rendre en présentiel (séance 2 & 5).",
+        "logistique[q_slots]": "Absence de créneaux réguliers pour les visios / présentielles.",
+        "logistique[q_commit]": "Impossible de s'engager sur 1–2 h d'intégration par semaine."
+      };
+
       function checkExclusions() {
         const healthKeys = [
           "sante[q_psychotic]",
@@ -700,7 +664,6 @@ const Carousel = (() => {
         const fd = new FormData(rootForm);
         const flat = {};
         for (const [k, v] of fd.entries()) {
-          // only keep non-empty values (string trimmed)
           if (typeof v === "string") {
             const trimmed = v.toString().trim();
             if (trimmed.length === 0) continue;
@@ -744,7 +707,6 @@ const Carousel = (() => {
           const flat = collectFlat();
           const keys = Object.keys(flat);
           if (!keys.length) {
-            // nothing to save -> remove any existing draft
             if (!opts.force) localStorage.removeItem(DRAFT_KEY);
             return;
           }
@@ -780,13 +742,8 @@ const Carousel = (() => {
           const val = flatData[k];
           els.forEach(el => {
             if (el.type === "radio") {
-              if (el.value === val) {
-                el.checked = true;
-                el.classList.add("is-success");
-              } else {
-                el.checked = false;
-                el.classList.remove("is-success","is-danger");
-              }
+              if (el.value === val) { el.checked = true; el.classList.add("is-success"); }
+              else { el.checked = false; el.classList.remove("is-success","is-danger"); }
             } else if (el.type === "checkbox") {
               el.checked = Array.isArray(val) ? val.includes(el.value) : !!val;
               el.classList.toggle("is-success", el.checked);
@@ -803,19 +760,13 @@ const Carousel = (() => {
       /* ---------- server message UI ---------- */
       function showServerMessage(message, severity = "danger") {
         const el = document.getElementById(serverMsgElId);
-        if (!el) {
-          // fallback to alert
-          alert(message);
-          return;
-        }
-        el.className = "notification"; // reset classes
+        if (!el) { alert(message); return; }
+        el.className = "notification";
         if (severity === "danger") el.classList.add("is-danger");
         else if (severity === "warning") el.classList.add("is-warning");
         else if (severity === "success") el.classList.add("is-success");
         el.innerHTML = message;
-        console.log("ici");
         show(el);
-        // scroll to message
         try { el.scrollIntoView({ behavior: "smooth" }); } catch (e) { /* ignore */ }
       }
 
@@ -823,15 +774,11 @@ const Carousel = (() => {
       function setFormLoading(state) {
         if (!rootForm) return;
         const submitBtn = rootForm.querySelector('button[type="submit"], #ade-submit');
-        // Bulma loader: add class is-loading on the submit button only
         if (submitBtn) submitBtn.classList.toggle("is-loading", state);
 
-        // disable/enable all form controls while keeping outer-cross (close) active
+        // disable/enable form controls while keeping external buttons (like the section-close which is outside form) active
         const controls = rootForm.querySelectorAll("input,textarea,select,button");
-        controls.forEach(c => {
-          // keep the submit button disabled as well while loading
-          c.disabled = !!state;
-        });
+        controls.forEach(c => { c.disabled = !!state; });
       }
 
       /* ---------- fetch with timeout ---------- */
@@ -845,7 +792,6 @@ const Carousel = (() => {
       /* ---------- submit ---------- */
       async function handleSubmit(e) {
         e.preventDefault();
-        // mark that we've attempted submit (used to show errors on blur)
         rootForm.dataset.submitted = "1";
 
         // validate all steps
@@ -853,18 +799,15 @@ const Carousel = (() => {
         for (let i = 0; i < steps.length; i++) {
           if (!validateStep(i)) allValid = false;
         }
-        if (!allValid) {
-          focusFirstInvalid(currentStepIndex);
-          return;
-        }
+        if (!allValid) { focusFirstInvalid(currentStepIndex); return; }
 
         // final exclusion check
         const excl = checkExclusions();
         if (excl.excluded) { handleExclusion(excl); return; }
 
-        // prepare payload and save draft (for logs)
+        // payload + draft
         const payload = collectStateNested();
-        saveDraft(); // keep a final copy
+        saveDraft();
 
         // send to webhook
         setFormLoading(true);
@@ -878,24 +821,16 @@ const Carousel = (() => {
               body: JSON.stringify(payload)
             }, FETCH_TIMEOUT_MS);
 
-            // parse response body if possible
+            // try parse body
             let bodyText = "";
             let jsonBody = null;
-            try {
-              bodyText = await resp.text();
-              jsonBody = bodyText ? JSON.parse(bodyText) : null;
-            } catch (_) {
-              jsonBody = null;
-            }
+            try { bodyText = await resp.text(); jsonBody = bodyText ? JSON.parse(bodyText) : null; } catch (_) { jsonBody = null; }
 
             if (resp.ok) {
-              // webhook accepted -> success path
-              // optionally check JSON for a success flag
+              // check any application-level rejection
               if (jsonBody && (jsonBody.success === false || jsonBody.error)) {
-                // webhook returned an application-level validation failure
                 const msg = (jsonBody && (jsonBody.message || jsonBody.error)) || "Vos réponses ont été rejetées par le serveur. Merci de vérifier.";
                 showServerMessage(msg, "danger");
-                // return to first real step to let user correct
                 goToStepByName("1", { scrollTop: true });
                 setFormLoading(false);
                 return;
@@ -908,13 +843,11 @@ const Carousel = (() => {
                 goToStep(idxCalendly, { scrollTop: true });
                 injectCalendly(CALENDLY_URL);
               } else {
-                // fallback: render success message
                 showServerMessage("Vos réponses ont bien été enregistrées. Vous allez pouvoir choisir un créneau.", "success");
               }
               setFormLoading(false);
               return;
             } else {
-              // non-ok responses -> inspect status
               const parsedMessage = (jsonBody && (jsonBody.message || jsonBody.error)) || bodyText || null;
               if (resp.status === 422) {
                 showServerMessage(parsedMessage || "Certaines réponses ne passent pas la validation. Merci de vérifier vos informations.", "danger");
@@ -923,7 +856,6 @@ const Carousel = (() => {
                 showServerMessage(parsedMessage || "Erreur dans la transmission des données. Merci de vérifier vos réponses ou contactez hello@luminose.fr", "danger");
                 goToStepByName("1", { scrollTop: true });
               } else {
-                // 5xx
                 showServerMessage(parsedMessage || "Erreur technique sur le serveur. Merci de réessayer plus tard ou de contacter hello@luminose.fr", "danger");
                 goToStepByName("1", { scrollTop: true });
               }
@@ -932,23 +864,20 @@ const Carousel = (() => {
             }
           } catch (err) {
             console.warn("webhook error", err);
-            if (err && err.name === "AbortError") {
-              showServerMessage("La requête a expiré (timeout). Vérifiez votre connexion et réessayez.", "danger");
-            } else {
-              showServerMessage("Impossible de contacter le serveur. Vérifiez votre connexion ou contactez hello@luminose.fr", "danger");
-            }
+            if (err && err.name === "AbortError") showServerMessage("La requête a expiré (timeout). Vérifiez votre connexion et réessayez.", "danger");
+            else showServerMessage("Impossible de contacter le serveur. Vérifiez votre connexion ou contactez hello@luminose.fr", "danger");
             setFormLoading(false);
             goToStepByName("1", { scrollTop: true });
             return;
           }
         } else {
-          // no webhook configured -> directly show Calendly
+          // no webhook configured -> show calendly directly
           const idxCalendly = getStepIndexByName("5");
           if (idxCalendly >= 0) {
             goToStep(idxCalendly, { scrollTop: true });
             injectCalendly(CALENDLY_URL);
           } else {
-            showServerMessage("Pas de webhook configuré — vous recevrez un lien par email.", "warning");
+            console.log("Pas de webhook configuré");
           }
           setFormLoading(false);
         }
@@ -958,26 +887,38 @@ const Carousel = (() => {
       function injectCalendly(url) {
         const wrap = document.getElementById("ade-calendly");
         if (!wrap) return;
-        if (!url || url.length < 5) {
-          wrap.innerHTML = `<p class="small-note">Calendly non configuré — vous recevrez un lien par email.</p>`;
-          return;
-        }
+        if (!url || url.length < 5) { console.log("Calendly non configuré"); return; }
         if (wrap.dataset.loaded === "1") return;
+
+        // Prefer Calendly inline widget if embed script loaded; otherwise fallback to iframe
+        if (window.Calendly && typeof window.Calendly.initInlineWidget === "function") {
+          try {
+            Calendly.initInlineWidget({
+              url: url,
+              parentElement: wrap,
+              prefill: {},
+              utm: {}
+            });
+            wrap.dataset.loaded = "1";
+            return;
+          } catch (e) {
+            console.warn("Calendly inline widget failed, falling back to iframe", e);
+          }
+        }
+
+        // fallback iframe
         const iframe = document.createElement("iframe");
-        iframe.src = url + '?embed_domain=' + encodeURIComponent(location.hostname) + '&embed_type=Widget';
-        iframe.style.width = '100%';
-        iframe.style.border = '0';
-        iframe.style.minHeight = '480px';
+        iframe.src = url + (url.includes("?") ? "&" : "?") + 'embed_domain=' + encodeURIComponent(location.hostname) + '&embed_type=Widget';
+        iframe.style.width = "100%";
+        iframe.style.border = "0";
+        iframe.style.minHeight = "600px";
         wrap.appendChild(iframe);
         wrap.dataset.loaded = "1";
       }
 
       /* ---------- public init ---------- */
-      function init() {
-        initDOM();
-      }
+      function init() { initDOM(); }
 
-      // return public API
       return { init };
     })();
 
