@@ -254,7 +254,7 @@ const Carousel = (() => {
       const serverMsgElId = "ade-server-message";
 
       // --------- STATE / DOM ----------
-      let rootForm, steps, sectionEl, closeBtn;
+      let rootForm, steps, sectionEl;
       let currentStepIndex = 0;
       let autosaveTimer = null;
 
@@ -271,8 +271,7 @@ const Carousel = (() => {
         if (!rootForm) return;
         steps = $$("[data-step]", rootForm);
         sectionEl = document.querySelector(".section.adequation");
-        closeBtn = sectionEl ? sectionEl.querySelector(".adequation-close") : null;
-
+        
         // nav (classes)
         rootForm.querySelectorAll(".ade-next").forEach(btn => btn.addEventListener("click", handleNextClick));
         rootForm.querySelectorAll(".ade-prev").forEach(btn => btn.addEventListener("click", handlePrevClick));
@@ -284,17 +283,11 @@ const Carousel = (() => {
         if (resetBtn) resetBtn.addEventListener("click", handleReset);
 
         // close button (croix) : simple navigation vers preambule (0)
-        if (closeBtn) {
-          closeBtn.addEventListener("click", (e) => {
+        rootForm.querySelectorAll(".adequation-close").forEach(btn => {
+          btn.addEventListener("click", e => {
             e.preventDefault();
             goToStepByName("0", { scrollTop: true });
           });
-        }
-
-        // manual review
-        const reviewBtn = document.getElementById("ade-request-review");
-        if (reviewBtn) reviewBtn.addEventListener("click", () => {
-          window.location.href = "mailto:hello@luminose.fr?subject=Demande%20examen%20manuel%20-%20Le%20Seuil";
         });
 
         // submit
@@ -360,11 +353,8 @@ const Carousel = (() => {
         e.preventDefault();
         if (!validateStep(currentStepIndex)) { focusFirstInvalid(currentStepIndex); return; }
 
-        // early exclusion check when leaving health/logistics (steps 1/2)
-        if (currentStepIndex <= 1) {
-          const excl = checkExclusions();
-          if (excl.excluded) { handleExclusion(excl); return; }
-        }
+        const excl = checkExclusions();
+        if (excl.excluded) { handleExclusion(excl); return; }
 
         const nextIndex = Math.min(steps.length - 1, currentStepIndex + 1);
         goToStep(nextIndex, { scrollTop: true });
@@ -651,12 +641,8 @@ const Carousel = (() => {
 
       function handleExclusion(obj) {
         const panel = document.getElementById("ade-exclusion");
-        const reasonEl = document.getElementById("ade-exclusion-reason");
-        if (reasonEl) reasonEl.textContent = obj.reason || "Pour des raisons de sécurité, ce parcours n'est pas adapté.";
         show(panel);
         steps.forEach(s => s.classList.add("is-hidden"));
-        panel.scrollIntoView({ behavior: "smooth" });
-        localStorage.setItem(DRAFT_KEY + "_excluded", JSON.stringify({ ts: nowISO(), reason: obj.reason }));
       }
 
       /* ---------- data & draft (flat) ---------- */

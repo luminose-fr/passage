@@ -5,6 +5,10 @@
   --overlay-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+html, body {
+  -webkit-text-size-adjust: 100%;
+}
+
 /* Fond gradient fixe qui ne bouge pas au scroll (y compris iOS) */
 .gradient-fixed::before {
   content: "";
@@ -909,5 +913,30 @@ button.nav-chip {
 
   #ade-calendly {
 
+  }
+}
+
+.content .tiny-signature,
+.tiny-signature {
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+  align-items: center;
+  gap: 0.5rem;
+
+  p,
+  p:not(:last-child) {
+    margin:0;
+      img {
+      width:40px;
+      height:40px;
+    }
+  }
+
+  h3,
+  h3:not(:first-child) {
+    margin:0;
+    font-size: var(--bulma-size-7);
+    font-family: v.$family-sans-serif;
   }
 }

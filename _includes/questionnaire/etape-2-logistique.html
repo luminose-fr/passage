@@ -1,80 +1,86 @@
-<!-- STEP 1B - LOGISTIQUE & DISPONIBILITÉ -->
-        <div class="form-step columns field is-horizontal is-hidden" data-step="2">
-          <div class="column is-3">
-            <div class="progress-wrap">
-              <progress id="adequation-progress" class="progress" value="25" max="100"></progress>
-              <div class="progress-label" id="adequation-progress-label-2">Étape 2 / 5</div>
+<!-- STEP 2 - LOGISTIQUE & DISPONIBILITÉ -->
+<div class="form-step columns field is-horizontal is-hidden" data-step="2">
+  <button type="button" class="adequation-close button is-white" aria-label="Fermer le formulaire" title="Fermer"><i
+      class="fas fa-times"></i></button>
+  <div class="column is-3">
+    <div class="progress-wrap">
+      <progress id="adequation-progress" class="progress" value="25" max="100"></progress>
+      <div class="progress-label" id="adequation-progress-label-2">Étape 2 / 5</div>
+    </div>
+    <label class="label">Disponibilité & logistique</label>
+  </div>
+
+  <div class="column is-9">
+    <table class="table is-fullwidth grille-logistique">
+      <tbody>
+
+        <tr tabindex="0">
+          <td>Je dispose du temps nécessaire aux séances (7 séances sur 4 mois ; présentiel et visio)</td>
+          <td class="no-wrap">
+            <div class="field is-narrow">
+              <div class="control">
+                <input class="is-checkradio" id="log-q_slots1" type="radio" name="logistique[q_slots]" value="oui"
+                  required>
+                <label for="log-q_slots1">Oui</label>
+                <input class="is-checkradio" id="log-q_slots2" type="radio" name="logistique[q_slots]" value="non">
+                <label for="log-q_slots2">Non</label>
+              </div>
             </div>
-            <label class="label">Disponibilité & logistique</label>
-          </div>
+          </td>
+        </tr>
 
-          <div class="column is-9">
-            <table class="table is-fullwidth grille-logistique">
-              <tbody>
-
-                <tr tabindex="0">
-                  <td>Je dispose du temps nécessaire aux séances (7 séances sur 4 mois ; présentiel et visio)</td>
-                  <td class="no-wrap">
-                    <div class="field is-narrow">
-                      <div class="control">
-                        <input class="is-checkradio" id="log-q_slots1" type="radio" name="logistique[q_slots]" value="oui" required>
-                        <label for="log-q_slots1">Oui</label>
-                        <input class="is-checkradio" id="log-q_slots2" type="radio" name="logistique[q_slots]" value="non">
-                        <label for="log-q_slots2">Non</label>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr tabindex="0">
-                  <td>Je peux prendre 1–2h par semaine pour des pratiques personnelles</td>
-                  <td class="no-wrap">
-                    <div class="field is-narrow">
-                      <div class="control">
-                        <input class="is-checkradio" id="log-q_commit1" type="radio" name="logistique[q_commit]" value="oui" required>
-                        <label for="log-q_commit1">Oui</label>
-                        <input class="is-checkradio" id="log-q_commit2" type="radio" name="logistique[q_commit]" value="non">
-                        <label for="log-q_commit2">Non</label>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr tabindex="0">
-                  <td>Je peux aller à Villefranche-de-Lauragais pour les séances en présentiel</td>
-                  <td class="no-wrap">
-                    <div class="field is-narrow">
-                      <div class="control">
-                        <input class="is-checkradio" id="log-q_travel1" type="radio" name="logistique[q_travel]" value="oui" required>
-                        <label for="log-q_travel1">Oui</label>
-                        <input class="is-checkradio" id="log-q_travel2" type="radio" name="logistique[q_travel]" value="non">
-                        <label for="log-q_travel2">Non</label>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr tabindex="0">
-                  <td>J'ai un ordinateur avec caméra, micro et un lieu calme pour les séances en ligne</td>
-                  <td class="no-wrap">
-                    <div class="field is-narrow">
-                      <div class="control">
-                        <input class="is-checkradio" id="log-q_tech1" type="radio" name="logistique[q_tech]" value="oui" required>
-                        <label for="log-q_tech1">Oui</label>
-                        <input class="is-checkradio" id="log-q_tech2" type="radio" name="logistique[q_tech]" value="non">
-                        <label for="log-q_tech2">Non</label>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-              </tbody>
-            </table>
-
-            <div class="buttons">
-              <button type="button" class="button is-secondary ade-prev">Précédent</button>
-              <button type="button" class="button is-primary ade-next">Étape suivante</button>
+        <tr tabindex="0">
+          <td>Je peux prendre 1–2h par semaine pour des pratiques personnelles</td>
+          <td class="no-wrap">
+            <div class="field is-narrow">
+              <div class="control">
+                <input class="is-checkradio" id="log-q_commit1" type="radio" name="logistique[q_commit]" value="oui"
+                  required>
+                <label for="log-q_commit1">Oui</label>
+                <input class="is-checkradio" id="log-q_commit2" type="radio" name="logistique[q_commit]" value="non">
+                <label for="log-q_commit2">Non</label>
+              </div>
             </div>
-          </div>
+          </td>
+        </tr>
 
-        </div> <!-- step 2 -->
+        <tr tabindex="0">
+          <td>Je peux aller à Villefranche-de-Lauragais pour les séances en présentiel</td>
+          <td class="no-wrap">
+            <div class="field is-narrow">
+              <div class="control">
+                <input class="is-checkradio" id="log-q_travel1" type="radio" name="logistique[q_travel]" value="oui"
+                  required>
+                <label for="log-q_travel1">Oui</label>
+                <input class="is-checkradio" id="log-q_travel2" type="radio" name="logistique[q_travel]" value="non">
+                <label for="log-q_travel2">Non</label>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr tabindex="0">
+          <td>J'ai un ordinateur avec caméra, micro et un lieu calme pour les séances en ligne</td>
+          <td class="no-wrap">
+            <div class="field is-narrow">
+              <div class="control">
+                <input class="is-checkradio" id="log-q_tech1" type="radio" name="logistique[q_tech]" value="oui"
+                  required>
+                <label for="log-q_tech1">Oui</label>
+                <input class="is-checkradio" id="log-q_tech2" type="radio" name="logistique[q_tech]" value="non">
+                <label for="log-q_tech2">Non</label>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="buttons">
+      <button type="button" class="button is-secondary ade-prev">Précédent</button>
+      <button type="button" class="button is-primary ade-next">Étape suivante</button>
+    </div>
+  </div>
+
+</div> <!-- step 2 -->

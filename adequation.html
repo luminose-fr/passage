@@ -11,10 +11,8 @@ permalink: /adequation/
 </section>
 
 <section class="section adequation">
-  <button type="button" class="adequation-close button is-white" aria-label="Fermer le formulaire" title="Fermer"><i class="fas fa-times"></i></button>
   <div class="container">
     <div class="box content">
-
       <form id="adequation-form" novalidate>
         {% include questionnaire/etape-0-preambule.html %}
         {% include questionnaire/etape-1-sante.html %}
@@ -26,17 +24,7 @@ permalink: /adequation/
         <!-- SERVER / WEBHOOK ERROR MESSAGE (hidden) -->
         <div id="ade-server-message" class="notification is-hidden" role="alert"></div>
 
-        <!-- Exclusion panel -->
-        <div id="ade-exclusion" class="notification is-danger is-hidden" role="alert">
-          <h4 class="title is-6">Merci pour votre franchise</h4>
-          <p id="ade-exclusion-reason">Pour des raisons de sécurité, ce parcours ne nous semble pas adapté à votre situation actuelle.</p>
-          <p class="small-note">Vous pouvez demander un examen manuel si vous pensez qu'il y a une erreur.</p>
-          <div class="buttons">
-            <button type="button" class="button is-light" id="ade-request-review">Demander un examen manuel</button>
-            <a class="button is-text" href="/securite/">Voir la page cadre & sécurité</a>
-          </div>
-        </div>
-
+        {% include questionnaire/exclusion.html %}
       </form>
     </div>
   </div>
