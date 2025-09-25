@@ -1,0 +1,22 @@
+<!-- Exclusion panel -->
+<div class="columns field is-horizontal is-hidden" id="ade-server-message" role="alert">
+    <div class="column is-3">
+        <label class="label">Erreur technique</label>
+    </div>
+
+    <div class="column is-9">
+        <div class="notification is-danger is-light" role="alert">
+            <p>Le site a rencontré une erreur technique dans le traitement de vos réponses.</p>
+            <blockquote id="ade-error-details" class="is-hidden">Validation failed for 1 parameter(s). >> Unexpected parameter '_utm_term' found.</blockquote>
+            <p>Si possible, envoyez moi un email pour que je puisse regarder ce bug, merci.</p>
+        </div>
+        
+        {% include tiny-signature.html %}
+
+        <div class="buttons">
+            <button type="button" class="button is-secondary ade-reset">Réinitialiser</button>
+            <a href="mailto:florent@luminose.fr?subject=Problème technique - Le Seuil" type="button"
+                class="button is-primary">Envoyer un email</a>
+        </div>
+    </div>
+</div>

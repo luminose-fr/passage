@@ -21,9 +21,7 @@ permalink: /adequation/
         {% include questionnaire/etape-4-coordonnees.html %}
         {% include questionnaire/etape-5-rdv.html %}
 
-        <!-- SERVER / WEBHOOK ERROR MESSAGE (hidden) -->
-        <div id="ade-server-message" class="notification is-hidden" role="alert"></div>
-
+        {% include questionnaire/erreur.html %}
         {% include questionnaire/exclusion.html %}
       </form>
     </div>

@@ -11,8 +11,7 @@
   </div>
 
   <div class="column is-9">
-    <p><strong>Avez-vous des antécédents, avez-vous été diagnostiqué ou êtes-vous actuellement confronté(e) à l'une des
-        situations suivantes ?</strong></p>
+    <p><strong>Êtes-vous actuellement concerné(e) par l’une des situations suivantes (diagnostic médical en cours, pathologie active ou non stabilisée) ?</strong></p>
     <table class="grille-sante table is-fullwidth">
       <tbody>
         <tr tabindex="0">
@@ -31,8 +30,7 @@
         </tr>
 
         <tr tabindex="0">
-          <td>Pathologie cardiaque (ex. hypertension artérielle) ou respiratoire significative non stabilisée (ex.
-            asthme sévère)</td>
+          <td>Pathologie cardiaque ou respiratoire significative non stabilisée (ex. hypertension sévère, infarctus, asthme grave).</td>
           <td class="no-wrap">
             <div class="field is-narrow">
               <div class="control">
@@ -47,23 +45,7 @@
         </tr>
 
         <tr tabindex="0">
-          <td>Grossesse ou post-partum immédiat (&lt; 3 mois)</td>
-          <td class="no-wrap">
-            <div class="field is-narrow">
-              <div class="control">
-                <input class="is-checkradio" id="sante-q_pregnancy1" type="radio" name="sante[q_pregnancy]" value="oui"
-                  required>
-                <label for="sante-q_pregnancy1">Oui</label>
-                <input class="is-checkradio" id="sante-q_pregnancy2" type="radio" name="sante[q_pregnancy]" value="non">
-                <label for="sante-q_pregnancy2">Non</label>
-              </div>
-            </div>
-          </td>
-        </tr>
-
-        <tr tabindex="0">
-          <td>Glaucome, décollement de la rétine, chirurgie récente (&lt; 3 mois), traumatisme crânien récent, fracture
-            non consolidée</td>
+          <td>Glaucome, décollement de rétine, traumatisme crânien ou fracture non consolidée.</td>
           <td class="no-wrap">
             <div class="field is-narrow">
               <div class="control">
@@ -79,14 +61,14 @@
         </tr>
 
         <tr tabindex="0">
-          <td>Traitement psychotrope lourd ou sevrage en cours</td>
+          <td>Traitement psychotrope lourd ou sevrage en cours / traumatisme psychique aigu (< 6 semaines).</td>
           <td class="no-wrap">
             <div class="field is-narrow">
               <div class="control">
-                <input class="is-checkradio" id="sante-q_psychotrop1" type="radio" name="sante[q_psychotrop]"
+                <input class="is-checkradio" id="sante-q_psychotrop1" type="radio" name="sante[q_psychotrop_recent_trauma]"
                   value="oui" required>
                 <label for="sante-q_psychotrop1">Oui</label>
-                <input class="is-checkradio" id="sante-q_psychotrop2" type="radio" name="sante[q_psychotrop]"
+                <input class="is-checkradio" id="sante-q_psychotrop2" type="radio" name="sante[q_psychotrop_recent_trauma]"
                   value="non">
                 <label for="sante-q_psychotrop2">Non</label>
               </div>
@@ -95,16 +77,15 @@
         </tr>
 
         <tr tabindex="0">
-          <td>Traumatisme aigu très récent (&lt; 6 semaines) nécessitant un suivi médical/psy</td>
+          <td>Grossesse ou post-partum immédiat (&lt; 3 mois)</td>
           <td class="no-wrap">
             <div class="field is-narrow">
               <div class="control">
-                <input class="is-checkradio" id="sante-q_recent_trauma1" type="radio" name="sante[q_recent_trauma]"
-                  value="oui" required>
-                <label for="sante-q_recent_trauma1">Oui</label>
-                <input class="is-checkradio" id="sante-q_recent_trauma2" type="radio" name="sante[q_recent_trauma]"
-                  value="non">
-                <label for="sante-q_recent_trauma2">Non</label>
+                <input class="is-checkradio" id="sante-q_pregnancy1" type="radio" name="sante[q_pregnancy]" value="oui"
+                  required>
+                <label for="sante-q_pregnancy1">Oui</label>
+                <input class="is-checkradio" id="sante-q_pregnancy2" type="radio" name="sante[q_pregnancy]" value="non">
+                <label for="sante-q_pregnancy2">Non</label>
               </div>
             </div>
           </td>

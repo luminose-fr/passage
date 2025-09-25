@@ -279,6 +279,10 @@
 
         .column.is-3 {
 
+            .label {
+                text-align: center;;
+            }
+
             .progress-wrap {
                 display: flex;
                 flex-direction: row-reverse;
