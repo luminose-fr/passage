@@ -42,6 +42,7 @@ h2.is-simple,
   font-weight: normal;
   font-family: v.$family-sans-serif;
   font-size: var(--bulma-size-6);
+  line-height: var(--bulma-body-line-height);
   color: v.$prune;
   margin-top: 0;
   margin-bottom: var(--bulma-content-block-margin-bottom);
@@ -265,6 +266,7 @@ img.has-rounded-corners{
     will-change: transform;
 
     .carousel-slide {
+      
       flex: 0 0 100%;     /* ← chaque slide occupe 100% de la largeur viewport */
       box-sizing: border-box;
       display: flex;      /* optionnel : pour centrer le contenu */
@@ -273,9 +275,9 @@ img.has-rounded-corners{
     }
 
     img {
-      max-width: 100%;    /* ← image ne dépasse jamais la slide */
-      height: auto;       /* ← garde proportions carrées */
-      object-fit: contain;/* ← si tu veux forcer affichage complet */
+      max-width: 100%; 
+      height: auto;   
+      object-fit: cover;
       display: block;
     }
   }
@@ -707,11 +709,11 @@ button.nav-chip {
 
 // A propos
 //
-.section.qui {
+.section.intro {
   img.florent {
-    width: 100px;
-    height: 100px;
-    margin:var(--bulma-block-spacing);
+    width: 150px;
+    height: 150px;
+    // margin:var(--bulma-block-spacing);
   }
 }
 
