@@ -123,148 +123,238 @@ const FAQ = (() => {
   return { init };
 })();
 
-    /* ------------ CAROUSEL (V2) ------------ */
-    const Carousel = (() => {
-      // détection touch simple (évite watchers)
-      const isTouchDevice = (() => {
-        if (typeof navigator === 'undefined') return false;
-        return (('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0)
-          || ('msMaxTouchPoints' in navigator && navigator.msMaxTouchPoints > 0)
-          || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)
-          || ('ontouchstart' in window));
-      })();
+/* ------------ CAROUSEL (avec debug) ------------ */
+const Carousel = (() => {
+  let carousels = [];
 
-      const bindEvents = (carousel) => {
-        const track = carousel.querySelector('.carousel-track');
-        const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
-        const prevBtn = carousel.querySelector('.carousel-btn.prev');
-        const nextBtn = carousel.querySelector('.carousel-btn.next');
-        let dotsWrap = carousel.querySelector('.carousel-dots');
+  const bindEvents = (carousel, track, slides, prevBtn, nextBtn, dots, debugBox) => {
+    let current = 0;
+    let startX = 0, deltaX = 0, isDragging = false;
 
-        // create dots container if missing (harmless)
-        if (!dotsWrap) {
-          dotsWrap = document.createElement('div');
-          dotsWrap.className = 'carousel-dots';
-          dotsWrap.setAttribute('role','tablist');
-          carousel.appendChild(dotsWrap);
-        }
+    const logDebug = (msg) => {
+      if (!debugBox) return;
+      debugBox.innerHTML += `<div>${msg}</div>`;
+      debugBox.scrollTop = debugBox.scrollHeight;
+    };
 
-        // create dots
-        const dots = slides.map((_, i) => {
-          const dot = document.createElement('button');
-          dot.className = 'carousel-dot';
-          dot.setAttribute('role', 'tab');
-          dot.setAttribute('aria-label', `Aller à la diapo ${i+1}`);
-          dotsWrap.appendChild(dot);
-          return dot;
-        });
+    const updateUI = () => {
+      track.style.transform = `translateX(-${current * 100}%)`;
 
-        let current = 0;
-        let startX = 0, deltaX = 0, isDragging = false;
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === current));
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
 
-        const updateUI = (withTransition = true) => {
-          // restore standard transition
-          track.style.transition = withTransition ? "transform 0.3s ease" : "none";
-          track.style.transform = `translateX(-${current * 100}%)`;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === slides.length - 1;
 
-          slides.forEach((s, i) => s.classList.toggle('is-active', i === current));
-          dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+      logDebug(`updateUI → current=${current}`);
+    };
 
-          if (prevBtn) prevBtn.disabled = current === 0;
-          if (nextBtn) nextBtn.disabled = current === slides.length - 1;
-        };
+    const goTo = index => {
+      if (index < 0 || index >= slides.length) {
+        logDebug(`goTo(${index}) bloqué`);
+        return;
+      }
+      current = index;
+      logDebug(`goTo(${index}) OK`);
+      updateUI();
+    };
 
-        const goTo = (index) => {
-          if (index < 0 || index >= slides.length) return;
-          current = index;
-          updateUI(true);
-        };
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
 
-        // --- CASE: only one slide -> inert carousel (no swipe)
-        if (slides.length <= 1) {
-          updateUI(false);
-          // ensure the track does not intercept vertical scroll
-          track.style.touchAction = 'pan-y';
-          return;
-        }
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => goTo(i));
+    });
 
-        // --- CASE: disable on touch devices via HTML attribute
-        if (isTouchDevice && carousel.dataset.disableOnTouch !== undefined) {
-          updateUI(false);
-          track.style.touchAction = 'pan-y';
-          // make controls non-focusable/hidden if you want (we leave visual behaviour to CSS)
-          if (prevBtn) prevBtn.setAttribute('aria-hidden','true');
-          if (nextBtn) nextBtn.setAttribute('aria-hidden','true');
-          dots.forEach(d => d.setAttribute('aria-hidden','true'));
-          return;
-        }
+    // Touch events (mobile "swipe")
+    track.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+      deltaX = 0;
+      track.style.transition = "none";
+      logDebug(`touchstart → startX=${startX}`);
+    }, { passive: true });
 
-        // --- regular interactive carousel (desktop and touch when allowed)
-        if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
-        if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
-        dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+    track.addEventListener('touchmove', e => {
+      if (!isDragging) return;
+      deltaX = e.touches[0].clientX - startX;
+      const slideWidth = slides[0].clientWidth;
+      const percent = (deltaX / slideWidth) * 100;
+      track.style.transform = `translateX(calc(${-current * 100}% + ${percent}%))`;
+      logDebug(`touchmove → deltaX=${deltaX}, percent=${percent.toFixed(1)}`);
+    }, { passive: true });
 
-        // TOUCH SWIPE — lightweight and robust
-        track.addEventListener('touchstart', (e) => {
-          startX = e.touches[0].clientX;
-          isDragging = true;
-          deltaX = 0;
-          track.style.transition = "none";
-        }, { passive: true });
+    track.addEventListener('touchend', () => {
+      track.style.transition = "";
+      if (isDragging) {
+        const slideWidth = slides[0].clientWidth;
+        const threshold = slideWidth * 0.15; // seuil ~15% largeur
+        logDebug(`touchend → deltaX=${deltaX}, threshold=${threshold}`);
+        if (deltaX < -threshold) goTo(current + 1);
+        else if (deltaX > threshold) goTo(current - 1);
+        else updateUI();
+      }
+      isDragging = false;
+    });
 
-        // track.addEventListener('touchmove', (e) => {
-        //   if (!isDragging) return;
-        //   deltaX = e.touches[0].clientX - startX;
-        //   // use carousel width (visible area) to compute percent
-        //   const w = carousel.clientWidth || window.innerWidth;
-        //   const percent = (deltaX / w) * 100;
-        //   track.style.transform = `translateX(calc(${-current * 100}% + ${percent}%))`;
-        // }, { passive: true });
+    updateUI();
+  };
 
-        // track.addEventListener('touchend', () => {
-        //   if (!isDragging) return;
-        //   // threshold: max(40px, 15% width) -> feels robust across screen sizes
-        //   const w = carousel.clientWidth || window.innerWidth;
-        //   const thresholdPx = Math.max(40, w * 0.15);
-        //   if (deltaX < -thresholdPx) goTo(current + 1);
-        //   else if (deltaX > thresholdPx) goTo(current - 1);
-        //   else updateUI(true);
-        //   isDragging = false;
-        // });
-        track.addEventListener('touchmove', e => {
-          if (!isDragging) return;
-          deltaX = e.touches[0].clientX - startX;
-          const slideWidth = slides[0].clientWidth; // largeur d’UNE slide
-          const percent = (deltaX / slideWidth) * 100;
-          track.style.transform = `translateX(calc(${-current * 100}% + ${percent}%))`;
-        }, { passive: true });
+  const init = () => {
+    carousels = document.querySelectorAll('[data-carousel]');
+    carousels.forEach(carousel => {
+      const track = carousel.querySelector('.carousel-track');
+      const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+      const prevBtn = carousel.querySelector('.carousel-btn.prev');
+      const nextBtn = carousel.querySelector('.carousel-btn.next');
+      const dotsWrap = carousel.querySelector('.carousel-dots');
 
-        track.addEventListener('touchend', () => {
-          track.style.transition = "";
-          if (isDragging) {
-            const slideWidth = slides[0].clientWidth;
-            const threshold = slideWidth * 0.15; // seuil = 15% de la largeur d’une slide
-            if (deltaX < -threshold) goTo(current+1);
-            else if (deltaX > threshold) goTo(current-1);
-            else updateUI();
-          }
-          isDragging = false;
-        });
+      // Créer les pastilles dynamiquement si besoin
+      const dots = slides.map((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot';
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `Aller à la diapo ${i + 1}`);
+        dotsWrap.appendChild(dot);
+        return dot;
+      });
 
-        // ensure layout stays coherent after a resize (no heavy polling)
-        window.addEventListener('resize', () => updateUI(false));
+      // Créer la zone debug (visible en bas du carousel)
+      const debugBox = document.createElement('div');
+      debugBox.className = 'carousel-debug';
+      debugBox.style.cssText = "max-height:120px;overflow:auto;font-size:12px;background:#222;color:#0f0;padding:4px;margin-top:6px;";
+      carousel.appendChild(debugBox);
 
-        // init
-        updateUI(true);
-      };
+      bindEvents(carousel, track, slides, prevBtn, nextBtn, dots, debugBox);
+    });
+  };
 
-      const init = () => {
-        const nodes = document.querySelectorAll('[data-carousel]');
-        nodes.forEach(node => bindEvents(node));
-      };
+  return { init };
+})();
 
-      return { init };
-    })();
+    // /* ------------ CAROUSEL (V2) ------------ */
+    // const Carousel = (() => {
+    //   // détection touch simple (évite watchers)
+    //   const isTouchDevice = (() => {
+    //     if (typeof navigator === 'undefined') return false;
+    //     return (('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0)
+    //       || ('msMaxTouchPoints' in navigator && navigator.msMaxTouchPoints > 0)
+    //       || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)
+    //       || ('ontouchstart' in window));
+    //   })();
+
+    //   const bindEvents = (carousel) => {
+    //     const track = carousel.querySelector('.carousel-track');
+    //     const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+    //     const prevBtn = carousel.querySelector('.carousel-btn.prev');
+    //     const nextBtn = carousel.querySelector('.carousel-btn.next');
+    //     let dotsWrap = carousel.querySelector('.carousel-dots');
+
+    //     // create dots container if missing (harmless)
+    //     if (!dotsWrap) {
+    //       dotsWrap = document.createElement('div');
+    //       dotsWrap.className = 'carousel-dots';
+    //       dotsWrap.setAttribute('role','tablist');
+    //       carousel.appendChild(dotsWrap);
+    //     }
+
+    //     // create dots
+    //     const dots = slides.map((_, i) => {
+    //       const dot = document.createElement('button');
+    //       dot.className = 'carousel-dot';
+    //       dot.setAttribute('role', 'tab');
+    //       dot.setAttribute('aria-label', `Aller à la diapo ${i+1}`);
+    //       dotsWrap.appendChild(dot);
+    //       return dot;
+    //     });
+
+    //     let current = 0;
+    //     let startX = 0, deltaX = 0, isDragging = false;
+
+    //     const updateUI = (withTransition = true) => {
+    //       // restore standard transition
+    //       track.style.transition = withTransition ? "transform 0.3s ease" : "none";
+    //       track.style.transform = `translateX(-${current * 100}%)`;
+
+    //       slides.forEach((s, i) => s.classList.toggle('is-active', i === current));
+    //       dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+
+    //       if (prevBtn) prevBtn.disabled = current === 0;
+    //       if (nextBtn) nextBtn.disabled = current === slides.length - 1;
+    //     };
+
+    //     const goTo = (index) => {
+    //       if (index < 0 || index >= slides.length) return;
+    //       current = index;
+    //       updateUI(true);
+    //     };
+
+    //     // --- CASE: only one slide -> inert carousel (no swipe)
+    //     if (slides.length <= 1) {
+    //       updateUI(false);
+    //       // ensure the track does not intercept vertical scroll
+    //       track.style.touchAction = 'pan-y';
+    //       return;
+    //     }
+
+    //     // --- CASE: disable on touch devices via HTML attribute
+    //     if (isTouchDevice && carousel.dataset.disableOnTouch !== undefined) {
+    //       updateUI(false);
+    //       track.style.touchAction = 'pan-y';
+    //       // make controls non-focusable/hidden if you want (we leave visual behaviour to CSS)
+    //       if (prevBtn) prevBtn.setAttribute('aria-hidden','true');
+    //       if (nextBtn) nextBtn.setAttribute('aria-hidden','true');
+    //       dots.forEach(d => d.setAttribute('aria-hidden','true'));
+    //       return;
+    //     }
+
+    //     // --- regular interactive carousel (desktop and touch when allowed)
+    //     if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
+    //     if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+    //     dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+    //     // TOUCH SWIPE — lightweight and robust
+    //     track.addEventListener('touchstart', (e) => {
+    //       startX = e.touches[0].clientX;
+    //       isDragging = true;
+    //       deltaX = 0;
+    //       track.style.transition = "none";
+    //     }, { passive: true });
+
+    //     track.addEventListener('touchmove', e => {
+    //       if (!isDragging) return;
+    //       deltaX = e.touches[0].clientX - startX;
+    //       const slideWidth = slides[0].clientWidth; // largeur d’UNE slide
+    //       const percent = (deltaX / slideWidth) * 100;
+    //       track.style.transform = `translateX(calc(${-current * 100}% + ${percent}%))`;
+    //     }, { passive: true });
+
+    //     track.addEventListener('touchend', () => {
+    //       track.style.transition = "";
+    //       if (isDragging) {
+    //         const slideWidth = slides[0].clientWidth;
+    //         const threshold = slideWidth * 0.15; // seuil = 15% de la largeur d’une slide
+    //         if (deltaX < -threshold) goTo(current+1);
+    //         else if (deltaX > threshold) goTo(current-1);
+    //         else updateUI();
+    //       }
+    //       isDragging = false;
+    //     });
+
+    //     // ensure layout stays coherent after a resize (no heavy polling)
+    //     window.addEventListener('resize', () => updateUI(false));
+
+    //     // init
+    //     updateUI(true);
+    //   };
+
+    //   const init = () => {
+    //     const nodes = document.querySelectorAll('[data-carousel]');
+    //     nodes.forEach(node => bindEvents(node));
+    //   };
+
+    //   return { init };
+    // })();
 
   /* ------------ COOKIE BANNER ------------ */
   const CookieBanner = (() => {
