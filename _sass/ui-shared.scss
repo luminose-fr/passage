@@ -271,23 +271,7 @@ img.has-rounded-corners{
   }
 }
 .carousel {
-  position: relative;
-  overflow: hidden;       // **important**
-  width: 100%;
-  touch-action: pan-y;    // laisse le scroll vertical par défaut
-
-  .carousel-track {
-    display: flex;
-    flex-wrap: nowrap;
-    transition: transform 0.28s ease;
-    will-change: transform;
-
-    .carousel-slide {
-      flex: 0 0 100%;
-      max-width: 100%;
-      user-select: none;
-      -webkit-user-drag: none;
-
+  
       img {
         // max-width: 100%; 
         // object-fit: cover;
@@ -295,8 +279,6 @@ img.has-rounded-corners{
         width:100%;             // images responsive
         height: auto;
       }
-    }
-  }
 
   .carousel-btn {
     position: absolute;
