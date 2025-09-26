@@ -123,114 +123,123 @@ const FAQ = (() => {
   return { init };
 })();
 
-/* ------------ CAROUSEL (avec debug) ------------ */
-const Carousel = (() => {
-  let carousels = [];
+    /* ------------ CAROUSEL (debug v2) ------------ */
+    const Carousel = (() => {
+      let carousels = [];
 
-  const bindEvents = (carousel, track, slides, prevBtn, nextBtn, dots, debugBox) => {
-    let current = 0;
-    let startX = 0, deltaX = 0, isDragging = false;
+      const bindEvents = (carousel, track, slides, prevBtn, nextBtn, dots, debugBox) => {
+        let current = 0;
+        let startX = 0, deltaX = 0, isDragging = false;
 
-    const logDebug = (msg) => {
-      if (!debugBox) return;
-      debugBox.innerHTML += `<div>${msg}</div>`;
-      debugBox.scrollTop = debugBox.scrollHeight;
-    };
+        const logDebug = (msg) => {
+          if (!debugBox) return;
+          debugBox.innerHTML += `<div>${msg}</div>`;
+          debugBox.scrollTop = debugBox.scrollHeight;
+        };
 
-    const updateUI = () => {
-      track.style.transform = `translateX(-${current * 100}%)`;
+        const updateUI = () => {
+          track.style.transition = "";
+          track.style.transform = `translateX(-${current * 100}%)`;
 
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === current));
-      dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+          slides.forEach((s, i) => s.classList.toggle('is-active', i === current));
+          dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
 
-      prevBtn.disabled = current === 0;
-      nextBtn.disabled = current === slides.length - 1;
+          prevBtn.disabled = current === 0;
+          nextBtn.disabled = current === slides.length - 1;
 
-      logDebug(`updateUI → current=${current}`);
-    };
+          logDebug(`updateUI → current=${current}`);
+        };
 
-    const goTo = index => {
-      if (index < 0 || index >= slides.length) {
-        logDebug(`goTo(${index}) bloqué`);
-        return;
-      }
-      current = index;
-      logDebug(`goTo(${index}) OK`);
-      updateUI();
-    };
+        const goTo = index => {
+          if (index < 0 || index >= slides.length) {
+            logDebug(`goTo(${index}) bloqué (hors limites)`);
+            return;
+          }
+          current = index;
+          logDebug(`goTo(${index}) OK`);
+          updateUI();
+        };
 
-    prevBtn.addEventListener('click', () => goTo(current - 1));
-    nextBtn.addEventListener('click', () => goTo(current + 1));
+        prevBtn.addEventListener('click', () => goTo(current - 1));
+        nextBtn.addEventListener('click', () => goTo(current + 1));
 
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => goTo(i));
-    });
+        dots.forEach((dot, i) => {
+          dot.addEventListener('click', () => goTo(i));
+        });
 
-    // Touch events (mobile "swipe")
-    track.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-      isDragging = true;
-      deltaX = 0;
-      track.style.transition = "none";
-      logDebug(`touchstart → startX=${startX}`);
-    }, { passive: true });
+        // Touch events (mobile "swipe")
+        track.addEventListener('touchstart', e => {
+          logDebug(`touchstart → current=${current}`);
+          startX = e.touches[0].clientX;
+          isDragging = true;
+          deltaX = 0;
+          track.style.transition = "none";
+        }, { passive: true });
 
-    track.addEventListener('touchmove', e => {
-      if (!isDragging) return;
-      deltaX = e.touches[0].clientX - startX;
-      const slideWidth = slides[0].clientWidth;
-      const percent = (deltaX / slideWidth) * 100;
-      track.style.transform = `translateX(calc(${-current * 100}% + ${percent}%))`;
-      logDebug(`touchmove → deltaX=${deltaX}, percent=${percent.toFixed(1)}`);
-    }, { passive: true });
+        track.addEventListener('touchmove', e => {
+          if (!isDragging) return;
 
-    track.addEventListener('touchend', () => {
-      track.style.transition = "";
-      if (isDragging) {
-        const slideWidth = slides[0].clientWidth;
-        const threshold = slideWidth * 0.15; // seuil ~15% largeur
-        logDebug(`touchend → deltaX=${deltaX}, threshold=${threshold}`);
-        if (deltaX < -threshold) goTo(current + 1);
-        else if (deltaX > threshold) goTo(current - 1);
-        else updateUI();
-      }
-      isDragging = false;
-    });
+          deltaX = e.touches[0].clientX - startX;
+          const slideWidth = slides[0].clientWidth;
 
-    updateUI();
-  };
+          // 🚫 Empêche de glisser si on est en bout de carrousel
+          if ((current === 0 && deltaX > 0) || (current === slides.length - 1 && deltaX < 0)) {
+            logDebug(`touchmove bloqué en bord → current=${current}, deltaX=${deltaX}`);
+            return;
+          }
 
-  const init = () => {
-    carousels = document.querySelectorAll('[data-carousel]');
-    carousels.forEach(carousel => {
-      const track = carousel.querySelector('.carousel-track');
-      const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
-      const prevBtn = carousel.querySelector('.carousel-btn.prev');
-      const nextBtn = carousel.querySelector('.carousel-btn.next');
-      const dotsWrap = carousel.querySelector('.carousel-dots');
+          const percent = (deltaX / slideWidth) * 100;
+          track.style.transform = `translateX(calc(${-current * 100}% + ${percent}%))`;
+          logDebug(`touchmove → deltaX=${deltaX}, percent=${percent.toFixed(1)}`);
+        }, { passive: true });
 
-      // Créer les pastilles dynamiquement si besoin
-      const dots = slides.map((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'carousel-dot';
-        dot.setAttribute('role', 'tab');
-        dot.setAttribute('aria-label', `Aller à la diapo ${i + 1}`);
-        dotsWrap.appendChild(dot);
-        return dot;
-      });
+        track.addEventListener('touchend', () => {
+          if (!isDragging) return;
+          isDragging = false;
 
-      // Créer la zone debug (visible en bas du carousel)
-      const debugBox = document.createElement('div');
-      debugBox.className = 'carousel-debug';
-      debugBox.style.cssText = "max-height:120px;overflow:auto;font-size:12px;background:#222;color:#0f0;padding:4px;margin-top:6px;";
-      carousel.appendChild(debugBox);
+          const slideWidth = slides[0].clientWidth;
+          const threshold = slideWidth * 0.15; // seuil ~15% largeur
+          logDebug(`touchend → deltaX=${deltaX}, threshold=${threshold}`);
 
-      bindEvents(carousel, track, slides, prevBtn, nextBtn, dots, debugBox);
-    });
-  };
+          if (deltaX < -threshold) goTo(current + 1);
+          else if (deltaX > threshold) goTo(current - 1);
+          else updateUI();
+        });
 
-  return { init };
-})();
+        updateUI();
+      };
+
+      const init = () => {
+        carousels = document.querySelectorAll('[data-carousel]');
+        carousels.forEach(carousel => {
+          const track = carousel.querySelector('.carousel-track');
+          const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+          const prevBtn = carousel.querySelector('.carousel-btn.prev');
+          const nextBtn = carousel.querySelector('.carousel-btn.next');
+          const dotsWrap = carousel.querySelector('.carousel-dots');
+
+          // Créer les pastilles dynamiquement si besoin
+          const dots = slides.map((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'carousel-dot';
+            dot.setAttribute('role', 'tab');
+            dot.setAttribute('aria-label', `Aller à la diapo ${i + 1}`);
+            dotsWrap.appendChild(dot);
+            return dot;
+          });
+
+          // Créer la zone debug
+          const debugBox = document.createElement('div');
+          debugBox.className = 'carousel-debug';
+          debugBox.style.cssText = "max-height:120px;overflow:auto;font-size:12px;background:#222;color:#0f0;padding:4px;margin-top:6px;";
+          carousel.appendChild(debugBox);
+
+          bindEvents(carousel, track, slides, prevBtn, nextBtn, dots, debugBox);
+        });
+      };
+
+      return { init };
+    })();
 
     // /* ------------ CAROUSEL (V2) ------------ */
     // const Carousel = (() => {
