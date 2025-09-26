@@ -254,79 +254,6 @@ img.has-rounded-corners{
   padding-top: 1.5rem;
 }
 
-// Carousel
-//
-.carousel {
-
-  .carousel-slide {
-    flex: 0 0 100%;              // chaque slide prend 100% de largeur
-    max-width: 100%;             // évite les débordements
-    user-select: none;           // évite la sélection de texte en swipe
-    img {
-      display: block;
-      width: 100%;               // images responsive
-      height: auto;
-      border-radius: var(--radius, .5rem);
-    }
-  }
-}
-
-.content ul.slider-container,
-.content ul.slider-container:not(:last-child) {
-  list-style: none;
-  margin-bottom: 0;
-  margin-inline-start: 0;
-}
-.carousel {
-  
-      img {
-        // max-width: 100%; 
-        // object-fit: cover;
-        display: block;
-        width:100%;             // images responsive
-        height: auto;
-      }
-
-  .carousel-btn {
-    position: absolute;
-    top: 50%; 
-    transform: translateY(-50%);
-    background: none; 
-    border: none;
-    font-size: 1.5rem; 
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 9999px;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  }
-  .carousel-btn.prev { left: .5rem; }
-  .carousel-btn.next { right: .5rem; }
-  .carousel-btn:disabled { opacity: .4; cursor: default; }
-
-  .carousel-dots {
-    position: absolute;
-    bottom: 1rem;
-    left:0; right:0;
-    display: flex; 
-    justify-content: center; 
-  }
-  .carousel-dot {
-    width: .75rem; 
-    height: .75rem;
-    border-radius: 50%;
-    margin: 0 .25rem;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    cursor: pointer;
-  }
-  .carousel-dot.is-active { 
-    background: v.$prune; 
-  }
-}
-
 .has-orange-medium-contrast .carousel .carousel-dot.is-active { 
     background: v.$orange; 
 }
@@ -612,6 +539,7 @@ button.nav-chip {
 
   h3:not(:first-child) {
     margin-top: 0;
+    margin-bottom: 1em;
   }
 
   .temoignage {

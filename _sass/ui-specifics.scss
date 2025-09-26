@@ -172,17 +172,6 @@
     .faq-container.show-panel {
         transform: translateX(calc(-50% - 1rem)); /* Décalage qui tient compte du gap */
     }
-
-    /* si tu utilises data-disable-on-touch pour masquer contrôles visuellement */
-    .carousel[data-disable-on-touch] .carousel-dots,
-    .carousel[data-disable-on-touch] .carousel-btn {
-        display: none;
-    }
-
-    /* quand le carousel est inactif, prioriser scroll vertical */
-    .carousel[data-disable-on-touch] .carousel-track {
-        touch-action: pan-y;
-    }
 }
 
 @include mixins.tablet-only {
