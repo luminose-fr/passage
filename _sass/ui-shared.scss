@@ -257,28 +257,44 @@ img.has-rounded-corners{
 // Carousel
 //
 .carousel {
+
+  .carousel-slide {
+    flex: 0 0 100%;              // chaque slide prend 100% de largeur
+    max-width: 100%;             // évite les débordements
+    user-select: none;           // évite la sélection de texte en swipe
+    img {
+      display: block;
+      width: 100%;               // images responsive
+      height: auto;
+      border-radius: var(--radius, .5rem);
+    }
+  }
+}
+.carousel {
   position: relative;
-  overflow: hidden;
+  overflow: hidden;       // **important**
+  width: 100%;
+  touch-action: pan-y;    // laisse le scroll vertical par défaut
 
   .carousel-track {
     display: flex;
-    transition: transform 0.4s ease;
+    flex-wrap: nowrap;
+    transition: transform 0.28s ease;
     will-change: transform;
 
     .carousel-slide {
-      
-      flex: 0 0 100%;     /* ← chaque slide occupe 100% de la largeur viewport */
-      box-sizing: border-box;
-      display: flex;      /* optionnel : pour centrer le contenu */
-      justify-content: center;
-      align-items: center;
-    }
+      flex: 0 0 100%;
+      max-width: 100%;
+      user-select: none;
+      -webkit-user-drag: none;
 
-    img {
-      max-width: 100%; 
-      height: auto;   
-      object-fit: cover;
-      display: block;
+      img {
+        // max-width: 100%; 
+        // object-fit: cover;
+        display: block;
+        width:100%;             // images responsive
+        height: auto;
+      }
     }
   }
 
