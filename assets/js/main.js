@@ -212,23 +212,42 @@ const FAQ = (() => {
           track.style.transition = "none";
         }, { passive: true });
 
-        track.addEventListener('touchmove', (e) => {
+        // track.addEventListener('touchmove', (e) => {
+        //   if (!isDragging) return;
+        //   deltaX = e.touches[0].clientX - startX;
+        //   // use carousel width (visible area) to compute percent
+        //   const w = carousel.clientWidth || window.innerWidth;
+        //   const percent = (deltaX / w) * 100;
+        //   track.style.transform = `translateX(calc(${-current * 100}% + ${percent}%))`;
+        // }, { passive: true });
+
+        // track.addEventListener('touchend', () => {
+        //   if (!isDragging) return;
+        //   // threshold: max(40px, 15% width) -> feels robust across screen sizes
+        //   const w = carousel.clientWidth || window.innerWidth;
+        //   const thresholdPx = Math.max(40, w * 0.15);
+        //   if (deltaX < -thresholdPx) goTo(current + 1);
+        //   else if (deltaX > thresholdPx) goTo(current - 1);
+        //   else updateUI(true);
+        //   isDragging = false;
+        // });
+        track.addEventListener('touchmove', e => {
           if (!isDragging) return;
           deltaX = e.touches[0].clientX - startX;
-          // use carousel width (visible area) to compute percent
-          const w = carousel.clientWidth || window.innerWidth;
-          const percent = (deltaX / w) * 100;
+          const slideWidth = slides[0].clientWidth; // largeur d’UNE slide
+          const percent = (deltaX / slideWidth) * 100;
           track.style.transform = `translateX(calc(${-current * 100}% + ${percent}%))`;
         }, { passive: true });
 
         track.addEventListener('touchend', () => {
-          if (!isDragging) return;
-          // threshold: max(40px, 15% width) -> feels robust across screen sizes
-          const w = carousel.clientWidth || window.innerWidth;
-          const thresholdPx = Math.max(40, w * 0.15);
-          if (deltaX < -thresholdPx) goTo(current + 1);
-          else if (deltaX > thresholdPx) goTo(current - 1);
-          else updateUI(true);
+          track.style.transition = "";
+          if (isDragging) {
+            const slideWidth = slides[0].clientWidth;
+            const threshold = slideWidth * 0.15; // seuil = 15% de la largeur d’une slide
+            if (deltaX < -threshold) goTo(current+1);
+            else if (deltaX > threshold) goTo(current-1);
+            else updateUI();
+          }
           isDragging = false;
         });
 
