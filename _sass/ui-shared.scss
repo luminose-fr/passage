@@ -270,6 +270,13 @@ img.has-rounded-corners{
     }
   }
 }
+
+.content ul.slider-container,
+.content ul.slider-container:not(:last-child) {
+  list-style: none;
+  margin-bottom: 0;
+  margin-inline-start: 0;
+}
 .carousel {
   
       img {
