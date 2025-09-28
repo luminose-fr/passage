@@ -1,0 +1,68 @@
+@use "ui-variables" as v;
+@use "bulma-1.0.4/sass/utilities/mixins";
+
+@mixin dark-theme {
+	body {
+		color: v.$prune-vivid-dark-alt;
+	}
+	.gradient-fixed::before {
+		background: v.$main-gradient-dark;
+	}
+	.title {
+		color: v.$prune-vivid-dark-alt;
+	}
+	.is-simple, 
+	h2.is-simple, 
+	.content h2.is-simple, 
+	.content h2:not(:first-child).is-simple {
+		color: v.$prune-vivid-dark-alt;
+	}
+	.nav-shell {
+		background: rgba(42, 24, 37, 0.75);
+		box-shadow: v.$nav-shadow-dark-alt;
+	}
+	/* Brand chip (clé + Le Seuil) */
+	.brand.nav-chip,
+	.nav-chip,
+	button.nav-chip {
+		background: v.$nav-chip-color-dark-alt;
+		color: v.$prune-neutral-dark-alt;
+		border: 2px solid v.$nav-chip-color-dark-alt;
+	}
+
+	.brand.nav-chip:hover,
+	.nav-chip:hover {
+		color: v.$prune-dark-alt;
+		border: 2px solid v.$pink-dark-alt;
+	}
+
+	.nav-chip.is-active,
+	.nav-chip[aria-current="page"] {
+		background: v.$pink-dark-alt;
+		color: v.$prune-vivid-dark-alt;
+		border: 2px solid v.$pink-dark-alt;
+	}
+
+	.key-ico {
+		color: v.$prune-dark-alt;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		// --bulma-body-background-color: #20122E;
+		// --bulma-body-color: #BB95DD;
+		// --bulma-strong-color: #FFFFFF;
+
+		@include dark-theme;
+	}
+}
+
+[data-theme=dark],
+.theme-dark {
+	// --bulma-body-background-color: #20122E;
+	// --bulma-body-color: #BB95DD;
+	// --bulma-strong-color: #FFFFFF;
+
+	@include dark-theme;
+}

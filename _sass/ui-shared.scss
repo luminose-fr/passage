@@ -43,7 +43,7 @@ h2.is-simple,
   font-family: v.$family-sans-serif;
   font-size: var(--bulma-size-6);
   line-height: var(--bulma-body-line-height);
-  color: v.$prune;
+  color: v.$prune-vivid;
   margin-top: 0;
   margin-bottom: var(--bulma-content-block-margin-bottom);
 }
@@ -327,9 +327,9 @@ button.nav-chip {
   gap: .5rem;
   padding: .45rem .875rem;
   border-radius: v.$rounded-radius;
-  background: #fff;
+  background: v.$nav-chip-color;
   color: v.$prune-neutral;
-  border: 2px solid #fff;
+  border: 2px solid v.$nav-chip-color;
   text-decoration: none;
   transition: color .25s ease, background .25s ease, border-color 0.25s ease;
 }

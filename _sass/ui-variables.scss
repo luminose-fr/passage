@@ -5,6 +5,10 @@ $prune: #780041;
 $prune-vivid: #86285A;
 $prune-neutral:  #6E3855;
 
+$prune-dark-alt: #FFFFFF;
+$prune-vivid-dark-alt: #F3C9BE;
+$prune-neutral-dark-alt: #C886B3;
+
 $gold: #EEAA47;
 $gold-medium: #fce1b5;
 $gold-light: #FFF4E2;
@@ -16,6 +20,8 @@ $orange-light: #FEEAE1;
 $pink: #FEE1F1;
 $pink-light: #FFF4F6;
 
+$pink-dark-alt: #180B14;
+
 $family-sans-serif: 'Futura LT W05 Book', sans-serif;
 $family-serif: 'Abril Display W05 Italic', serif;
 
@@ -26,6 +32,11 @@ $rounded-radius: 38px;
 $nav-radius-open: 34px;
 $nav-shadow: 0 10px 30px rgba(229,199,205,.70);
 $panel-shadow: 0 16px 32px rgba(229,199,205,.70);
+$nav-shadow-dark-alt: 0 10px 30px rgba(46,0,32,.70);
+
+$nav-chip-color: #FFFFFF;
+$nav-chip-color-dark-alt: #2E0020;
 
 $main-gradient: linear-gradient(180deg,#E5C7CD,#E8C6BD,#F8D2B6,#FCDFB9,#FFDDAA);
+$main-gradient-dark : linear-gradient(180deg, #392E49, #8E666F);
 $hero-gradient: linear-gradient(135deg, $prune-vivid 0%, $prune 100%);
