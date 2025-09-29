@@ -28,9 +28,6 @@ strong {
 .has-orange-medium-contrast strong {
   background-color: transparent;
 }
-.has-gold-contrast strong {
-  background-color: v.$gold-medium;
-}
 .section.intro strong {
   background: transparent;
 }
@@ -51,7 +48,7 @@ h2.is-simple,
 h3,
 .content h3 {
   font-family: v.$family-serif;
-  color: v.$prune;
+  color: v.$prune-vivid;
   font-size: var(--bulma-size-4);
   // font-weight: var(--bulma-title-weight);
 }
@@ -84,27 +81,23 @@ p.illustration,
 
 .has-hero-contrast {
   background: v.$hero-gradient;
-  color: #fff;
+  color: v.$white;
   
   h2, h3 {
-    color: #fff;
+    color: v.$white;
   }
   h2:not(:first-child) {
     margin-top: 0;
   }
 
   .button.is-primary{
-    background-color: #fff;
-    color: v.$prune;
+    background-color: v.$white;
+    color: v.$prune-vivid;
   }
   .button.is-primary:hover{
     background-color: v.$pink;
     color: v.$prune-vivid;
   }
-}
-
-.has-white-background {
-  background-color: #fff;
 }
 
 .has-pink-contrast {
@@ -119,6 +112,10 @@ p.illustration,
     width: 30%;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  strong {
+    background-color: v.$gold-medium;
   }
 }
 .has-gold-contrast-border {
@@ -191,7 +188,7 @@ img.has-rounded-corners{
 }
 .tag.is-pink {
   background-color: v.$pink;
-  color: v.$prune;
+  color: v.$prune-vivid;
 }
 
 .image-fit {
@@ -222,22 +219,21 @@ img.has-rounded-corners{
 
 .button.is-primary {
   background-color: v.$prune-vivid;
-  transition: background-color .25s ease;
+  transition: background .25s ease;
   border:none;
-  color: #fff;
+  color: v.$white;
 }
 .button.is-primary:hover {
-  background-color: v.$prune;
-  background-color: v.$hero-gradient;
+  background-color: v.$prune-vivid;
   border: none;
-  color: #fff;
+  color: v.$white;
 }
 
 .button.is-secondary {
-  background-color: white;
-  border-color: v.$prune;
-  color: v.$prune;
-  border-width: 2px;;
+  background-color: v.$white;
+  border-color: v.$prune-vivid;
+  color: v.$prune-vivid;
+  border-width: 2px;
 
   .is-hidden-mobile {
     padding:0 0.25rem;
@@ -247,17 +243,13 @@ img.has-rounded-corners{
 .button.is-secondary:hover{
     background-color: v.$pink;
     color: v.$prune-vivid;
+    border-color: v.$prune-vivid;
   }
 
 /* Compensation du menu fixe (prend en compte marque + bloc blanc) */
 .has-floating-nav .site-main {
   padding-top: 1.5rem;
 }
-
-.has-orange-medium-contrast .carousel .carousel-dot.is-active { 
-    background: v.$orange; 
-}
-
 
 
 //
@@ -336,7 +328,7 @@ button.nav-chip {
 
 .brand.nav-chip:hover,
 .nav-chip:hover {
-  color: v.$prune;
+  color: v.$prune-vivid;
   border: 2px solid v.$pink;
 }
 
@@ -348,7 +340,7 @@ button.nav-chip {
 }
 
 .key-ico {
-  color: v.$prune;
+  color: v.$prune-vivid;
 }
 
 .floating-nav .main-icon {
@@ -413,7 +405,7 @@ button.nav-chip {
   position: absolute;
   left: 0;
   right: 0;
-  background: white;
+  background: v.$white;
   top: 4rem;
   z-index: 1099;
   pointer-events: none;
@@ -469,7 +461,7 @@ button.nav-chip {
   top: 4.5rem;
   background: #fff;
   padding: .5rem .75rem;
-  border: 2px solid v.$prune;
+  border: 2px solid v.$prune-vivid;
   border-radius: 6px;
   z-index: 1100;
 }
@@ -548,7 +540,7 @@ button.nav-chip {
     flex-direction: column;
 
     .texte {
-      background-color: #fff;
+      background-color: v.$white;
       font-family: v.$family-serif;
     }
 
@@ -658,7 +650,6 @@ section.qui .box,
 // FAQ
 //
 
-/* bloc global */
 /* Bloc global */
 .faq-container {
 
@@ -670,7 +661,7 @@ section.qui .box,
 
   .menu-list a:hover {
     background-color: transparent;
-    color: v.$prune;
+    color: v.$prune-vivid;
     border: 2px solid v.$pink;
   }
   .menu-list a.is-active {
@@ -754,7 +745,7 @@ section.qui .box,
       input:hover, 
       select:hover, 
       textarea:hover {
-        border: 2px solid v.$prune;
+        border: 2px solid v.$prune-vivid;
       }
 
       input.is-success, 
@@ -788,7 +779,7 @@ section.qui .box,
       .is-checkradio[type=checkbox]:hover:not([disabled])+label:before, 
       .is-checkradio[type=radio]:hover:not([disabled])+label::before, 
       .is-checkradio[type=radio]:hover:not([disabled])+label:before {
-        border-color: v.$prune !important;
+        border-color: v.$prune-vivid !important;
       }
       .is-checkradio[type=checkbox]:checked+label::before, 
       .is-checkradio[type=checkbox]:checked+label:before, 
@@ -825,7 +816,7 @@ section.qui .box,
       transform:translateX(-50%); 
       top:0; 
       font-size:var(--bulma-size-7); 
-      color:v.$prune-neutral; 
+      color:v.$prune-vivid; 
     }
   }
 

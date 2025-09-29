@@ -1,6 +1,5 @@
 Pages :
 - Analytics et CookiesBanner - click_cta_home
-- Entretien, Annulation
 - Petit bug visuel de "cliqué/focused" sur les boutons ">" pour ouvrir les détails sur mobile.
 
 Mettre le côté "sacré"
@@ -9,8 +8,6 @@ Mettre des éléments "pédagogiques / formation" ?
 CTA : choisir entre "Demander l'entretien", "Entretien découverte" ou "Vérifier l’adéquation"
 
 Micro-animations CSS / effets modernes (dégradés de couleur)
-
-DarkMode
 
 D’autres illustrations du même type
 
@@ -36,3 +33,4 @@ Cible :
 - Sacré 
 - Spiritualité 
 - Signal fort - signal faible
+- Un évènement réactive des blessures passées ? (Vous devenez maman ou papa)

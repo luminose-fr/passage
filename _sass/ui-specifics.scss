@@ -222,7 +222,7 @@
 
         .adequation-close.button.is-white {
             background: rgba(255,255,255,0.9);
-            color: v.$prune;
+            color: v.$prune-vivid;
         }
 
          /* All steps except 0 and 0b: fixed full-screen panel with its own scroll */
@@ -282,7 +282,7 @@
         .column.is-3 {
 
             .label {
-                text-align: center;;
+                text-align: center;
             }
 
             .progress-wrap {
@@ -337,7 +337,10 @@
                     display: grid;
                     grid-template-columns: 1fr;
                     padding: 0;
-                    border-bottom: 2px #fff solid;
+
+                    td:last-child {
+                        border-bottom: 2px v.$white solid;
+                    }
                 }
 
                 td.no-wrap {

@@ -7,7 +7,19 @@
         </div>
         <div class="column is-4">
             <figure class="image image-container-egg">
-                <img class="image-fit" src="{{ '/images/arche-seuil.jpg' | relative_url }}" srcset="{{ '/images/arche-seuil.jpg' | relative_url }}, {{ '/images/arche-seuil@2x.jpg' | relative_url }} 2x" alt="Arche de passage, symbole de seuil" />
+                <picture>
+                <!-- Version dark -->
+                <source 
+                    srcset="{{ '/images/arche-seuil-dark.jpg' | relative_url }}, {{ '/images/arche-seuil-dark@2x.jpg' | relative_url }} 2x" 
+                    media="(prefers-color-scheme: dark)">
+                
+                <!-- Version light (fallback avec retina) -->
+                <img 
+                    class="image-fit"
+                    src="{{ '/images/arche-seuil.jpg' | relative_url }}" 
+                    srcset="{{ '/images/arche-seuil.jpg' | relative_url }}, {{ '/images/arche-seuil@2x.jpg' | relative_url }} 2x" 
+                    alt="Arche de passage, symbole de seuil" />
+                </picture>
             </figure>
         </div>
         

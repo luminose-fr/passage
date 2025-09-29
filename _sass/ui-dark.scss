@@ -6,19 +6,28 @@
 		color: v.$prune-vivid-dark-alt;
 	}
 	.gradient-fixed::before {
-		background: v.$main-gradient-dark;
+		background: v.$main-gradient-dark-alt;
 	}
 	.title {
 		color: v.$prune-vivid-dark-alt;
 	}
+	strong {
+		background-color: v.$pink-light-dark-alt;
+		color: v.$prune-vivid-dark-alt;
+	}
 	.is-simple, 
 	h2.is-simple, 
+	.content h2,
 	.content h2.is-simple, 
 	.content h2:not(:first-child).is-simple {
 		color: v.$prune-vivid-dark-alt;
 	}
+	h3,
+	.content h3 {
+		color: v.$prune-vivid-dark-alt;
+	}
 	.nav-shell {
-		background: rgba(42, 24, 37, 0.75);
+		background: v.$nav-bar-bg;
 		box-shadow: v.$nav-shadow-dark-alt;
 	}
 	/* Brand chip (clé + Le Seuil) */
@@ -32,7 +41,7 @@
 
 	.brand.nav-chip:hover,
 	.nav-chip:hover {
-		color: v.$prune-dark-alt;
+		color: v.$prune-vivid-dark-alt;
 		border: 2px solid v.$pink-dark-alt;
 	}
 
@@ -42,9 +51,290 @@
 		color: v.$prune-vivid-dark-alt;
 		border: 2px solid v.$pink-dark-alt;
 	}
-
+	.mobile-overlay {
+		box-shadow: v.$nav-shadow-dark-alt;
+		background: v.$nav-menu-bg;
+	}
 	.key-ico {
-		color: v.$prune-dark-alt;
+		color: v.$prune-vivid-dark-alt;
+	}
+	.button.is-primary {
+		border: none;
+		background-color: v.$prune-vivid-dark-alt;
+		color: v.$white-dark-alt;
+		transition: background .25s ease;
+	}
+	.button.is-primary:hover {
+		background-color: v.$prune-vivid-dark-alt;
+		border: none;
+		color: v.$white-dark-alt;
+	}
+
+	.button.is-secondary {
+		background-color: v.$white-dark-alt;
+		border-color: v.$prune-vivid-dark-alt;
+		color: v.$prune-vivid-dark-alt;
+	}
+
+	.button.is-secondary:hover{
+		background-color: v.$pink-dark-alt;
+		color: v.$prune-vivid-dark-alt;
+		border-color: v.$prune-vivid-dark-alt;
+	}
+	.section.intro hr {
+		background-color: v.$prune-neutral-dark-alt;
+	}
+	.card,
+	.box {
+		background-color: v.$white-dark-alt;
+		color: v.$prune-vivid-dark-alt;
+	}
+	.has-hero-contrast {
+		background: v.$hero-gradient-dark-alt;
+		color: v.$white-dark-alt;
+		
+		h2, h3 {
+			color: v.$white-dark-alt;
+		}
+
+		.button.is-primary{
+			background-color: v.$white-dark-alt;
+			color: v.$prune-vivid-dark-alt;
+		}
+		.button.is-primary:hover{
+			background-color: v.$pink-dark-alt;
+			color: v.$prune-vivid-dark-alt;
+		}
+		.fa-check-circle.has-text-success {
+			color:v.$white-dark-alt !important;
+		}
+	}
+	.hero-body .benefices .benefice {
+		background-color: v.$pink-dark-alt;
+	}
+	.tag {
+		background-color: v.$gold-dark-alt;
+		color: v.$gold-light-dark-alt;
+	}
+	.tag.is-pink {
+		background-color: v.$pink-dark-alt;
+		color: v.$prune-vivid-dark-alt;
+	}
+	.has-gold-contrast {
+		background-color: v.$gold-light-dark-alt2;
+
+		hr {
+			background-color: v.$gold-dark-alt;
+		}
+		strong {
+			background-color: v.$brown-dark;
+		}
+		.button.is-secondary {
+  			background-color: transparent;
+		}
+		.button.is-secondary:hover {
+			background-color: v.$brown-dark;
+		}
+	}
+	.has-gold-contrast-border {
+		border: 2px solid v.$gold-dark-alt;
+	}
+	.has-orange-medium-contrast {
+		background-color: v.$orange-light-dark-alt;
+		color: v.$orange-dark-alt;
+
+		h3 {
+			color: v.$orange-dark-alt;
+		}
+
+		small {
+			color: v.$orange-medium-dark-alt;
+		}
+
+		hr {
+			background-color: v.$orange-dark-alt;
+		}
+	}
+	.numero-etape {
+		background:v.$pink-dark-alt;
+	}
+	section.qui .box,
+	.card .card-content {
+	.content h3,
+	
+		.secondaire {
+			border-top: 2px v.$pink-dark-alt solid;
+		}
+	}
+	.box.temoignages {
+		.temoignage {
+			.texte {
+				background-color: v.$white-dark-alt;
+			}
+		}
+	}
+	.faq-container {
+		.menu-list a:hover {
+			color: v.$prune-vivid-dark-alt;
+			border: 2px solid v.$pink-dark-alt;
+		}
+		.menu-list a.is-active {
+			color: v.$prune-vivid-dark-alt;
+			background-color: v.$pink-dark-alt;
+		}
+		.button.is-light {
+			background-color: v.$pink-light-dark-alt;
+			color: v.$prune-vivid-dark-alt;
+		}
+	}
+
+
+	.has-pink-contrast {
+		background-color: v.$pink-dark-alt;
+	}
+	.skip-link:focus {
+		background: #fff;
+		border: 2px solid v.$prune-vivid-dark-alt;
+	}
+	.adequation .label {
+		color: v.$prune-vivid-dark-alt;
+	}
+	.adequation .columns.field.is-horizontal .column.is-3 .label {
+		color: v.$prune-vivid-dark-alt;
+	}
+	.adequation .columns.field.is-horizontal .column.is-9 td {
+		border-bottom: 2px v.$white-dark-alt solid;
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 .grille-sante,
+	.adequation .columns.field.is-horizontal .column.is-9 .grille-logistique {
+		background-color: v.$pink-light-dark-alt;
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 input,
+	.adequation .columns.field.is-horizontal .column.is-9 select,
+	.adequation .columns.field.is-horizontal .column.is-9 textarea,
+	.adequation .columns.field.is-horizontal .column.is-9 input:hover,
+	.adequation .columns.field.is-horizontal .column.is-9 select:hover,
+	.adequation .columns.field.is-horizontal .column.is-9 textarea:hover {
+		border: 2px solid v.$pink-dark-alt;
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 input:hover,
+	.adequation .columns.field.is-horizontal .column.is-9 select:hover,
+	.adequation .columns.field.is-horizontal .column.is-9 textarea:hover {
+		border: 2px solid v.$prune-vivid-dark-alt;
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 input.is-success,
+	.adequation .columns.field.is-horizontal .column.is-9 select.is-success,
+	.adequation .columns.field.is-horizontal .column.is-9 textarea.is-success {
+		border: 2px solid var(--bulma-success);
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 input.is-danger,
+	.adequation .columns.field.is-horizontal .column.is-9 select.is-danger,
+	.adequation .columns.field.is-horizontal .column.is-9 textarea.is-danger {
+		border: 2px solid var(--bulma-danger);
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio.is-danger[type=checkbox]+label::before,
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio.is-danger[type=radio]+label::before {
+		border: 2px solid var(--bulma-danger);
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio[type="radio"]+label::before {
+		background-color: v.$white-dark-alt;
+		border-color: v.$pink-dark-alt;
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio[type="radio"]+label::after {
+		background-color: v.$prune-vivid-dark-alt;
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio[type=checkbox]:hover:not([disabled])+label::before,
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio[type=radio]:hover:not([disabled])+label::before {
+		border-color: v.$prune-vivid-dark-alt !important;
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio[type=checkbox]:checked+label::before,
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio[type=radio]:checked+label::before {
+		background-color: v.$white-dark-alt;
+		border-color: v.$pink-dark-alt;
+	}
+
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio[type=checkbox]+label::before,
+	.adequation .columns.field.is-horizontal .column.is-9 .is-checkradio[type=radio]+label::before {
+		background-color: v.$white-dark-alt;
+		border-color: v.$pink-dark-alt;
+	}
+
+	.adequation .progress-wrap .progress-label {
+		color: v.$prune-vivid-dark-alt;
+	}
+	@include mixins.tablet-only {
+		.avant-pendant-apres .column:not(:first-child) {
+			border-left: 2px v.$brown-dark solid;
+		}
+	}
+
+	@include mixins.mobile {
+
+		.avant-pendant-apres .column:not(:first-child) {
+			border-top: 2px v.$brown-dark solid;
+		}
+
+		section.adequation {
+
+
+			.adequation-close.button.is-white {
+				background: rgba(0, 0, 0, 0.9);
+				color: v.$prune-vivid-dark-alt;
+			}
+
+			.form-step:not([data-step="0"]):not([data-step="0b"]) {
+				background: v.$main-gradient-dark-alt;
+
+				.column.is-9 {
+					background-color: v.$white-dark-alt;
+				}
+			}
+
+			/* header column (left) pinned at top for mobile */
+			.form-step:not([data-step="0"]):not([data-step="0b"]) .column.is-3 {
+				background: v.$nav-bar-bg;
+				box-shadow: v.$nav-shadow-dark-alt;
+			}
+
+			/* bottom buttons bar fixed */
+			.form-step:not([data-step="0"]):not([data-step="0b"]) .column.is-9 .buttons {
+				background: v.$nav-bar-bg;
+				box-shadow: v.$nav-shadow-dark-alt;
+
+				.button.is-secondary {
+					background: transparent;;
+				}
+			}
+
+			.column.is-3 {
+				.progress-wrap {
+					.progress {
+						--bulma-progress-bar-background-color: var(--bulma-border-weak);
+					}
+				}
+
+			}
+
+			.columns.field.is-horizontal .column.is-9 {
+				.grille-sante,
+				.grille-logistique {
+
+					tr td:last-child {
+						border-bottom: 2px v.$white-dark-alt solid;
+					}
+				}
+			}
+		}
 	}
 }
 
