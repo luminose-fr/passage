@@ -1,3 +1,7 @@
+[2025-09-30 09:10:59] ERROR '/apple-touch-icon-precomposed.png' not found.
+[2025-09-30 09:10:59] ERROR '/apple-touch-icon.png' not found.
+[2025-09-30 09:10:59] ERROR '/favicon.ico' not found.
+
 Pages :
 - Analytics et CookiesBanner - click_cta_home
 - Petit bug visuel de "cliqué/focused" sur les boutons ">" pour ouvrir les détails sur mobile.
@@ -17,6 +21,10 @@ Peut-être storytelling avec vidéo animation « Vous n’êtes pas là par has
 
 Meta description et autre
 
+Vérifier différents navigateurs et différentes résolutions d'écran :
+•	360×800 (mobile standard Android / iPhone récent)
+•	414×896 (grand mobile iPhone)
+•	1920×1080 (desktop classique)
 
 -------------
 
@@ -29,8 +37,9 @@ Valeur :
 
 Cible :
 - Grandes transitions de vie
+- Sortir des cycles qui de répètent
+- Un évènement réactive des blessures passées ? (Vous devenez maman ou papa)
 - Rite de passage, initiatique et thérapeutique 
 - Sacré 
 - Spiritualité 
 - Signal fort - signal faible
-- Un évènement réactive des blessures passées ? (Vous devenez maman ou papa)

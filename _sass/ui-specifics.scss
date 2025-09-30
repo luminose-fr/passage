@@ -1,393 +1,305 @@
-@use "ui-variables"as v;
+@use "ui-variables" as v;
 @use "bulma-1.0.4/sass/utilities/mixins";
 
+/* Full HD */
 @include mixins.fullhd {
-    :root {
-        --bulma-size-4: 1.7rem;
-    }
-    
-  // Styles applied
-  // above v.$fullhd
-  html, body {
-    font-size: 20px;
+  :root {
+    --bulma-size-4: 1.7rem;
   }
+
+  html, body { font-size: 20px; }
+
   .hero-body {
     .title.is-1 {
-        font-size: 4rem;
-        margin-top: 2rem;
+      font-size: 4rem;
+      margin-top: 2rem;
     }
-    h1 {
-        margin-bottom: 3rem;
+    h1 { margin-bottom: 3rem; }
+  }
+
+  .box.programme .image-container-egg { margin: 0 4rem; }
+
+  .faq-container.has-selection .faq-menu {
+    flex: 0 0 520px;
+    max-width: none;
+  }
+  .faq-panel { max-width: 700px; }
+}
+
+/* Widescreen only */
+@include mixins.widescreen-only {
+  .box.programme .image-container-egg { margin: 0 4rem; }
+
+  .faq-container.has-selection .faq-menu {
+    flex: 0 0 480px;
+    max-width: none;
+  }
+
+  .faq-panel {
+    display: none;
+    flex: 1;
+    max-width: 600px;
+  }
+}
+
+/* Desktop only */
+@include mixins.desktop-only {
+  .box.programme .image-container-egg { margin: 0 1rem; }
+
+  .hero-body .benefices {
+    .column:not(:first-child) { padding-left: 0; }
+    .benefice { padding: 0.5rem; }
+  }
+
+  .faq-container.has-selection .faq-menu {
+    flex: 0 0 380px;
+    max-width: none;
+  }
+
+  .faq-panel {
+    display: none;
+    flex: 1;
+    max-width: 600px;
+  }
+}
+
+/* Desktop and up */
+@include mixins.desktop {
+  .is-visible-desktop { display: block !important; }
+
+  .avant-pendant-apres .column:not(:first-child) {
+    border-left: 2px v.$gold-medium solid;
+  }
+
+  .faq-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+
+    .faq-menu {
+      flex: 1;
+      max-width: 800px;
+    }
+
+    .faq-panel.is-visible {
+      display: block;
+      animation: fadeIn .3s ease;
     }
   }
-  .box.programme {
-        .image-container-egg {
-            margin:0 4rem;
-        }
-    }
-    .faq-container.has-selection .faq-menu {
-        flex: 0 0 520px;           /* quand réponse affichée → menu redevient colonne */
-        max-width: none;
-    }
-    .faq-panel {
-        max-width: 700px;
-    }
+
+  .faq-back { display: none; }
 }
 
-@include mixins.widescreen-only {
-    .box.programme {
-        .image-container-egg {
-            margin:0 4rem;
-        }
-    }
-    .faq-container.has-selection .faq-menu {
-        flex: 0 0 480px;           /* quand réponse affichée → menu redevient colonne */
-        max-width: none;
-    }
-    .faq-panel {
-        display: none;
-        flex: 1;
-        max-width: 600px;
-    }
-
-//   // Styles applied
-//   // between v.$widescreen
-//   // and v.$fullhd
-//   html, body {
-//     font-size: 17px;
-//   }
-}
-
-@include mixins.desktop-only {
-
-  // Styles applied
-  // between v.$desktop
-  // and v.$widescreen
-    //   html, body {
-    //     font-size: 16px;
-    //   }
-    .box.programme {
-        .image-container-egg {
-            margin:0 1rem;
-        }
-    }
-    .hero-body .benefices {
-
-        .column:not(:first-child) {
-            padding-left:0;
-        }
-        
-        .benefice {
-            padding: 0.5rem;
-        }
-    }
-    .faq-container.has-selection .faq-menu {
-        flex: 0 0 380px;           /* quand réponse affichée → menu redevient colonne */
-        max-width: none;
-    }
-    .faq-panel {
-        display: none;
-        flex: 1;
-        max-width: 600px;
-    }
-}
-
-@include mixins.desktop {
-    .is-visible-desktop {
-        display: block !important;
-    }
-    .avant-pendant-apres .column:not(:first-child) {
-        border-left: 2px v.$gold-medium solid;
-    }
-    .faq-container {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-    }
-    .faq-menu {
-        flex: 1;                  /* prend toute largeur initialement */
-        max-width: 800px;          /* large centré plein écran */
-    }
-    .faq-panel.is-visible {
-        display: block;
-        animation: fadeIn .3s ease;
-    }
-    .faq-back {
-        display: none;
-    }
-}
-
+/* Touch devices */
 @include mixins.touch {
-    .is-centered-touch {
-        text-align: center;
-        justify-content: center;
-    }
-    .nav-mobile-top {
-        padding-top:0.75rem;
-    }
-    .has-floating-nav .site-main{ 
-        padding-top: 0.75rem; 
-    }
-    .floating-nav{
-        top: 0.75rem;
-    }
-    .nav-shell {
-        padding: 0.7rem;
-    }
+  .is-centered-touch { text-align: center; justify-content: center; }
+  .nav-mobile-top { padding-top: 0.75rem; }
+  .has-floating-nav .site-main { padding-top: 0.75rem; }
+  .floating-nav { top: 0.75rem; }
+  .nav-shell { padding: 0.7rem; }
 
-    /* État ouvert: le nav-shell joint visuellement avec l’overlay */
-    .nav-shell.is-open {
-        border-radius: v.$nav-radius-open;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+  .nav-shell.is-open {
+    border-radius: v.$nav-radius-open;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: white;
+    background: white;
+  }
 
-        /* Conserve la hauteur: cache la bordure au lieu de la retirer */
-        border-bottom-color: white;
-        background: white;
-    }
-    .faq-block {
-        // min-height: 15rem; 
-        overflow: hidden;
-    }
-    
-    .faq-container {
-        display: flex;
-        width: calc(200% + 2rem);
-        overflow-x: hidden;
-        transition: transform .3s ease; 
-    }
-    
+  .faq-block { overflow: hidden; }
+
+  .faq-container {
+    display: flex;
+    width: calc(200% + 2rem);
+    overflow-x: hidden;
+    gap: 2rem;
+    transition: transform .3s ease;
+
     .faq-menu,
     .faq-panel {
-        flex: 0 0 calc(50% - 1rem); /* 50% moins la moitié du gap */
-        width: calc(50% - 1rem);
-    }
-    
-
-    .faq-container {
-        transform: translateX(0);
-        gap: 2rem; 
+      flex: 0 0 calc(50% - 1rem);
+      width: calc(50% - 1rem);
     }
 
-    .faq-container.show-panel {
-        transform: translateX(calc(-50% - 1rem)); /* Décalage qui tient compte du gap */
+    &.show-panel {
+      transform: translateX(calc(-50% - 1rem));
     }
+  }
 }
 
+/* Tablet only */
 @include mixins.tablet-only {
+  html, body { font-size: 17px; }
 
-    html,
-    body {
-        font-size: 17px;
-    }
-    .avant-pendant-apres .column:not(:first-child) {
-        border-left: 2px v.$gold-medium solid;
-    }
+  .avant-pendant-apres .column:not(:first-child) {
+    border-left: 2px v.$gold-medium solid;
+  }
 }
 
+/* Mobile */
 @include mixins.mobile {
+  html, body { font-size: 17px; }
 
-    html,
-    body {
-        font-size: 17px;
+  .avant-pendant-apres .column:not(:first-child) {
+    border-top: 2px v.$gold-medium solid;
+  }
+
+  .nav-mobile-bar { gap: 0; }
+
+  .brand.nav-chip,
+  .nav-chip,
+  .button.nav-chip {
+    gap: .5rem;
+    padding: .45rem 2.7vw;
+  }
+
+  .box.programme .image-container-egg { margin: 0 2rem; }
+
+  body.adequation-lock {
+    overflow: hidden !important;
+    height: 100%;
+    touch-action: none;
+  }
+
+  section.adequation {
+    .adequation-close {
+      display: flex;
+
+      &.button.is-white {
+        background: rgba(255,255,255,0.9);
+        color: v.$prune-vivid;
+      }
     }
-    .avant-pendant-apres .column:not(:first-child) {
-        border-top: 2px v.$gold-medium solid;
-    }
-    .nav-mobile-bar {
-        gap:0rem;
-    }
-    .brand.nav-chip,
-    .nav-chip,
-    .button.nav-chip {
-        gap: .5rem;
-        padding: .45rem 2.7vw;
-    }
-    .box.programme {
-        .image-container-egg {
-            margin:0 2rem;
+
+    /* Fullscreen steps */
+    .form-step:not([data-step="0"]):not([data-step="0b"]) {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      background: v.$main-gradient;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 6.5rem 2.25rem;
+      display: block;
+
+      .column.is-9 {
+        border-radius: v.$rounded-radius;
+        background-color: #fff;
+        padding: 1.5rem;
+
+        .buttons {
+          position: fixed;
+          left: 0; right: 0; bottom: 0;
+          z-index: 1201;
+          padding: 0.75rem;
+          background: rgba(255,255,255,0.85);
+          display: flex;
+          justify-content: flex-end;
+          gap: .6rem;
+          -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+          box-shadow: v.$nav-shadow;
         }
-    }
-    /* lock du body pour éviter le scroll de fond lors du mode plein-écran */
-    body.adequation-lock {
-        overflow: hidden !important;
-        height: 100%;
-        touch-action: none;
-    }
+      }
 
-    /* quand la section passe en fullscreen */
-    section.adequation {
-    
-        .adequation-close { display: flex; } /* show cross on mobile */
+      .column.is-3 {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 1201;
+        background: rgba(255,255,255,0.85);
+        padding: 0.75rem;
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        box-shadow: v.$nav-shadow;
 
-        .adequation-close.button.is-white {
-            background: rgba(255,255,255,0.9);
-            color: v.$prune-vivid;
-        }
+        .label { text-align: center; }
 
-         /* All steps except 0 and 0b: fixed full-screen panel with its own scroll */
-        .form-step:not([data-step="0"]):not([data-step="0b"]) {
-            position: fixed;
-            inset: 0; /* top:0; right:0; bottom:0; left:0 */
-            z-index: 1200;
-            background: v.$main-gradient;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding: 6.5rem 2.25rem;
-            // padding-bottom: 5rem;
+        .progress-wrap {
+          display: flex;
+          flex-direction: row-reverse;
+          gap: 0.75rem;
+          margin-bottom: 0.5rem;
+
+          .progress-label {
             display: block;
-            
-            .column.is-9 {
-                border-radius: v.$rounded-radius;
-                background-color: #fff;
-            }
-        }
+            position: relative;
+            transform: none;
+            left: 0;
+            white-space: nowrap;
+          }
 
-        /* header column (left) pinned at top for mobile */
-        .form-step:not([data-step="0"]):not([data-step="0b"]) .column.is-3 {
-            position: fixed;
+          .progress {
             top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1201;
-            background: rgba(255,255,255,0.85);
-            padding: 0.75rem;
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            box-shadow: v.$nav-shadow;
+            position: relative;
+            margin: 0 3rem 0 0;
+            display: block;
+            --bulma-progress-bar-background-color: #fff;
+          }
         }
-
-        /* bottom buttons bar fixed */
-        .form-step:not([data-step="0"]):not([data-step="0b"]) .column.is-9 .buttons {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 1201;
-            padding: 0.75rem;
-            background: rgba(255,255,255,0.85);
-            display: flex;
-            justify-content: flex-end;
-            gap: .6rem;
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            box-shadow: v.$nav-shadow;
-        }
-
-        /* ensure the content column has breathing room (not hidden under fixed bars) */
-        .form-step:not([data-step="0"]):not([data-step="0b"]) .column.is-9 {
-            padding:1.5rem;
-        }
-
-        .column.is-3 {
-
-            .label {
-                text-align: center;
-            }
-
-            .progress-wrap {
-                display: flex;
-                flex-direction: row-reverse;
-                vertical-align: middle;
-                height:auto;
-                gap:0.75rem;
-                margin-bottom: 0.5rem;
-
-                .progress-label {
-                    display: block;
-                    position: relative;
-                    transform: none;
-                    left:0;
-                    white-space: nowrap;
-                }
-                .progress {
-                    top:0;
-                    display: block;
-                    position: relative;
-                    margin-bottom: 0;
-                    margin-right:3rem;
-                    --bulma-progress-bar-background-color: #fff;
-                }
-            }
-            
-        }
-        .columns.field.is-horizontal .column.is-9 {
-            .field.is-grouped {
-                flex-direction: column;
-                gap: 1rem;
-                
-                p:not(:last-child) {
-                    margin-bottom:0;
-                }
-            }
-            
-            .grille-sante,
-            .grille-logistique {
-
-                display: block;
-
-                tbody { 
-                    display: block; 
-                }
-                td {
-                    border: none;
-                }
-
-                tr {
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    padding: 0;
-
-                    td:last-child {
-                        border-bottom: 2px v.$white solid;
-                    }
-                }
-
-                td.no-wrap {
-                    order: 2; /* radios flow under the question */
-                }
-
-                td:first-child { 
-                    order: 1; 
-                }
-            }
-            .radios-inline {
-                label {
-                    display: block;
-                    // margin-right: 0;
-                }
-                .is-checkradio[type=checkbox]+label, 
-                .is-checkradio[type=radio]+label {
-                    margin-left:0;
-                }
-            }
-        }
+      }
     }
 
+    .columns.field.is-horizontal .column.is-9 {
+      .field.is-grouped {
+        flex-direction: column;
+        gap: 1rem;
+
+        p:not(:last-child) { margin-bottom: 0; }
+      }
+
+      .grille-sante,
+      .grille-logistique {
+        display: block;
+
+        tbody { display: block; }
+        td { border: none; }
+
+        tr {
+          display: grid;
+          grid-template-columns: 1fr;
+          padding: 0;
+
+          td:last-child {
+            border-bottom: 2px v.$white solid;
+          }
+        }
+
+        td.no-wrap { order: 2; }
+        td:first-child { order: 1; }
+      }
+
+      .radios-inline {
+        label { display: block; }
+        .is-checkradio[type=checkbox]+label,
+        .is-checkradio[type=radio]+label {
+          margin-left: 0;
+        }
+      }
+    }
+  }
 }
+
+/* Fine breakpoints */
 @media screen and (max-width: 444px) {
-    a.brand.nav-chip {
-        padding:0.45rem 0.65rem 0.45rem 0.85rem;
+  a.brand.nav-chip {
+    padding: 0.45rem 0.65rem 0.45rem 0.85rem;
 
-        .brand-text {
-            display: none;
-        }
-    }
+    .brand-text { display: none; }
+  }
 }
+
 @media screen and (max-width: 388px) {
-    .nav-left {
-        gap: .5rem .65rem;
-    }
-    .brand.nav-chip,
-    .nav-chip,
-    button.nav-chip {
-        padding: .45rem .65rem;
-    }
+  .nav-left { gap: .5rem .65rem; }
+
+  .brand.nav-chip,
+  .nav-chip,
+  button.nav-chip {
+    padding: .45rem .65rem;
+  }
 }
 
-
-
+/* Animation */
 @keyframes fadeIn {
-  from {opacity: 0; transform: translateX(20px);}
-  to   {opacity: 1; transform: translateX(0);}
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
