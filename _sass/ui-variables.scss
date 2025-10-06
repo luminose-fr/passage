@@ -43,13 +43,14 @@ $family-serif: 'Abril Display W05 Italic', serif;
 
 // Nav/gradient tokens (utilisés par ui-shared)
 $nav-padding: 0.65rem 0.75rem;    // padding interne ET gap entre boutons
-$rounded-radius: 38px;
-$nav-radius-open: 34px;
-$nav-shadow: 0 10px 30px rgba(229,199,205,.70);
+$rounded-radius: 38px !default;
+$nav-radius-open: 34px !default;
+$nav-shadow: 0 0 20px rgba(229,199,205,.70);
+$nav-shadow-dark-alt: 0 0 20px rgba(46,0,32,.70);
 $panel-shadow: 0 16px 32px rgba(229,199,205,.70);
-$nav-shadow-dark-alt: 0 10px 30px rgba(46,0,32,.70);
 $nav-bar-bg: rgba(42, 24, 37, 0.75);
 $nav-menu-bg: rgba(42, 24, 37, 1);
+$gold-shadow: 0 0 20px rgba(194,97,19,.50);
 
 $nav-chip-color: $white;
 $nav-chip-color-dark-alt: $white-dark-alt;
@@ -59,3 +60,6 @@ $main-gradient: linear-gradient(180deg,#E5C7CD,#E8C6BD,#F8D2B6,#FCDFB9,#FFDDAA);
 $main-gradient-dark-alt : linear-gradient(180deg, #38154B, #6F2233);
 $hero-gradient: linear-gradient(135deg, $prune-vivid 0%, $prune 100%);
 $hero-gradient-dark-alt : linear-gradient(135deg, $prune-vivid-dark-alt 0%, $prune-dark-alt 100%);
+$gold-gradient: linear-gradient(135deg,#FFB244,#FC7A14);
+
+$backdrop-blur-size: 20px !default;

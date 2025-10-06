@@ -70,7 +70,6 @@
       border: none;
       background-color: v.$prune-vivid-dark-alt;
       color: v.$white-dark-alt;
-      transition: background .25s ease;
 
       &:hover {
         background-color: v.$prune-vivid-dark-alt;
@@ -126,8 +125,27 @@
     }
   }
 
-  .hero-body .benefices .benefice {
-    background-color: v.$pink-dark-alt;
+  .hero-body {
+    .box.splash {
+      background-image: url("/images/arche-seuil-dark-bg.jpg");
+      background-size: cover;
+      background-position: center;
+      height:33rem;
+
+      @media
+      only screen and (-webkit-min-device-pixel-ratio: 2),
+      only screen and (   min--moz-device-pixel-ratio: 2),
+      only screen and (     -o-min-device-pixel-ratio: 2/1),
+      only screen and (        min-device-pixel-ratio: 2),
+      only screen and (                min-resolution: 192dpi),
+      only screen and (                min-resolution: 2dppx) { 
+        background-image: url("/images/arche-seuil-dark-bg@2x.jpg");
+        background-size: cover;
+      }
+    }
+    .benefices .benefice {
+      background-color: v.$pink-dark-alt;
+    }
   }
 
   .tag {
@@ -301,6 +319,11 @@
   @include mixins.mobile {
     .avant-pendant-apres .column:not(:first-child) {
       border-top: 2px v.$brown-dark solid;
+    }
+
+    .hero-body .box.splash {
+      background-position: top center;
+      height:30rem;
     }
 
     section.adequation {

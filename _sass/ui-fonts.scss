@@ -18,7 +18,15 @@
         url("/assets/fonts/5313918/feaf9b77-0958-45fa-96c3-1afc445987ef.ttf") format("truetype");
 }
 @font-face{
-    font-family:"Futura LT W05 Medium";
+    font-family:"P Heavy";
+    src:url("/assets/fonts/ext/ext1.eot?#iefix");
+    src:url("/assets/fonts/ext/ext1.eot?#iefix") format("eot"),
+        url("/assets/fonts/ext/ext1.woff2") format("woff2"),
+        url("/assets/fonts/ext/ext1.woff") format("woff"),
+        url("/assets/fonts/ext/ext1.ttf") format("truetype");
+}
+@font-face{
+    font-family:"P Medium";
     src:url("/assets/fonts/ext/ext2.eot?#iefix");
     src:url("/assets/fonts/ext/ext2.eot?#iefix") format("eot"),
         url("/assets/fonts/ext/ext2.woff2") format("woff2"),
@@ -59,3 +67,4 @@
 .icon-small-plant:before{content:'\004b';}
 .icon-tissage:before{content:'\004c';}
 .icon-bougie:before{content:'\004d';}
+.icon-gem:before{content:'\004e';}

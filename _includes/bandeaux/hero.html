@@ -1,51 +1,13 @@
-<div class="title is-1">Le Seuil</div>
-<h1>Un parcours initiatique thérapeutique de 4 mois, conçu pour les moments où tout bascule.</h1>
+<div class="box splash">
+    <div class="title is-1">Le Seuil</div>
+    <h1>Un rite de passage contemporain pour transformer votre transition en initiation</h1>
+</div>
 
-<div class="columns content is-multiline">
-      <div class="column is-8">
-        <div class="box ">
-            <p class="illustration"><i class="icon icon-key"></i></p>
-            <h2>Pourquoi franchir le Seuil ?</h2>
-            <div class="columns is-multiline benefices">
-                <div class="column is-6">
-                    <div class="benefice">
-                        <h3>Guérir une blessure qui se réactive</h3>
-                        <p>Quand un événement (naissance, séparation, épuisement…) rouvre une vieille douleur, lui offrir enfin un espace pour l’intégrer en profondeur.</p>
-                    </div>
-                </div>
-                <div class="column is-6">
-                    <div class="benefice">
-                        <h3>Traverser une transition avec clarté</h3>
-                        <p>Faire de ce moment de passage (changement de vie, perte, nouveau départ) une étape structurante et porteuse de sens.</p>
-                    </div>
-                </div>
-                <div class="column is-6">
-                    <div class="benefice">
-                        <h3>Rompre les cycles répétitifs</h3>
-                        <p>Sortir des schémas qui se rejouent sans cesse dans vos relations, vos choix ou vos émotions.</p>
-                    </div>
-                </div>
-                <div class="column is-6">
-                    <div class="benefice">
-                        <h3>Retrouver vitalité et présence</h3>
-                        <p>Revenir au corps, au souffle, à une énergie plus vivante et incarnée.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </div>
-      <div class="column is-4">
-        <div class="box has-hero-contrast">
-            <p>4 mois · 7 étapes<br />Cadre thérapeutique sécurisé</p>
-            <p class="tags">
-                <span class="tag">Offre premium</span>
-                <span class="tag">Places limitées</span>
-                <span class="tag">Entretien préalable requis</span>
-            </p>
-            <div class="buttons is-centered">
-                <a class="button is-primary is-medium" href="{{ '/adequation/' | relative_url }}" onclick="track('click_cta_home')">{{ site.cta_label }}</a>
-            </div>
-            <p class="is-size-7">Entretien gratuit 1h — tarif communiqué à l’issue si adéquation.</p>
-        </div>
-      </div>
+<div class="columns">
+    <div class="column is-5">
+        {% include bandeaux/adequation.html %}
+    </div>
+    <div class="column is-7">
+        {% include bandeaux/pour-qui.html %}
+    </div>
 </div>

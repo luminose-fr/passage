@@ -1,0 +1,236 @@
+@use "ui-variables" as v;
+// ============================================
+// _modal-seuil.scss
+// Module de modale style Apple
+// Compatible avec Bulma
+// ============================================
+
+// Variables configurables
+$modal-overlay-bg: rgba(100, 100, 100, 0.5) !default;
+$modal-overlay-blur: v.$backdrop-blur-size;
+$modal-container-bg: #ffffff !default;
+$modal-container-radius: v.$rounded-radius;
+$modal-container-radius-mobile: v.$rounded-radius;
+$modal-container-max-width: 480px !default;
+$modal-container-shadow: 0 30px 60px rgba(0, 0, 0, 0.3) !default;
+
+$modal-header-border: 1px solid rgba(0, 0, 0, 0.08) !default;
+$modal-footer-bg: rgba(255, 255, 255, 0.95) !default;
+$modal-footer-border: 1px solid rgba(0, 0, 0, 0.08) !default;
+
+$modal-close-bg: v.$prune-vivid;
+$modal-close-color: v.$white;
+$modal-close-size: 36px !default;
+$modal-close-size-mobile: 32px !default;
+
+$modal-animation-duration: 0.4s !default;
+$modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
+
+// Mixins
+@mixin modal-scrollbar {
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+  }
+}
+
+// Overlay principal
+.seuil-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  display: none;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity $modal-animation-duration $modal-animation-easing, // Marche pas
+              backdrop-filter $modal-animation-duration $modal-animation-easing;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0;
+  
+  @include modal-scrollbar;
+
+  &.is-active {
+    display: block;
+    opacity: 1;
+    background: $modal-overlay-bg;
+    backdrop-filter: blur($modal-overlay-blur);
+    -webkit-backdrop-filter: blur($modal-overlay-blur);
+  }
+}
+
+// Wrapper pour centrer la modale
+.seuil-modal-wrapper {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.8rem;
+}
+
+// Container de la modale
+.seuil-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: $modal-container-max-width;
+  background: $modal-container-bg;
+  border-radius: $modal-container-radius;
+  box-shadow: $modal-container-shadow;
+  transform: scale(0.9) translateY(20px);
+  opacity: 0;
+  transition: all $modal-animation-duration $modal-animation-easing;
+  margin: auto;
+
+  .seuil-modal-overlay.is-active & {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+// Bouton de fermeture sticky
+.seuil-modal-close {
+  position: sticky;
+  top: 20px;
+  width: $modal-close-size;
+  height: $modal-close-size;
+  border: none;
+  color: $modal-close-color;
+  background: $modal-close-bg;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 30;
+  margin-left: auto;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: -56px; // Compense la hauteur + marge pour superposer avec le header
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Header
+.seuil-modal-header {
+  padding: 24px 24px 16px;
+  border-bottom: $modal-header-border;
+  background: $modal-container-bg;
+  border-radius: $modal-container-radius $modal-container-radius 0 0;
+  padding-right: 72px; // Espace pour le bouton X
+}
+
+.seuil-modal-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1d1d1f;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+// Contenu
+.seuil-modal-content {
+  padding: 32px 24px;
+  background: $modal-container-bg;
+  
+  // Si c'est le dernier élément (pas de footer), ajouter les coins arrondis
+  &:last-child {
+    border-radius: 0 0 $modal-container-radius $modal-container-radius;
+  }
+}
+
+// Footer sticky
+.seuil-modal-footer {
+  position: sticky;
+  bottom: 0;
+  background: $modal-footer-bg;
+  backdrop-filter: saturate(120%) $modal-overlay-blur;
+  -webkit-backdrop-filter: saturate(120%) $modal-overlay-blur;
+  border-top: $modal-footer-border;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 0;
+  z-index: 10;
+
+  // Animation quand on atteint le bas
+  .seuil-modal-container.is-at-bottom & {
+    margin-bottom: 0;
+    border-radius: 0 0 $modal-container-radius $modal-container-radius;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// Responsive
+@media screen and (max-width: 768px) {
+  .seuil-modal-container {
+    border-radius: $modal-container-radius-mobile;
+  }
+
+  .seuil-modal-close {
+    width: $modal-close-size-mobile;
+    height: $modal-close-size-mobile;
+    top: 16px;
+    margin-right: 16px;
+    margin-top: 16px;
+    margin-bottom: -48px;
+  }
+
+  .seuil-modal-header {
+    padding: 20px 20px 16px;
+    padding-right: 64px;
+    border-radius: $modal-container-radius-mobile $modal-container-radius-mobile 0 0;
+  }
+
+  .seuil-modal-title {
+    font-size: 22px;
+  }
+
+  .seuil-modal-content {
+    padding: 24px 20px;
+    
+    // Si c'est le dernier élément (pas de footer), ajouter les coins arrondis
+    &:last-child {
+      border-radius: 0 0 $modal-container-radius-mobile $modal-container-radius-mobile;
+    }
+  }
+
+  .seuil-modal-footer {
+    padding: 16px 20px;
+    border-radius: 0;
+
+    .seuil-modal-container.is-at-bottom & {
+      border-radius: 0 0 $modal-container-radius-mobile $modal-container-radius-mobile;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .seuil-modal-overlay {
+    padding: 0;
+  }
+
+  .seuil-modal-wrapper {
+    padding: 2rem 0;
+  }
+}

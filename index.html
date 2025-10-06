@@ -14,14 +14,194 @@ permalink: /
   <div class="container">{% include bandeaux/programme.html %}</div>
 </section>
 
+<section class="section has-text-centered" id="benefices">
+  <div class="container">{% include bandeaux/benefices.html %}</div>
+</section>
+
 <section class="section" id="temoignages">
   <div class="container">{% include bandeaux/temoignages.html %}</div>
+</section>
+
+<section class="section has-text-centered" id="exception">
+  <div class="container">{% include bandeaux/exception.html %}</div>
 </section>
 
 <section class="section" id="florent">
   <div class="container">{% include bandeaux/florent.html %}</div>
 </section>
 
-<section class="section" id="reassurance">
-  <div class="container">{% include bandeaux/securite-mini.html %}</div>
-</section>
+
+<!-- Carousel standalone -->
+<div id="myCarousel" class="seuil-carousel" data-carousel data-loop="true">
+  <div class="seuil-carousel-viewport">
+    <div class="seuil-carousel-track">
+      
+      <!-- Slide 1 -->
+      <div class="seuil-carousel-slide is-active">
+        <div class="box">
+          <h3 class="title is-4">Slide 1</h3>
+          <p>Contenu de la première slide...</p>
+        </div>
+      </div>
+      
+      <!-- Slide 2 -->
+      <div class="seuil-carousel-slide">
+        <div class="box">
+          <h3 class="title is-4">Slide 2</h3>
+          <p>Contenu de la deuxième slide...</p>
+        </div>
+      </div>
+      
+      <!-- Slide 3 -->
+      <div class="seuil-carousel-slide">
+        <div class="box">
+          <h3 class="title is-4">Slide 3</h3>
+          <p>Contenu de la troisième slide...</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- Navigation buttons -->
+  <button class="seuil-carousel-nav seuil-carousel-prev" aria-label="Précédent">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+  
+  <button class="seuil-carousel-nav seuil-carousel-next" aria-label="Suivant">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+  
+  <!-- Tabs/Navigation bar -->
+  <div class="seuil-carousel-tabs">
+    <div class="seuil-carousel-tab is-active">
+      <div class="seuil-carousel-tab-icon">
+        Icone
+      </div>
+      <div class="seuil-carousel-tab-label">Design</div>
+    </div>
+    
+    <div class="seuil-carousel-tab">
+      <div class="seuil-carousel-tab-icon">
+        Icone
+      </div>
+      <div class="seuil-carousel-tab-label">Caméra</div>
+    </div>
+    
+    <div class="seuil-carousel-tab">
+      <div class="seuil-carousel-tab-icon">
+        Icone
+      </div>
+      <div class="seuil-carousel-tab-label">Performance</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<button class="button is-secondary" data-modal-trigger="compareModal">Modale</button>
+
+
+<!-- Dans une modale -->
+<div id="compareModal" class="seuil-modal">
+  <div class="seuil-modal-overlay">
+    <div class="seuil-modal-wrapper">
+      <div class="seuil-modal-container">
+
+        <!-- Bouton de fermeture sticky -->
+        <button class="seuil-modal-close" data-modal-close aria-label="Fermer"><i class="fas fa-times"></i></button>
+        
+        <!-- Header -->
+        <div class="seuil-modal-header">
+            <h2 class="seuil-modal-title">Comparer les modèles</h2>
+        </div>
+
+        <div class="seuil-modal-content">
+          <!-- Carousel dans la modale -->
+          <div id="modalCarousel" class="seuil-carousel" data-carousel>
+              <div class="seuil-carousel-viewport">
+                <div class="seuil-carousel-track">
+
+                  <!-- Slide 1 -->
+                  <div class="seuil-carousel-slide is-active">
+                    <div class="box">
+                      <h3 class="title is-4">Slide 1</h3>
+                      <p>Contenu de la première slide...</p>
+                    </div>
+                  </div>
+
+                  <!-- Slide 2 -->
+                  <div class="seuil-carousel-slide">
+                    <div class="box">
+                      <h3 class="title is-4">Slide 2</h3>
+                      <p>Contenu de la deuxième slide...</p>
+                    </div>
+                  </div>
+
+                  <!-- Slide 3 -->
+                  <div class="seuil-carousel-slide">
+                    <div class="box">
+                      <h3 class="title is-4">Slide 3</h3>
+                      <p>Contenu de la troisième slide...</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Navigation buttons -->
+              <button class="seuil-carousel-nav seuil-carousel-prev" aria-label="Précédent">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+
+              <button class="seuil-carousel-nav seuil-carousel-next" aria-label="Suivant">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+
+
+          </div>
+
+        </div>
+
+
+
+        <div class="seuil-modal-footer">
+          <!-- Tabs/Navigation bar -->
+          <div class="seuil-carousel-tabs" data-carousel-tabs="modalCarousel">
+            <div class="seuil-carousel-tab is-active">
+              <div class="seuil-carousel-tab-icon">
+                <svg viewBox="0 0 32 32" fill="currentColor">
+                  <circle cx="16" cy="16" r="12"/>
+                </svg>
+              </div>
+              <div class="seuil-carousel-tab-label">Design</div>
+            </div>
+            
+            <div class="seuil-carousel-tab">
+              <div class="seuil-carousel-tab-icon">
+                <svg viewBox="0 0 32 32" fill="currentColor">
+                  <rect x="8" y="8" width="16" height="16"/>
+                </svg>
+              </div>
+              <div class="seuil-carousel-tab-label">Caméra</div>
+            </div>
+            
+            <div class="seuil-carousel-tab">
+              <div class="seuil-carousel-tab-icon">
+                <svg viewBox="0 0 32 32" fill="currentColor">
+                  <polygon points="16,8 24,24 8,24"/>
+                </svg>
+              </div>
+              <div class="seuil-carousel-tab-label">Performance</div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>

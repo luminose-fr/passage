@@ -7,6 +7,15 @@
   --overlay-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+// Désactiver les transitions au chargement de la page
+.preload *,
+.preload *::before,
+.preload *::after {
+  transition: none !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+}
+
 html, body {
   -webkit-text-size-adjust: 100%;
 }
@@ -29,7 +38,11 @@ html, body {
    TYPOGRAPHIE
 ========================= */
 strong {
-  background-color: v.$pink-light;
+  font-family:"P Medium";
+  font-weight: 600;
+  background: linear-gradient(90deg, rgba(v.$pink-light, 1), rgba(v.$gold-light, 1));
+  border-radius: var(--bulma-radius);
+  padding: 0.05em 0.2em;
 
   .has-pink-contrast &,
   .has-orange-medium-contrast &,
@@ -54,6 +67,12 @@ h3,
   font-family: v.$family-serif;
   color: v.$prune-vivid;
   font-size: var(--bulma-size-4);
+}
+
+h5,
+.content h5 {
+  font-family: v.$family-serif;
+  font-size: var(--bulma-size-5);
 }
 
 /* =========================
@@ -103,17 +122,26 @@ h3,
   .button.is-primary {
     background-color: v.$white;
     color: v.$prune-vivid;
+    transition: all 0.2s ease;
 
     &:hover {
       background-color: v.$pink;
       color: v.$prune-vivid;
+      transform: scale(1.1);
     }
   }
 }
 
-.has-pink-contrast { background-color: v.$pink; }
+.has-pink-contrast { 
+  background-color: v.$pink; 
 
-.has-gold-contrast {
+  strong {
+    background: linear-gradient(90deg, rgba(250,210,140,0.25), rgba(255,160,100,0.15));
+    color: v.$prune-vivid;
+  }
+}
+
+.has-gold-light-contrast {
   background-color: v.$gold-light;
 
   hr {
@@ -122,10 +150,38 @@ h3,
     margin-inline: auto;
   }
 
-  strong { background-color: v.$gold-medium; }
+  strong { 
+    // background-color: v.$gold-medium; 
+    background: linear-gradient(90deg, rgba(100,40,70,0.15), rgba(220,140,160,0.15));
+    color: v.$prune-vivid;
+  }
+}
+
+.has-gold-contrast {
+  color: v.$white;
+  background-color: v.$gold;
+  background: v.$gold-gradient;
+
+  h3, h4 {
+    color:v.$white;
+  }
+
+  hr {
+    background-color: v.$gold;
+    width: 30%;
+    margin-inline: auto;
+  }
+
+  strong { 
+    background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,240,200,0.2));
+    color: #fff;
+    // background: linear-gradient(90deg, rgba(v.$pink-light, 1), rgba(v.$gold-light, 1));
+  }
 }
 
 .has-gold-contrast-border { border: 2px solid v.$gold; }
+.has-gold-light-contrast-border { border: 2px solid v.$gold-medium }
+.has-gold-shadow { box-shadow: v.$gold-shadow; }
 
 .has-orange-medium-contrast {
   background-color: v.$orange-light;
@@ -181,7 +237,7 @@ img.has-rounded-corners { padding: 0; }
   margin-inline: auto;
 }
 
-.tag {
+.tag:not(.is-white) {
   background-color: v.$gold;
   color: v.$gold-light;
 
@@ -219,6 +275,11 @@ p.illustration,
   margin-bottom: 0;
 }
 
+.cle {
+  text-align: center;
+  font-family: v.$family-serif;
+}
+
 /* =========================
    BOUTONS
 ========================= */
@@ -227,7 +288,7 @@ p.illustration,
 
   &.is-primary {
     background-color: v.$prune-vivid;
-    transition: background .25s ease;
+    transition: all 0.2s ease;
     border: none;
     color: v.$white;
 
@@ -235,6 +296,7 @@ p.illustration,
       background-color: v.$prune-vivid;
       color: v.$white;
       border: none;
+      transform: scale(1.1);
     }
   }
 
@@ -242,10 +304,12 @@ p.illustration,
     background-color: v.$white;
     border: 2px solid v.$prune-vivid;
     color: v.$prune-vivid;
+    transition: all 0.2s ease;
 
     &:hover {
       background-color: v.$pink;
       color: v.$prune-vivid;
+      transform: scale(1.1);
     }
 
     .is-hidden-mobile {
@@ -289,8 +353,8 @@ p.illustration,
   box-shadow: v.$nav-shadow;
 
   @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
-    -webkit-backdrop-filter: saturate(120%) blur(12px);
-    backdrop-filter: saturate(120%) blur(12px);
+    -webkit-backdrop-filter: saturate(120%) blur(v.$backdrop-blur-size);
+    backdrop-filter: saturate(120%) blur(v.$backdrop-blur-size);
   }
 }
 
@@ -320,11 +384,12 @@ button.nav-chip {
   color: v.$prune-neutral;
   border: 2px solid v.$nav-chip-color;
   text-decoration: none;
-  transition: color .25s ease, background .25s ease, border-color .25s ease;
+  transition: all 0.2s ease;
 
   &:hover {
     color: v.$prune-vivid;
     border: 2px solid v.$pink;
+    transform: scale(1.1);
   }
 
   &.is-active,
@@ -443,6 +508,30 @@ button.nav-chip {
     font-size: var(--bulma-size-6);
     font-weight: 600;
   }
+  .columns {
+    flex-direction: row-reverse;
+
+    .columns {
+      flex-direction: row;
+    }
+  }
+
+  .box.splash {
+    background-image: url("/images/arche-seuil-clair-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    height:38rem;
+
+    @media
+    only screen and (-webkit-min-device-pixel-ratio: 2),
+    only screen and (   min--moz-device-pixel-ratio: 2),
+    only screen and (     -o-min-device-pixel-ratio: 2/1),
+    only screen and (        min-device-pixel-ratio: 2),
+    only screen and (                min-resolution: 192dpi),
+    only screen and (                min-resolution: 2dppx) { 
+      background-image: url("/images/arche-seuil-clair-bg@2x.jpg");
+    }
+  }
 
   .benefices .benefice {
     background-color: v.$pink;
@@ -464,21 +553,45 @@ button.nav-chip {
 .tags:not(:last-child) { margin-bottom: 0.75rem; }
 
 .box {
-  &.programme {
+  &.programme,
+  &.benefices,
+  &.qui,
+  &.temoignages,
+  &.exception {
     h2 {
       font-family: v.$family-serif;
       font-size: var(--bulma-size-4);
     }
     h3:not(:first-child) { margin-top: 0; }
+    .content h4,
+    h4 { font-size: var(--bulma-size-7); }
+  }
+  &.programme,
+  &.qui,
+  &.exception,
+  &.benefices {
+    h3:not(:first-child) { margin-bottom: 0; }
   }
 
   &.temoignages {
     text-align: center;
 
-    h3:not(:first-child) {
-      margin-top: 0;
+    h4:not(:first-child) {
       margin-bottom: 1em;
     }
+
+    .seuil-carousel-nav {
+      position: absolute;
+      top: 3rem;
+
+      &.seuil-carousel-prev {
+        left: 33%;
+      }
+      &.seuil-carousel-next {
+        right: 33%;
+      }
+    }
+     
 
     .temoignage {
       text-align: left;
@@ -536,15 +649,10 @@ section.qui,
     margin-bottom: 0.75rem;
   }
 
-  .cle {
-    text-align: center;
-    font-family: v.$family-serif;
-  }
-
   button.plus {
     padding: 0.75rem;
 
-    .icon { transition: transform 0.3s ease; }
+    .icon { transition: all 0.2s ease; }
     &.is-open .icon { transform: rotate(180deg); }
   }
 
@@ -565,6 +673,40 @@ section.qui,
       border-top: 2px solid v.$pink;
       padding-top: 0.75rem;
       margin-top: 0.75rem;
+    }
+  }
+}
+/* =========================
+   Bénéfices
+========================= */
+#benefices {
+  .box.benefices {
+    background-color: rgba(255,255,255,0.6  );
+    .columns {
+      background-color: v.$white;
+      border: 3px v.$pink solid;
+      border-radius: v.$rounded-radius;
+      margin:0 0 var(--bulma-block-spacing) 0;
+    
+      .column:not(:last-child) {
+        position: relative;
+        border-right: 3px v.$pink dotted;
+
+        &::after {
+          font: var(--fa-font-solid);
+          content: "\f054"; /* chevron-right */
+          margin-left: .5em;
+          color: currentColor;
+          position: absolute;
+          top:1rem;
+          right:-0.8rem;
+          background-color: v.$pink;
+          width:1.5rem;
+          height:1.5rem;
+          line-height:1.5rem;
+          border-radius: 999px; 
+        }
+      }
     }
   }
 }
@@ -613,10 +755,16 @@ section.qui,
     padding: 0.35rem 0.45rem;
     border-radius: 999px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
+
+  
 
   .columns.field.is-horizontal {
     .column.is-3 .label {
