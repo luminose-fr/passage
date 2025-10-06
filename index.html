@@ -31,177 +31,125 @@ permalink: /
 </section>
 
 
-<!-- Carousel standalone -->
-<div id="myCarousel" class="seuil-carousel" data-carousel data-loop="true">
+<!-- EXEMPLE 1: Carousel basique (1 slide à la fois) -->
+<div id="carousel1" class="seuil-carousel" data-carousel data-loop="true">
   <div class="seuil-carousel-viewport">
     <div class="seuil-carousel-track">
-      
-      <!-- Slide 1 -->
       <div class="seuil-carousel-slide is-active">
-        <div class="box">
-          <h3 class="title is-4">Slide 1</h3>
-          <p>Contenu de la première slide...</p>
-        </div>
+        <div class="box">Slide 1</div>
       </div>
-      
-      <!-- Slide 2 -->
       <div class="seuil-carousel-slide">
-        <div class="box">
-          <h3 class="title is-4">Slide 2</h3>
-          <p>Contenu de la deuxième slide...</p>
-        </div>
+        <div class="box">Slide 2</div>
       </div>
-      
-      <!-- Slide 3 -->
       <div class="seuil-carousel-slide">
-        <div class="box">
-          <h3 class="title is-4">Slide 3</h3>
-          <p>Contenu de la troisième slide...</p>
-        </div>
+        <div class="box">Slide 3</div>
       </div>
-      
     </div>
   </div>
   
-  <!-- Navigation buttons -->
-  <button class="seuil-carousel-nav seuil-carousel-prev" aria-label="Précédent">
-    <i class="fas fa-chevron-left"></i>
+  <button class="seuil-carousel-nav seuil-carousel-prev">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M15 18L9 12L15 6" stroke="currentColor"/>
+    </svg>
   </button>
   
-  <button class="seuil-carousel-nav seuil-carousel-next" aria-label="Suivant">
-    <i class="fas fa-chevron-right"></i>
+  <button class="seuil-carousel-nav seuil-carousel-next">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M9 6L15 12L9 18" stroke="currentColor"/>
+    </svg>
   </button>
+</div>
+
+
+<!-- EXEMPLE 2: 3 slides par page sur desktop, 1 sur mobile, avec bullets -->
+<div id="carousel2" 
+     class="seuil-carousel" 
+     data-carousel 
+     data-loop="false"
+     data-slides-per-view="3"
+     data-slides-per-view-mobile="1"
+     data-show-bullets="true">
+  <div class="seuil-carousel-viewport">
+    <div class="seuil-carousel-track">
+      <div class="seuil-carousel-slide is-active"><div class="box">1</div></div>
+      <div class="seuil-carousel-slide"><div class="box">2</div></div>
+      <div class="seuil-carousel-slide"><div class="box">3</div></div>
+      <div class="seuil-carousel-slide"><div class="box">4</div></div>
+      <div class="seuil-carousel-slide"><div class="box">5</div></div>
+      <div class="seuil-carousel-slide"><div class="box">6</div></div>
+    </div>
+  </div>
   
-  <!-- Tabs/Navigation bar -->
-  <div class="seuil-carousel-tabs">
-    <div class="seuil-carousel-tab is-active">
-      <div class="seuil-carousel-tab-icon">
-        Icone
+  <button class="seuil-carousel-nav seuil-carousel-prev">...</button>
+  <button class="seuil-carousel-nav seuil-carousel-next">...</button>
+  <!-- Bullets générés automatiquement -->
+</div>
+
+
+<!-- EXEMPLE 3: Avec peek (aperçu de la slide suivante) -->
+<div id="carousel3" 
+     class="seuil-carousel" 
+     data-carousel 
+     data-show-peek="true"
+     data-peek-amount="80px"
+     data-slides-per-view="2">
+  <div class="seuil-carousel-viewport">
+    <div class="seuil-carousel-track">
+      <div class="seuil-carousel-slide is-active"><div class="box">1</div></div>
+      <div class="seuil-carousel-slide"><div class="box">2</div></div>
+      <div class="seuil-carousel-slide"><div class="box">3</div></div>
+    </div>
+  </div>
+  
+  <button class="seuil-carousel-nav seuil-carousel-prev">...</button>
+  <button class="seuil-carousel-nav seuil-carousel-next">...</button>
+</div>
+
+
+<!-- EXEMPLE 4: Dans une modale avec tabs -->
+<div class="seuil-modal-content">
+  <div id="modalCarousel" 
+       class="seuil-carousel" 
+       data-carousel 
+       data-slides-per-view="2"
+       data-slides-per-view-mobile="1"
+       data-show-bullets="true">
+    <div class="seuil-carousel-viewport">
+      <div class="seuil-carousel-track">
+        <div class="seuil-carousel-slide is-active"><div class="box">Design 1</div></div>
+        <div class="seuil-carousel-slide"><div class="box">Design 2</div></div>
+        <div class="seuil-carousel-slide"><div class="box">Camera 1</div></div>
+        <div class="seuil-carousel-slide"><div class="box">Camera 2</div></div>
       </div>
+    </div>
+    
+    <button class="seuil-carousel-nav seuil-carousel-prev">...</button>
+    <button class="seuil-carousel-nav seuil-carousel-next">...</button>
+  </div>
+</div>
+
+<div class="seuil-modal-footer">
+  <div class="seuil-carousel-tabs" data-carousel-tabs="modalCarousel">
+    <div class="seuil-carousel-tab is-active">
+      <div class="seuil-carousel-tab-icon">🎨</div>
       <div class="seuil-carousel-tab-label">Design</div>
     </div>
-    
     <div class="seuil-carousel-tab">
-      <div class="seuil-carousel-tab-icon">
-        Icone
-      </div>
+      <div class="seuil-carousel-tab-icon">📷</div>
       <div class="seuil-carousel-tab-label">Caméra</div>
-    </div>
-    
-    <div class="seuil-carousel-tab">
-      <div class="seuil-carousel-tab-icon">
-        Icone
-      </div>
-      <div class="seuil-carousel-tab-label">Performance</div>
     </div>
   </div>
 </div>
 
 
-
-
-<button class="button is-secondary" data-modal-trigger="compareModal">Modale</button>
-
-
-<!-- Dans une modale -->
-<div id="compareModal" class="seuil-modal">
-  <div class="seuil-modal-overlay">
-    <div class="seuil-modal-wrapper">
-      <div class="seuil-modal-container">
-
-        <!-- Bouton de fermeture sticky -->
-        <button class="seuil-modal-close" data-modal-close aria-label="Fermer"><i class="fas fa-times"></i></button>
-        
-        <!-- Header -->
-        <div class="seuil-modal-header">
-            <h2 class="seuil-modal-title">Comparer les modèles</h2>
-        </div>
-
-        <div class="seuil-modal-content">
-          <!-- Carousel dans la modale -->
-          <div id="modalCarousel" class="seuil-carousel" data-carousel>
-              <div class="seuil-carousel-viewport">
-                <div class="seuil-carousel-track">
-
-                  <!-- Slide 1 -->
-                  <div class="seuil-carousel-slide is-active">
-                    <div class="box">
-                      <h3 class="title is-4">Slide 1</h3>
-                      <p>Contenu de la première slide...</p>
-                    </div>
-                  </div>
-
-                  <!-- Slide 2 -->
-                  <div class="seuil-carousel-slide">
-                    <div class="box">
-                      <h3 class="title is-4">Slide 2</h3>
-                      <p>Contenu de la deuxième slide...</p>
-                    </div>
-                  </div>
-
-                  <!-- Slide 3 -->
-                  <div class="seuil-carousel-slide">
-                    <div class="box">
-                      <h3 class="title is-4">Slide 3</h3>
-                      <p>Contenu de la troisième slide...</p>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <!-- Navigation buttons -->
-              <button class="seuil-carousel-nav seuil-carousel-prev" aria-label="Précédent">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </button>
-
-              <button class="seuil-carousel-nav seuil-carousel-next" aria-label="Suivant">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </button>
-
-
-          </div>
-
-        </div>
-
-
-
-        <div class="seuil-modal-footer">
-          <!-- Tabs/Navigation bar -->
-          <div class="seuil-carousel-tabs" data-carousel-tabs="modalCarousel">
-            <div class="seuil-carousel-tab is-active">
-              <div class="seuil-carousel-tab-icon">
-                <svg viewBox="0 0 32 32" fill="currentColor">
-                  <circle cx="16" cy="16" r="12"/>
-                </svg>
-              </div>
-              <div class="seuil-carousel-tab-label">Design</div>
-            </div>
-            
-            <div class="seuil-carousel-tab">
-              <div class="seuil-carousel-tab-icon">
-                <svg viewBox="0 0 32 32" fill="currentColor">
-                  <rect x="8" y="8" width="16" height="16"/>
-                </svg>
-              </div>
-              <div class="seuil-carousel-tab-label">Caméra</div>
-            </div>
-            
-            <div class="seuil-carousel-tab">
-              <div class="seuil-carousel-tab-icon">
-                <svg viewBox="0 0 32 32" fill="currentColor">
-                  <polygon points="16,8 24,24 8,24"/>
-                </svg>
-              </div>
-              <div class="seuil-carousel-tab-label">Performance</div>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- DATA ATTRIBUTES DISPONIBLES -->
+data-carousel               : Active l'auto-init
+data-loop="true/false"     : Active/désactive le loop (défaut: true)
+data-autoplay="true/false" : Autoplay (défaut: false)
+data-autoplay-delay="5000" : Délai autoplay en ms
+data-slides-per-view="3"   : Nombre de slides visibles desktop (défaut: 1)
+data-slides-per-view-mobile="1" : Nombre de slides visibles mobile (défaut: 1)
+data-show-peek="true"      : Afficher aperçu slide suivante (défaut: false)
+data-peek-amount="80px"    : Taille de l'aperçu (défaut: 60px)
+data-show-bullets="true"   : Afficher les bullets (défaut: false)
+data-swipe="true/false"    : Activer le swipe (défaut: true)

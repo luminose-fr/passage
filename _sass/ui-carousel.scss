@@ -9,10 +9,11 @@ $carousel-nav-size: 44px !default;
 $carousel-nav-bg: rgba(0, 0, 0, 0.05) !default;
 $carousel-nav-bg-hover: rgba(0, 0, 0, 0.1) !default;
 $carousel-nav-color: #1d1d1f !default;
-$carousel-tab-height: 80px !default;
 $carousel-tab-gap: 16px !default;
 $carousel-animation-duration: 0.4s !default;
 $carousel-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
+$carousel-bullet-size: 8px !default;
+$carousel-bullet-gap: 8px !default;
 
 // Container
 .seuil-carousel {
@@ -20,6 +21,13 @@ $carousel-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
   width: 100%;
   overflow: hidden;
   background: $carousel-bg;
+  
+  // Peek mode
+  &.has-peek {
+    .seuil-carousel-viewport {
+      padding: 0 var(--peek-amount, 60px);
+    }
+  }
 }
 
 // Viewport
@@ -34,20 +42,19 @@ $carousel-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
   display: flex;
   transition: transform $carousel-animation-duration $carousel-animation-easing;
   will-change: transform;
+  touch-action: pan-y pinch-zoom;
 }
 
 // Slides
 .seuil-carousel-slide {
   flex: 0 0 100%;
   width: 100%;
-  min-height: 400px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity $carousel-animation-duration $carousel-animation-easing;
+  min-height: 300px;
+  padding: 0 8px; // Gap entre slides
+  box-sizing: border-box;
   
-  &.is-active {
-    opacity: 1;
-    pointer-events: auto;
+  > * {
+    height: 100%;
   }
 }
 
@@ -93,6 +100,38 @@ $carousel-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
 
 .seuil-carousel-next {
   right: 20px;
+}
+
+// Bullets
+.seuil-carousel-bullets {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $carousel-bullet-gap;
+  padding: 20px 0;
+  margin-top: 16px;
+}
+
+.seuil-carousel-bullet {
+  width: $carousel-bullet-size;
+  height: $carousel-bullet-size;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(1.2);
+  }
+  
+  &.is-active {
+    background: rgba(0, 0, 0, 0.8);
+    width: $carousel-bullet-size * 2;
+    border-radius: $carousel-bullet-size;
+  }
 }
 
 // Tabs/Navigation bar (sticky footer)
@@ -148,6 +187,7 @@ $carousel-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
   width: 32px;
   height: 32px;
   margin: 0 auto 8px;
+  font-size: 24px;
   
   img, svg {
     width: 100%;
@@ -166,7 +206,8 @@ $carousel-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
 // Responsive
 @media screen and (max-width: 768px) {
   .seuil-carousel-slide {
-    min-height: 300px;
+    min-height: 250px;
+    padding: 0 4px;
   }
   
   .seuil-carousel-nav {
@@ -180,11 +221,11 @@ $carousel-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
   }
   
   .seuil-carousel-prev {
-    left: 12px;
+    left: 8px;
   }
   
   .seuil-carousel-next {
-    right: 12px;
+    right: 8px;
   }
   
   .seuil-carousel-tabs {
@@ -193,17 +234,18 @@ $carousel-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
   }
   
   .seuil-carousel-tab {
-    min-width: 100px;
+    min-width: 90px;
     padding: 10px 12px;
   }
   
   .seuil-carousel-tab-icon {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     margin-bottom: 6px;
+    font-size: 18px;
   }
   
   .seuil-carousel-tab-label {
-    font-size: 12px;
+    font-size: 11px;
   }
 }

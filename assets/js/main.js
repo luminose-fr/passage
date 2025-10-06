@@ -1097,6 +1097,11 @@ class Adequation {
   }
 }
 
+/* ============================================
+ * SEUIL CAROUSEL v2 - Carousel style Apple
+ * Utilisable dans la modale ou standalone
+ * ============================================ */
+
 class SeuilCarousel {
   constructor(carouselId, options = {}) {
     this.carouselId = carouselId;
@@ -1107,12 +1112,18 @@ class SeuilCarousel {
       return;
     }
 
+    // Options depuis data attributes ou paramètres
     this.options = {
-      autoplay: false,
-      autoplayDelay: 5000,
-      loop: true,
-      swipe: true,
-      onChange: null,
+      autoplay: this.carousel.dataset.autoplay === 'true' || options.autoplay || false,
+      autoplayDelay: parseInt(this.carousel.dataset.autoplayDelay) || options.autoplayDelay || 5000,
+      loop: this.carousel.dataset.loop !== 'false' && (options.loop !== false),
+      swipe: this.carousel.dataset.swipe !== 'false' && (options.swipe !== false),
+      slidesPerView: parseInt(this.carousel.dataset.slidesPerView) || options.slidesPerView || 1,
+      slidesPerViewMobile: parseInt(this.carousel.dataset.slidesPerViewMobile) || options.slidesPerViewMobile || 1,
+      showPeek: this.carousel.dataset.showPeek === 'true' || options.showPeek || false,
+      peekAmount: this.carousel.dataset.peekAmount || options.peekAmount || '60px',
+      showBullets: this.carousel.dataset.showBullets === 'true' || options.showBullets || false,
+      onChange: options.onChange || null,
       ...options
     };
 
@@ -1124,15 +1135,14 @@ class SeuilCarousel {
     
     // Tabs peuvent être dans le carousel OU dans un container externe
     this.tabsContainer = this.carousel.querySelector('.seuil-carousel-tabs');
-    
-    // Si pas de tabs dans le carousel, chercher un container externe avec data-carousel-tabs
     if (!this.tabsContainer) {
-      console.log('ici');
       this.tabsContainer = document.querySelector(`[data-carousel-tabs="${carouselId}"]`);
-      console.log(carouselId);
     }
-    
     this.tabs = this.tabsContainer ? Array.from(this.tabsContainer.querySelectorAll('.seuil-carousel-tab')) : [];
+
+    // Bullets
+    this.bulletsContainer = null;
+    this.bullets = [];
 
     // State
     this.currentIndex = 0;
@@ -1140,6 +1150,15 @@ class SeuilCarousel {
     this.autoplayTimer = null;
     this.touchStartX = 0;
     this.touchEndX = 0;
+    this.touchStartTime = 0;
+    this.isDragging = false;
+    this.startTranslate = 0;
+    this.currentTranslate = 0;
+    this.isMobile = window.innerWidth < 768;
+
+    // Responsive
+    this.handleResize = this.handleResize.bind(this);
+    window.addEventListener('resize', this.handleResize);
 
     this.init();
   }
@@ -1147,7 +1166,15 @@ class SeuilCarousel {
   init() {
     if (!this.track || this.slides.length === 0) return;
 
-    // Show first slide
+    // Setup responsive
+    this.updateResponsive();
+
+    // Create bullets if needed
+    if (this.options.showBullets) {
+      this.createBullets();
+    }
+
+    // Show first slide/group
     this.goToSlide(0, false);
 
     // Navigation buttons
@@ -1156,7 +1183,7 @@ class SeuilCarousel {
 
     // Tabs
     this.tabs.forEach((tab, index) => {
-      tab.addEventListener('click', () => this.goToSlide(index));
+      tab.addEventListener('click', () => this.goToSlide(index * this.getCurrentSlidesPerView()));
     });
 
     // Touch/swipe
@@ -1173,26 +1200,129 @@ class SeuilCarousel {
     this.updateButtons();
   }
 
+  updateResponsive() {
+    this.isMobile = window.innerWidth < 768;
+    const slidesPerView = this.getCurrentSlidesPerView();
+    
+    // Apply peek if enabled
+    if (this.options.showPeek && !this.isMobile) {
+      this.carousel.style.setProperty('--peek-amount', this.options.peekAmount);
+      this.carousel.classList.add('has-peek');
+    } else {
+      this.carousel.classList.remove('has-peek');
+    }
+
+    // Update slide widths
+    this.slides.forEach(slide => {
+      if (this.options.showPeek && !this.isMobile) {
+        slide.style.width = `calc((100% - ${this.options.peekAmount}) / ${slidesPerView})`;
+      } else {
+        slide.style.width = `${100 / slidesPerView}%`;
+      }
+    });
+
+    // Update bullets count
+    if (this.options.showBullets) {
+      this.createBullets();
+    }
+  }
+
+  handleResize() {
+    clearTimeout(this.resizeTimer);
+    this.resizeTimer = setTimeout(() => {
+      const wasMobile = this.isMobile;
+      this.updateResponsive();
+      
+      // Recalculer la position si on change de mode
+      if (wasMobile !== this.isMobile) {
+        this.goToSlide(this.currentIndex, false);
+      }
+    }, 150);
+  }
+
+  getCurrentSlidesPerView() {
+    return this.isMobile ? this.options.slidesPerViewMobile : this.options.slidesPerView;
+  }
+
+  getTotalPages() {
+    const slidesPerView = this.getCurrentSlidesPerView();
+    return Math.ceil(this.slides.length / slidesPerView);
+  }
+
+  getCurrentPage() {
+    const slidesPerView = this.getCurrentSlidesPerView();
+    return Math.floor(this.currentIndex / slidesPerView);
+  }
+
+  createBullets() {
+    // Remove old bullets
+    if (this.bulletsContainer) {
+      this.bulletsContainer.remove();
+    }
+
+    const totalPages = this.getTotalPages();
+    if (totalPages <= 1) return;
+
+    this.bulletsContainer = document.createElement('div');
+    this.bulletsContainer.className = 'seuil-carousel-bullets';
+    
+    this.bullets = [];
+    for (let i = 0; i < totalPages; i++) {
+      const bullet = document.createElement('button');
+      bullet.className = 'seuil-carousel-bullet';
+      bullet.setAttribute('aria-label', `Aller à la page ${i + 1}`);
+      if (i === 0) bullet.classList.add('is-active');
+      
+      bullet.addEventListener('click', () => {
+        const slidesPerView = this.getCurrentSlidesPerView();
+        this.goToSlide(i * slidesPerView);
+      });
+      
+      this.bullets.push(bullet);
+      this.bulletsContainer.appendChild(bullet);
+    }
+
+    // Insert bullets after viewport
+    const viewport = this.carousel.querySelector('.seuil-carousel-viewport');
+    if (viewport) {
+      viewport.after(this.bulletsContainer);
+    }
+  }
+
+  updateBullets() {
+    if (!this.options.showBullets || !this.bullets.length) return;
+    
+    const currentPage = this.getCurrentPage();
+    this.bullets.forEach((bullet, i) => {
+      bullet.classList.toggle('is-active', i === currentPage);
+    });
+  }
+
   goToSlide(index, animate = true) {
-    if (this.isAnimating) return;
+    if (this.isAnimating && animate) return;
+    
+    const slidesPerView = this.getCurrentSlidesPerView();
+    const maxIndex = this.slides.length - slidesPerView;
     
     // Handle loop
     if (this.options.loop) {
-      if (index < 0) index = this.slides.length - 1;
-      if (index >= this.slides.length) index = 0;
+      if (index < 0) index = maxIndex;
+      if (index > maxIndex) index = 0;
     } else {
       if (index < 0) index = 0;
-      if (index >= this.slides.length) index = this.slides.length - 1;
+      if (index > maxIndex) index = maxIndex;
     }
 
-    if (index === this.currentIndex) return;
+    if (index === this.currentIndex && animate) return;
 
-    this.isAnimating = true;
+    if (animate) {
+      this.isAnimating = true;
+    }
 
-    // Update slides
+    // Update slides visibility
     this.slides.forEach((slide, i) => {
       slide.classList.remove('is-active', 'is-prev', 'is-next');
-      if (i === index) {
+      if (i >= index && i < index + slidesPerView) {
         slide.classList.add('is-active');
       } else if (i < index) {
         slide.classList.add('is-prev');
@@ -1201,28 +1331,33 @@ class SeuilCarousel {
       }
     });
 
-    // Update tabs
+    // Update tabs (map groups to tabs)
+    const currentPage = Math.floor(index / slidesPerView);
     this.tabs.forEach((tab, i) => {
-      tab.classList.toggle('is-active', i === index);
+      tab.classList.toggle('is-active', i === currentPage);
     });
 
     // Transform track
-    const offset = -index * 100;
+    const slideWidth = 100 / slidesPerView;
+    const offset = -index * slideWidth;
     this.track.style.transform = `translateX(${offset}%)`;
 
     this.currentIndex = index;
 
     // Reset animation lock
-    setTimeout(() => {
-      this.isAnimating = false;
-    }, 400);
+    if (animate) {
+      setTimeout(() => {
+        this.isAnimating = false;
+      }, 400);
+    }
 
-    // Update buttons
+    // Update UI
     this.updateButtons();
+    this.updateBullets();
 
     // Callback
     if (typeof this.options.onChange === 'function') {
-      this.options.onChange(index, this.slides[index]);
+      this.options.onChange(index, this.slides[index], currentPage);
     }
 
     // Reset autoplay
@@ -1232,43 +1367,114 @@ class SeuilCarousel {
   }
 
   next() {
-    this.goToSlide(this.currentIndex + 1);
+    const slidesPerView = this.getCurrentSlidesPerView();
+    this.goToSlide(this.currentIndex + slidesPerView);
   }
 
   prev() {
-    this.goToSlide(this.currentIndex - 1);
+    const slidesPerView = this.getCurrentSlidesPerView();
+    this.goToSlide(this.currentIndex - slidesPerView);
   }
 
   updateButtons() {
-    if (!this.options.loop) {
-      this.prevBtn?.classList.toggle('is-disabled', this.currentIndex === 0);
-      this.nextBtn?.classList.toggle('is-disabled', this.currentIndex === this.slides.length - 1);
+    if (!this.prevBtn || !this.nextBtn) return;
+    
+    const slidesPerView = this.getCurrentSlidesPerView();
+    const maxIndex = this.slides.length - slidesPerView;
+    
+    if (this.options.loop) {
+      this.prevBtn.classList.remove('is-disabled');
+      this.nextBtn.classList.remove('is-disabled');
+      this.prevBtn.disabled = false;
+      this.nextBtn.disabled = false;
+    } else {
+      const atStart = this.currentIndex === 0;
+      const atEnd = this.currentIndex >= maxIndex;
+      
+      this.prevBtn.classList.toggle('is-disabled', atStart);
+      this.nextBtn.classList.toggle('is-disabled', atEnd);
+      this.prevBtn.disabled = atStart;
+      this.nextBtn.disabled = atEnd;
     }
   }
 
-  // Swipe support
+  // Swipe support amélioré (style Apple)
   initSwipe() {
     this.track.addEventListener('touchstart', (e) => {
-      this.touchStartX = e.changedTouches[0].screenX;
+      this.touchStartX = e.touches[0].clientX;
+      this.touchStartTime = Date.now();
+      this.isDragging = true;
+      
+      // Get current transform
+      const transform = window.getComputedStyle(this.track).transform;
+      if (transform !== 'none') {
+        const matrix = new DOMMatrix(transform);
+        this.startTranslate = matrix.m41;
+      } else {
+        this.startTranslate = 0;
+      }
+      
+      this.track.style.transition = 'none';
+    }, { passive: true });
+
+    this.track.addEventListener('touchmove', (e) => {
+      if (!this.isDragging) return;
+      
+      const currentX = e.touches[0].clientX;
+      const diff = currentX - this.touchStartX;
+      this.currentTranslate = this.startTranslate + diff;
+      
+      // Apply transform with resistance at edges
+      if (!this.options.loop) {
+        const slidesPerView = this.getCurrentSlidesPerView();
+        const maxIndex = this.slides.length - slidesPerView;
+        const trackWidth = this.track.offsetWidth;
+        const minTranslate = -(maxIndex * trackWidth / this.slides.length);
+        
+        if (this.currentTranslate > 0) {
+          this.currentTranslate = this.currentTranslate * 0.3; // Resistance
+        } else if (this.currentTranslate < minTranslate) {
+          this.currentTranslate = minTranslate + (this.currentTranslate - minTranslate) * 0.3;
+        }
+      }
+      
+      this.track.style.transform = `translateX(${this.currentTranslate}px)`;
     }, { passive: true });
 
     this.track.addEventListener('touchend', (e) => {
-      this.touchEndX = e.changedTouches[0].screenX;
-      this.handleSwipe();
-    }, { passive: true });
-  }
+      if (!this.isDragging) return;
+      
+      this.isDragging = false;
+      this.touchEndX = e.changedTouches[0].clientX;
+      this.track.style.transition = '';
+      
+      const diff = this.touchStartX - this.touchEndX;
+      const timeDiff = Date.now() - this.touchStartTime;
+      const velocity = Math.abs(diff) / timeDiff;
+      
+      // Threshold basé sur la vélocité et la distance
+      const threshold = velocity > 0.5 ? 30 : 80;
 
-  handleSwipe() {
-    const diff = this.touchStartX - this.touchEndX;
-    const threshold = 50;
-
-    if (Math.abs(diff) > threshold) {
-      if (diff > 0) {
-        this.next();
+      if (Math.abs(diff) > threshold) {
+        if (diff > 0) {
+          this.next();
+        } else {
+          this.prev();
+        }
       } else {
-        this.prev();
+        // Snap back
+        this.goToSlide(this.currentIndex, true);
       }
-    }
+    }, { passive: true });
+
+    // Cancel on touch cancel
+    this.track.addEventListener('touchcancel', () => {
+      if (this.isDragging) {
+        this.isDragging = false;
+        this.track.style.transition = '';
+        this.goToSlide(this.currentIndex, true);
+      }
+    }, { passive: true });
   }
 
   // Autoplay
@@ -1294,6 +1500,10 @@ class SeuilCarousel {
 
   destroy() {
     this.stopAutoplay();
+    window.removeEventListener('resize', this.handleResize);
+    if (this.bulletsContainer) {
+      this.bulletsContainer.remove();
+    }
   }
 }
 
@@ -1376,13 +1586,7 @@ class CarouselManager {
       const id = el.id;
       if (!id) return;
 
-      const options = {
-        autoplay: el.dataset.autoplay === 'true',
-        autoplayDelay: parseInt(el.dataset.autoplayDelay) || 5000,
-        loop: el.dataset.loop !== 'false'
-      };
-
-      const carousel = new SeuilCarousel(id, options);
+      const carousel = new SeuilCarousel(id);
       this.carousels.set(id, carousel);
     });
   }
