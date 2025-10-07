@@ -1354,10 +1354,16 @@ class SeuilCarousel {
       tab.classList.toggle('is-active', i === currentPage);
     });
 
-    // Transform track
-    const slideWidth = 100 / slidesPerView;
-    const offset = -index * slideWidth;
-    this.track.style.transform = `translateX(${offset}%)`;
+    // Use native scroll instead of transform - BEAUCOUP plus robuste !
+    const viewport = this.carousel.querySelector('.seuil-carousel-viewport');
+    const gapWidth = parseInt(window.getComputedStyle(this.track).gap) || 0;
+    const slideWidth = this.slides[0].offsetWidth + gapWidth;
+    const scrollLeft = slideWidth * index;
+
+    viewport.scroll({
+      left: scrollLeft,
+      behavior: animate ? 'smooth' : 'auto'
+    });
 
     this.currentIndex = index;
 
