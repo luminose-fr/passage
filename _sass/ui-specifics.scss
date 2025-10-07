@@ -302,6 +302,25 @@
       }
     }
   }
+  #carouselProgramme {
+    img {
+      height:10rem;
+      object-fit: cover;
+      object-position: center 80%;
+      width: 100%;
+    }
+    .seuil-carousel-nav {
+        position: absolute;
+        top: 13.2rem !important;
+
+        &.seuil-carousel-prev {
+          left: 4% !important;
+        }
+        &.seuil-carousel-next {
+          right: 4% !important;
+        }
+      }
+  }
   .box {
     &.temoignages {
       .seuil-carousel-nav {

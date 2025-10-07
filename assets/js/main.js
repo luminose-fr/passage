@@ -1072,7 +1072,7 @@ class SeuilCarousel {
     // Calculer les slidesPerView avec peek SEULEMENT si on a plus de slides que ce qu'on affiche
     const getAdjustedSlidesPerView = (baseValue) => {
       const hasMoreSlides = totalSlides > baseValue;
-      return (this.options.showPeek && hasMoreSlides) ? baseValue + 0.2 : baseValue;
+      return (this.options.showPeek && hasMoreSlides) ? baseValue + 0.14 : baseValue;
     };
     
     const desktopSlidesPerView = getAdjustedSlidesPerView(this.options.slidesPerView);
