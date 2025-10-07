@@ -1075,6 +1075,7 @@ class SeuilCarousel {
         nextEl: this.nextBtn,
         prevEl: this.prevBtn,
         disabledClass: 'is-disabled',
+        addIcons: false,
       },
 
       // Pagination (bullets)
@@ -1090,11 +1091,14 @@ class SeuilCarousel {
 
       // Responsive breakpoints
       slidesPerView: this.options.slidesPerViewMobile,
+      slidesPerGroup: this.options.slidesPerViewMobile, // ← AJOUTÉ
       spaceBetween: 16,
       
       breakpoints: {
         768: {
           slidesPerView: this.options.slidesPerView,
+          slidesPerGroup: this.options.slidesPerView, // ← AJOUTÉ
+          slidesPerGroupSkip: 0, // ← Optionnel : pour éviter de skipper des slides
           spaceBetween: 20,
           ...(this.options.showPeek && {
             slidesOffsetBefore: peekAmount,
@@ -1105,6 +1109,7 @@ class SeuilCarousel {
 
       // Comportement
       loop: this.options.loop,
+      loopFillGroupWithBlank: true,
       grabCursor: true,
       allowTouchMove: this.options.swipe,
       resistanceRatio: 0.3,

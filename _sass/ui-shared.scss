@@ -582,13 +582,13 @@ button.nav-chip {
 
     .seuil-carousel-nav {
       position: absolute;
-      top: 3rem;
+      top: 3rem !important;
 
       &.seuil-carousel-prev {
-        left: 33%;
+        left: 36% !important;
       }
       &.seuil-carousel-next {
-        right: 33%;
+        right: 36% !important;
       }
     }
      

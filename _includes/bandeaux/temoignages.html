@@ -5,8 +5,9 @@
 {% assign nb_additional_buttons = temoignages.size | divided_by: 3 | ceil | minus: 1 %}
 <div class="box temoignages has-orange-medium-contrast">
 	<!-- Carousel standalone -->
-	<div id="carouselTemoignages" class="seuil-carouselX" 
-		data-carouselX data-loop="false" 
+	<div id="carouselTemoignages" class="seuil-carousel swiper" 
+		data-carousel 
+		data-loop="false" 
 		data-show-bullets="true" 
 		data-slides-per-view="3"
        	data-slides-per-view-mobile="1">
@@ -15,36 +16,37 @@
 		<h3>Témoignages</h3>
 		<h4>Ils ont traversé</h4>
 		
-		<div class="seuil-carousel-viewport">
-			<div class="seuil-carousel-track">
-				{% for temoignage in temoignages %}
-				<div class="temoignage seuil-carousel-slide is-active">
-					<div class="texte has-rounded-corners">« {{ temoignage.texte | strip_html }} »</div>
-					<div class="metadata-container">
-						<div class="auteur">{{ temoignage.auteur | strip_html }}</div>
-						<div class="etoiles">
-							{% for j in (1..5) %}
-							{% if j > temoignage.etoiles %}
-								<i class="far fa-star"></i>
-							{% else %}
-								<i class="fas fa-star"></i>
-							{% endif %}
-							{% endfor %}
-						</div>
-						<small class="date">{{ temoignage.date | strip_html }}</small>
+		<div class="swiper-wrapper">
+			{% for temoignage in temoignages %}
+			<div class="temoignage swiper-slide seuil-carousel-slide">
+				<div class="texte has-rounded-corners">« {{ temoignage.texte | strip_html }} »</div>
+				<div class="metadata-container">
+					<div class="auteur">{{ temoignage.auteur | strip_html }}</div>
+					<div class="etoiles">
+						{% for j in (1..5) %}
+						{% if j > temoignage.etoiles %}
+							<i class="far fa-star"></i>
+						{% else %}
+							<i class="fas fa-star"></i>
+						{% endif %}
+						{% endfor %}
 					</div>
+					<small class="date">{{ temoignage.date | strip_html }}</small>
 				</div>
-				{% endfor %}
 			</div>
+			{% endfor %}
 		</div>
 		<!-- Navigation buttons -->
-		<button class="seuil-carousel-nav seuil-carousel-prev" aria-label="Précédent">
+		<button class="seuil-carousel-nav swiper-button-prev seuil-carousel-prev" aria-label="Précédent">
 			<i class="fas fa-chevron-left"></i>
 		</button>
 		
-		<button class="seuil-carousel-nav seuil-carousel-next" aria-label="Suivant">
+		<button class="seuil-carousel-nav swiper-button-next seuil-carousel-next" aria-label="Suivant">
 			<i class="fas fa-chevron-right"></i>
 		</button>
+
+		<!-- Pagination (bullets) -->
+  		<div class="swiper-pagination seuil-carousel-bullets"></div>
 	</div>
 </div>
 {% endif %}

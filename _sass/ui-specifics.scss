@@ -296,6 +296,21 @@
       }
     }
   }
+  .box {
+    &.temoignages {
+      .seuil-carousel-nav {
+          position: absolute;
+          top: 5.3rem !important;
+
+          &.seuil-carousel-prev {
+            left: 1% !important;
+          }
+          &.seuil-carousel-next {
+            right: 1% !important;
+          }
+      }
+    }
+  }
 }
 
 /* Fine breakpoints */
