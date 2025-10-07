@@ -30,77 +30,45 @@ permalink: /
   <div class="container">{% include bandeaux/florent.html %}</div>
 </section>
 
-
-<!-- EXEMPLE 1: Carousel basique (1 slide à la fois) -->
-<div id="carousel1" class="seuil-carousel" data-carousel data-loop="true">
-  <div class="seuil-carousel-viewport">
-    <div class="seuil-carousel-track">
-      <div class="seuil-carousel-slide is-active">
-        <div class="box">Slide 1</div>
-      </div>
-      <div class="seuil-carousel-slide">
-        <div class="box">Slide 2</div>
-      </div>
-      <div class="seuil-carousel-slide">
-        <div class="box">Slide 3</div>
-      </div>
-    </div>
-  </div>
-  
-  <button class="seuil-carousel-nav seuil-carousel-prev">
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M15 18L9 12L15 6" stroke="currentColor"/>
-    </svg>
-  </button>
-  
-  <button class="seuil-carousel-nav seuil-carousel-next">
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M9 6L15 12L9 18" stroke="currentColor"/>
-    </svg>
-  </button>
-</div>
-
-
-<!-- EXEMPLE 2: 3 slides par page sur desktop, 1 sur mobile, avec bullets -->
+<!-- Structure Swiper propre -->
 <div id="carousel2" 
-     class="seuil-carousel" 
+     class="seuil-carousel swiper" 
      data-carousel 
      data-loop="false"
      data-slides-per-view="3"
      data-slides-per-view-mobile="1"
      data-show-bullets="true">
-  <div class="seuil-carousel-viewport">
-    <div class="seuil-carousel-track">
-      <div class="seuil-carousel-slide is-active"><div class="box">1</div></div>
-      <div class="seuil-carousel-slide"><div class="box">2</div></div>
-      <div class="seuil-carousel-slide"><div class="box">3</div></div>
-      <div class="seuil-carousel-slide"><div class="box">4</div></div>
-      <div class="seuil-carousel-slide"><div class="box">5</div></div>
-      <div class="seuil-carousel-slide"><div class="box">6</div></div>
-    </div>
+  
+  <!-- Swiper wrapper -->
+  <div class="swiper-wrapper">
+    <div class="swiper-slide seuil-carousel-slide"><div class="box">1</div></div>
+    <div class="swiper-slide seuil-carousel-slide"><div class="box">2</div></div>
+    <div class="swiper-slide seuil-carousel-slide"><div class="box">3</div></div>
+    <div class="swiper-slide seuil-carousel-slide"><div class="box">4</div></div>
+    <div class="swiper-slide seuil-carousel-slide"><div class="box">5</div></div>
+    <div class="swiper-slide seuil-carousel-slide"><div class="box">6</div></div>
   </div>
   
-  <button class="seuil-carousel-nav seuil-carousel-prev">...</button>
-  <button class="seuil-carousel-nav seuil-carousel-next">...</button>
-  <!-- Bullets générés automatiquement -->
+  <!-- Navigation -->
+  <div class="swiper-button-prev seuil-carousel-prev">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+  </div>
+  <div class="swiper-button-next seuil-carousel-next">
+    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+  </div>
+  
+  <!-- Pagination (bullets) -->
+  <div class="swiper-pagination seuil-carousel-bullets"></div>
 </div>
 
-
-<!-- EXEMPLE 3: Avec peek (aperçu de la slide suivante) -->
-<div id="carousel3" 
-     class="seuil-carousel" 
-     data-carousel 
-     data-show-peek="true"
-     data-peek-amount="80px"
-     data-slides-per-view="2">
-  <div class="seuil-carousel-viewport">
-    <div class="seuil-carousel-track">
-      <div class="seuil-carousel-slide is-active"><div class="box">1</div></div>
-      <div class="seuil-carousel-slide"><div class="box">2</div></div>
-      <div class="seuil-carousel-slide"><div class="box">3</div></div>
-    </div>
-  </div>
-  
-  <button class="seuil-carousel-nav seuil-carousel-prev">...</button>
-  <button class="seuil-carousel-nav seuil-carousel-next">...</button>
+<!-- Tabs externes (optionnel) -->
+<div class="seuil-carousel-tabs" data-carousel-tabs="carousel2">
+  <button class="seuil-carousel-tab is-active">
+    <div class="seuil-carousel-tab-icon">📱</div>
+    <div class="seuil-carousel-tab-label">Mobile</div>
+  </button>
+  <button class="seuil-carousel-tab">
+    <div class="seuil-carousel-tab-icon">💻</div>
+    <div class="seuil-carousel-tab-label">Desktop</div>
+  </button>
 </div>
