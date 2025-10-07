@@ -1434,7 +1434,12 @@ class SeuilCarousel {
   }
 
   onTouchStart(e) {
-    if (this.isAnimating) return;
+    if (this.isAnimating) {
+      alert('Touch blocked: animation in progress');
+      return;
+    }
+
+    alert('Touch start - currentIndex:', this.currentIndex);
 
     const point = e.touches ? e.touches[0] : e;
     
@@ -1452,10 +1457,10 @@ class SeuilCarousel {
     this.touch.initialTranslate = -(this.currentIndex * (100 / slidesPerView));
     this.touch.currentTranslate = this.touch.initialTranslate;
 
+    alert('Initial translate:', this.touch.initialTranslate);
+
     // Enlever les transitions pour un drag fluide
     this.track.style.transition = 'none';
-
-    // Prevent text selection
     document.body.style.userSelect = 'none';
   }
 
@@ -1507,11 +1512,16 @@ class SeuilCarousel {
   }
 
   onTouchEnd(e) {
-    if (!this.touch.startX) return;
+    if (!this.touch.startX) {
+      alert('Touch end ignored: no start detected');
+      return;
+    }
 
     const touchDuration = Date.now() - this.touch.startTime;
     const distance = this.touch.currentX - this.touch.startX;
     const velocity = Math.abs(distance) / touchDuration;
+
+    alert('Touch end:', { distance, velocity, isDragging: this.touch.isDragging });
 
     // Restaurer les styles
     this.track.style.transition = '';
@@ -1519,35 +1529,40 @@ class SeuilCarousel {
 
     // Si pas de drag, permettre le click
     if (!this.touch.isDragging) {
+      alert('No dragging detected, reset');
       this.resetTouch();
       return;
     }
 
     // Déterminer la direction et l'intensité
     const slidesPerView = this.getCurrentSlidesPerView();
-    const threshold = velocity > 0.5 ? 30 : trackWidth * 0.2; // Seuil adaptatif
     const trackWidth = this.track.offsetWidth;
+    const threshold = velocity > 0.5 ? 30 : trackWidth * 0.2;
 
     let targetIndex = this.currentIndex;
 
     if (Math.abs(distance) > threshold) {
       if (distance > 0) {
-        // Swipe vers la droite - slide précédente
         targetIndex = this.currentIndex - slidesPerView;
       } else {
-        // Swipe vers la gauche - slide suivante  
         targetIndex = this.currentIndex + slidesPerView;
       }
     }
 
+    console.log('Going to slide:', targetIndex);
+
     // Aller à la slide cible
     this.goToSlide(targetIndex, true);
     
-    this.resetTouch();
+    setTimeout(() => {
+      this.resetTouch();
+      console.log('Touch reset complete');
+    }, 50);
   }
 
   resetTouch() {
-    this.touch = {
+    // Reset complet de l'état touch
+    Object.assign(this.touch, {
       startX: 0,
       startY: 0,
       currentX: 0,
@@ -1558,7 +1573,11 @@ class SeuilCarousel {
       isDragging: false,
       initialTranslate: 0,
       currentTranslate: 0
-    };
+    });
+    
+    // S'assurer que les styles sont bien nettoyés
+    this.track.style.transition = '';
+    document.body.style.userSelect = '';
   }
 
   // Autoplay (inchangé)
