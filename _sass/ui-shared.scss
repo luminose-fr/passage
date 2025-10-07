@@ -217,6 +217,7 @@ h5,
   &:last-child { margin-bottom: 0; }
 }
 img.has-rounded-corners { padding: 0; }
+img.has-rounded-corners-small { padding: 0; }
 
 .content ul.fa-ul {
   list-style-type: none;
@@ -248,6 +249,9 @@ img.has-rounded-corners { padding: 0; }
     background-color: v.$pink;
     color: v.$prune-vivid;
   }
+}
+.tag.is-white {
+  color: v.$prune-vivid;
 }
 
 .image-fit {
