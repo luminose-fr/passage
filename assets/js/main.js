@@ -1100,6 +1100,16 @@ class Adequation {
 /* ============================================
  * SEUIL CAROUSEL v2 - Carousel style Apple
  * Utilisable dans la modale ou standalone
+ * data-carousel               : Active l'auto-init
+ * data-loop="true/false"     : Active/désactive le loop (défaut: true)
+ * data-autoplay="true/false" : Autoplay (défaut: false)
+ * data-autoplay-delay="5000" : Délai autoplay en ms
+ * data-slides-per-view="3"   : Nombre de slides visibles desktop (défaut: 1)
+ * data-slides-per-view-mobile="1" : Nombre de slides visibles mobile (défaut: 1)
+ * data-show-peek="true"      : Afficher aperçu slide suivante (défaut: false)
+ * data-peek-amount="80px"    : Taille de l'aperçu (défaut: 60px)
+ * data-show-bullets="true"   : Afficher les bullets (défaut: false)
+ * data-swipe="true/false"    : Activer le swipe (défaut: true)
  * ============================================ */
 
 class SeuilCarousel {
@@ -1212,14 +1222,21 @@ class SeuilCarousel {
       this.carousel.classList.remove('has-peek');
     }
 
-    // Update slide widths
+    // Update slide widths - IMPORTANT pour que slidesPerView fonctionne
     this.slides.forEach(slide => {
       if (this.options.showPeek && !this.isMobile) {
-        slide.style.width = `calc((100% - ${this.options.peekAmount}) / ${slidesPerView})`;
+        const width = `calc((100% - ${this.options.peekAmount}) / ${slidesPerView})`;
+        slide.style.width = width;
+        slide.style.flexBasis = width;
       } else {
-        slide.style.width = `${100 / slidesPerView}%`;
+        const width = `${100 / slidesPerView}%`;
+        slide.style.width = width;
+        slide.style.flexBasis = width;
       }
     });
+
+    // Le track doit toujours faire 100% - pas besoin de le redimensionner
+    this.track.style.width = '100%';
 
     // Update bullets count
     if (this.options.showBullets) {
@@ -1400,81 +1417,82 @@ class SeuilCarousel {
 
   // Swipe support amélioré (style Apple)
   initSwipe() {
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    let startIndex = 0;
+
     this.track.addEventListener('touchstart', (e) => {
-      this.touchStartX = e.touches[0].clientX;
-      this.touchStartTime = Date.now();
-      this.isDragging = true;
+      startX = e.touches[0].clientX;
+      currentX = startX;
+      isDragging = true;
+      startIndex = this.currentIndex;
       
-      // Get current transform
-      const transform = window.getComputedStyle(this.track).transform;
-      if (transform !== 'none') {
-        const matrix = new DOMMatrix(transform);
-        this.startTranslate = matrix.m41;
-      } else {
-        this.startTranslate = 0;
-      }
-      
+      // Remove transition for smooth dragging
       this.track.style.transition = 'none';
+      this.touchStartTime = Date.now();
     }, { passive: true });
 
     this.track.addEventListener('touchmove', (e) => {
-      if (!this.isDragging) return;
+      if (!isDragging) return;
       
-      const currentX = e.touches[0].clientX;
-      const diff = currentX - this.touchStartX;
-      this.currentTranslate = this.startTranslate + diff;
+      currentX = e.touches[0].clientX;
+      const diff = currentX - startX;
+      const slidesPerView = this.getCurrentSlidesPerView();
+      const slideWidth = this.track.offsetWidth / slidesPerView;
       
-      // Apply transform with resistance at edges
+      // Calculate current offset in percentage
+      const baseOffset = -(startIndex * 100 / slidesPerView);
+      const dragOffset = (diff / this.track.offsetWidth) * 100;
+      let newOffset = baseOffset + dragOffset;
+      
+      // Apply resistance at edges if not looping
       if (!this.options.loop) {
-        const slidesPerView = this.getCurrentSlidesPerView();
-        const maxIndex = this.slides.length - slidesPerView;
-        const trackWidth = this.track.offsetWidth;
-        const minTranslate = -(maxIndex * trackWidth / this.slides.length);
+        const maxOffset = 0;
+        const minOffset = -((this.slides.length - slidesPerView) * 100 / slidesPerView);
         
-        if (this.currentTranslate > 0) {
-          this.currentTranslate = this.currentTranslate * 0.3; // Resistance
-        } else if (this.currentTranslate < minTranslate) {
-          this.currentTranslate = minTranslate + (this.currentTranslate - minTranslate) * 0.3;
+        if (newOffset > maxOffset) {
+          newOffset = maxOffset + (newOffset - maxOffset) * 0.3;
+        } else if (newOffset < minOffset) {
+          newOffset = minOffset + (newOffset - minOffset) * 0.3;
         }
       }
       
-      this.track.style.transform = `translateX(${this.currentTranslate}px)`;
+      this.track.style.transform = `translateX(${newOffset}%)`;
     }, { passive: true });
 
-    this.track.addEventListener('touchend', (e) => {
-      if (!this.isDragging) return;
+    const endTouch = (e) => {
+      if (!isDragging) return;
       
-      this.isDragging = false;
-      this.touchEndX = e.changedTouches[0].clientX;
-      this.track.style.transition = '';
-      
-      const diff = this.touchStartX - this.touchEndX;
+      isDragging = false;
+      const endX = e.changedTouches[0].clientX;
+      const diff = startX - endX;
       const timeDiff = Date.now() - this.touchStartTime;
       const velocity = Math.abs(diff) / timeDiff;
       
-      // Threshold basé sur la vélocité et la distance
+      // Restore transition
+      this.track.style.transition = '';
+      
+      // Determine threshold based on velocity
       const threshold = velocity > 0.5 ? 30 : 80;
+      const slidesPerView = this.getCurrentSlidesPerView();
 
       if (Math.abs(diff) > threshold) {
         if (diff > 0) {
-          this.next();
+          // Swipe left - next
+          this.goToSlide(this.currentIndex + slidesPerView);
         } else {
-          this.prev();
+          // Swipe right - prev
+          this.goToSlide(this.currentIndex - slidesPerView);
         }
       } else {
-        // Snap back
+        // Snap back to current
         this.goToSlide(this.currentIndex, true);
       }
-    }, { passive: true });
+    };
 
-    // Cancel on touch cancel
-    this.track.addEventListener('touchcancel', () => {
-      if (this.isDragging) {
-        this.isDragging = false;
-        this.track.style.transition = '';
-        this.goToSlide(this.currentIndex, true);
-      }
-    }, { passive: true });
+    this.track.addEventListener('touchend', endTouch, { passive: true });
+    this.track.addEventListener('touchcancel', endTouch, { passive: true });
   }
 
   // Autoplay

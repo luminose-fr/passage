@@ -47,11 +47,13 @@ $carousel-bullet-gap: 8px !default;
 
 // Slides
 .seuil-carousel-slide {
-  flex: 0 0 100%;
-  width: 100%;
+  flex-shrink: 0;
   min-height: 300px;
-  padding: 0 8px; // Gap entre slides
+  padding: 0 8px;
   box-sizing: border-box;
+  
+  // La largeur est définie par JS selon slidesPerView
+  // Ne pas mettre de width ou flex-basis fixe ici
   
   > * {
     height: 100%;
