@@ -162,6 +162,10 @@ h5,
   background-color: v.$gold;
   background: v.$gold-gradient;
 
+  .seuil-modal {
+    color: v.$prune-vivid;
+  }
+
   h3, h4 {
     color:v.$white;
   }
@@ -175,7 +179,6 @@ h5,
   strong { 
     background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,240,200,0.2));
     color: #fff;
-    // background: linear-gradient(90deg, rgba(v.$pink-light, 1), rgba(v.$gold-light, 1));
   }
 }
 
@@ -278,6 +281,22 @@ p.illustration,
 .cle {
   text-align: center;
   font-family: v.$family-serif;
+}
+
+.seuil-modal .seuil-carousel-nav {
+  position: absolute;
+  top: auto !important;
+  bottom: 0 !important;
+  font-size: var(--bulma-size-7);
+  width: 26px !important;
+  height: 26px !important;
+
+  &.seuil-carousel-prev {
+    left: 42% !important;
+  }
+  &.seuil-carousel-next {
+    right: 42% !important;
+  }
 }
 
 /* =========================

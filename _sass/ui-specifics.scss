@@ -179,6 +179,12 @@
     touch-action: none;
   }
 
+  .has-rounded-corners-small-mobile {
+    border-radius: var(--bulma-radius);
+    padding: var(--bulma-block-spacing);
+    margin-bottom: 0.75rem;
+  }
+
   section.adequation {
     .adequation-close {
       display: flex;

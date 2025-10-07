@@ -10,21 +10,23 @@
             <p>L’espace est conçu pour la confidentialité, la sécurité et le confort : tapis et coussins, zone d’intégration, matériel sonore (tambour/gong).</p>
         </div>
         <div class="column is-7">
-            <div class="swiffy-slider slider-nav-noloop slider-indicators-round slider-indicators-sm">
-                <ul class="slider-container">
-                    <li><img class="has-rounded-corners" src="/images/cabinet-fauteuil.jpg" srcset="/images/cabinet-fauteuil.jpg, /images/cabinet-fauteuil@2x.jpg 2x" alt="Cabinet, espace thérapeutique confortable"></li>
-                    <li><img class="has-rounded-corners" src="/images/cabinet-matelas.jpg" srcset="/images/cabinet-matelas.jpg, /images/cabinet-matelas@2x.jpg 2x" alt="Matelas pour respiration holotropique"></li>
-                    <li><img class="has-rounded-corners" src="/images/cabinet-tambour.jpg" srcset="/images/cabinet-tambour.jpg, /images/cabinet-tambour@2x.jpg 2x" alt="Tambour pour soutien énergétique"></li>
-                </ul>
-
-                <button type="button" class="slider-nav is-hidden-touch"></button>
-                <button type="button" class="slider-nav slider-nav-next is-hidden-touch"></button>
-
-                <div class="slider-indicators">
-                    <button class="active"></button>
-                    <button></button>
-                    <button></button>
+            <div id="carouselPhotosLieu" 
+                class="seuil-carousel swiper" 
+                data-carousel 
+                data-loop="false"
+                data-slides-per-view="1"
+                data-slides-per-view-mobile="1"
+                data-show-bullets="true">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide seuil-carousel-slide"><img class="has-rounded-corners" src="/images/cabinet-fauteuil.jpg" srcset="/images/cabinet-fauteuil.jpg, /images/cabinet-fauteuil@2x.jpg 2x" alt="Cabinet, espace thérapeutique confortable"></div>
+                    <div class="swiper-slide seuil-carousel-slide"><img class="has-rounded-corners" src="/images/cabinet-matelas.jpg" srcset="/images/cabinet-matelas.jpg, /images/cabinet-matelas@2x.jpg 2x" alt="Matelas pour respiration holotropique"></div>
+                    <div class="swiper-slide seuil-carousel-slide"><img class="has-rounded-corners" src="/images/cabinet-tambour.jpg" srcset="/images/cabinet-tambour.jpg, /images/cabinet-tambour@2x.jpg 2x" alt="Tambour pour soutien énergétique"></div>
                 </div>
+
+                <button class="seuil-carousel-nav seuil-carousel-prev swiper-button-prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="seuil-carousel-nav seuil-carousel-next swiper-button-next"><i class="fas fa-chevron-right"></i></button>
+
+                <div class="swiper-pagination seuil-carousel-bullets"></div>
             </div>
         </div>
     </div>

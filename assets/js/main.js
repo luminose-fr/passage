@@ -975,7 +975,7 @@ class Adequation {
  * data-slides-per-view="3"   : Nombre de slides visibles desktop (défaut: 1)
  * data-slides-per-view-mobile="1" : Nombre de slides visibles mobile (défaut: 1)
  * data-show-peek="true"      : Afficher aperçu slide suivante (défaut: false)
- * data-peek-amount="80px"    : Taille de l'aperçu (défaut: 60px)
+ * data-peek-value="0.2"      : Décalage (1,2 slides affichées)
  * data-show-bullets="true"   : Afficher les bullets (défaut: false)
  * data-swipe="true/false"    : Activer le swipe (défaut: true)
  * ============================================ */
@@ -1020,7 +1020,7 @@ class SeuilCarousel {
       slidesPerView: parseInt(this.carousel.dataset.slidesPerView) || options.slidesPerView || 1,
       slidesPerViewMobile: parseInt(this.carousel.dataset.slidesPerViewMobile) || options.slidesPerViewMobile || 1,
       showPeek: this.carousel.dataset.showPeek === 'true' || options.showPeek || false,
-      peekAmount: this.carousel.dataset.peekAmount || options.peekAmount || '60px',
+      peekValue: parseFloat(this.carousel.dataset.peekValue) || options.peekValue || 0.2, // Personnalisable
       showBullets: this.carousel.dataset.showBullets === 'true' || options.showBullets || false,
       onChange: options.onChange || null,
       ...options
@@ -1067,19 +1067,32 @@ class SeuilCarousel {
   }
 
   buildSwiperConfig() {
-    const peekAmount = parseInt(this.options.peekAmount) || 60;
+    const totalSlides = this.slides.length;
+    
+    // Calculer les slidesPerView avec peek SEULEMENT si on a plus de slides que ce qu'on affiche
+    const getAdjustedSlidesPerView = (baseValue) => {
+      const hasMoreSlides = totalSlides > baseValue;
+      return (this.options.showPeek && hasMoreSlides) ? baseValue + 0.2 : baseValue;
+    };
+    
+    const desktopSlidesPerView = getAdjustedSlidesPerView(this.options.slidesPerView);
+    const mobileSlidesPerView = getAdjustedSlidesPerView(this.options.slidesPerViewMobile);
+    
+    // Calculer si navigation est nécessaire (basé sur les valeurs de base)
+    const needsNavigationDesktop = totalSlides > this.options.slidesPerView;
+    const needsNavigationMobile = totalSlides > this.options.slidesPerViewMobile;
     
     return {
-      // Navigation
-      navigation: {
+      // Navigation conditionnelle
+      navigation: (needsNavigationDesktop || needsNavigationMobile) ? {
         nextEl: this.nextBtn,
         prevEl: this.prevBtn,
         disabledClass: 'is-disabled',
         addIcons: false,
-      },
+      } : false,
 
-      // Pagination (bullets)
-      pagination: this.options.showBullets ? {
+      // Pagination conditionnelle
+      pagination: (this.options.showBullets && (needsNavigationDesktop || needsNavigationMobile)) ? {
         el: this.carousel.querySelector('.seuil-carousel-bullets'),
         clickable: true,
         bulletClass: 'seuil-carousel-bullet',
@@ -1089,35 +1102,29 @@ class SeuilCarousel {
         }
       } : false,
 
-      // Responsive breakpoints
-      slidesPerView: this.options.slidesPerViewMobile,
-      slidesPerGroup: this.options.slidesPerViewMobile, // ← AJOUTÉ
+      // Configuration responsive
+      slidesPerView: mobileSlidesPerView,
+      slidesPerGroup: this.options.slidesPerViewMobile,
       spaceBetween: 16,
       
       breakpoints: {
         768: {
-          slidesPerView: this.options.slidesPerView,
-          slidesPerGroup: this.options.slidesPerView, // ← AJOUTÉ
-          slidesPerGroupSkip: 0, // ← Optionnel : pour éviter de skipper des slides
+          slidesPerView: desktopSlidesPerView,
+          slidesPerGroup: this.options.slidesPerView,
           spaceBetween: 20,
-          ...(this.options.showPeek && {
-            slidesOffsetBefore: peekAmount,
-            slidesOffsetAfter: peekAmount,
-          })
         }
       },
 
-      // Comportement
-      loop: this.options.loop,
-      loopFillGroupWithBlank: true,
-      grabCursor: true,
-      allowTouchMove: this.options.swipe,
+      // Comportement - désactiver si pas nécessaire
+      loop: this.options.loop && (needsNavigationDesktop || needsNavigationMobile),
+      grabCursor: needsNavigationDesktop || needsNavigationMobile,
+      allowTouchMove: this.options.swipe && (needsNavigationDesktop || needsNavigationMobile),
       resistanceRatio: 0.3,
       longSwipesRatio: 0.3,
       threshold: 10,
 
-      // Autoplay
-      autoplay: this.options.autoplay ? {
+      // Autoplay - désactiver si pas de navigation
+      autoplay: (this.options.autoplay && (needsNavigationDesktop || needsNavigationMobile)) ? {
         delay: this.options.autoplayDelay,
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
@@ -1153,20 +1160,24 @@ class SeuilCarousel {
           this.updateNavigation();
         },
         resize: (swiper) => {
-          this.updateNavigation();
+          this.handleResponsiveChange();
         },
-        touchStart: (swiper) => {
-          if (this.options.autoplay) {
-            swiper.autoplay.stop();
-          }
-        },
-        touchEnd: (swiper) => {
-          if (this.options.autoplay) {
-            swiper.autoplay.start();
-          }
-        }
       }
     };
+  }
+
+  handleResponsiveChange() {
+    if (!this.swiper) return;
+    
+    const currentSlidesPerView = this.getCurrentSlidesPerView(); // Valeur de base
+    const totalSlides = this.slides.length;
+    const needsNavigation = totalSlides > currentSlidesPerView;
+    
+    // Afficher/masquer navigation selon le contexte
+    this.toggleNavigation(needsNavigation);
+    this.togglePagination(needsNavigation);
+    
+    this.updateNavigation();
   }
 
   setupTabs() {
@@ -1182,17 +1193,11 @@ class SeuilCarousel {
   }
 
   onSwiperInit(swiper) {
-    console.log('Swiper initialized');
-    this.updateNavigation();
-    this.updateTabs();
+    // console.log('Swiper initialized');
     
-    // Appliquer peek mode
-    if (this.options.showPeek) {
-      this.carousel.classList.add('has-peek');
-      this.carousel.style.setProperty('--peek-amount', this.options.peekAmount);
-    }
-
-    // Classes de slides pour compatibilité
+    // Nettoyage initial
+    this.updatePeekMode();
+    this.handleResponsiveChange();
     this.updateSlideClasses();
   }
 
@@ -1235,6 +1240,34 @@ class SeuilCarousel {
     });
   }
 
+  toggleNavigation(show) {
+    if (this.prevBtn && this.nextBtn) {
+      this.prevBtn.classList.toggle('is-hidden', !show);
+      this.nextBtn.classList.toggle('is-hidden', !show);
+    }
+  }
+
+  togglePagination(show) {
+    const bullets = this.carousel.querySelector('.seuil-carousel-bullets');
+    if (bullets) {
+      bullets.classList.toggle('is-hidden', !show || !this.options.showBullets);
+    }
+  }
+
+  updatePeekMode() {
+    const currentSlidesPerView = this.getCurrentSlidesPerView();
+    const totalSlides = this.slides.length;
+    const shouldShowPeek = this.options.showPeek && totalSlides > currentSlidesPerView;
+    
+    this.carousel.classList.toggle('has-peek', shouldShowPeek);
+    
+    if (shouldShowPeek) {
+      this.carousel.style.setProperty('--peek-amount', this.options.peekAmount);
+    } else {
+      this.carousel.style.removeProperty('--peek-amount');
+    }
+  }
+
   updateSlideClasses() {
     // Maintenir tes classes existantes pour compatibilité CSS
     const slidesPerView = this.getCurrentSlidesPerView();
@@ -1253,19 +1286,8 @@ class SeuilCarousel {
   }
 
   getCurrentSlidesPerView() {
-    if (!this.swiper) {
-      return window.innerWidth >= 768 ? this.options.slidesPerView : this.options.slidesPerViewMobile;
-    }
-    
-    // Récupérer la valeur actuelle de Swiper (responsive)
-    const params = this.swiper.params;
-    const currentBreakpoint = this.swiper.currentBreakpoint;
-    
-    if (currentBreakpoint && params.breakpoints && params.breakpoints[currentBreakpoint]) {
-      return params.breakpoints[currentBreakpoint].slidesPerView || params.slidesPerView;
-    }
-    
-    return params.slidesPerView;
+    // Retourne les valeurs de BASE (sans peek) pour les calculs logiques
+    return window.innerWidth >= 768 ? this.options.slidesPerView : this.options.slidesPerViewMobile;
   }
 
   getCurrentPage() {

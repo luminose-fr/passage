@@ -15,8 +15,6 @@ $modal-container-max-width: 480px !default;
 $modal-container-shadow: 0 30px 60px rgba(0, 0, 0, 0.3) !default;
 
 $modal-header-border: 1px solid rgba(0, 0, 0, 0.08) !default;
-$modal-footer-bg: rgba(255, 255, 255, 0.95) !default;
-$modal-footer-border: 1px solid rgba(0, 0, 0, 0.08) !default;
 
 $modal-close-bg: v.$prune-vivid;
 $modal-close-color: v.$white;
@@ -132,11 +130,14 @@ $modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
 
 // Header
 .seuil-modal-header {
-  padding: 24px 24px 16px;
+  padding: 1.25rem 0.5rem;
   border-bottom: $modal-header-border;
   background: $modal-container-bg;
   border-radius: $modal-container-radius $modal-container-radius 0 0;
   padding-right: 72px; // Espace pour le bouton X
+  h2 {
+    margin-bottom: 0;
+  }
 }
 
 .seuil-modal-title {
@@ -149,7 +150,7 @@ $modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
 
 // Contenu
 .seuil-modal-content {
-  padding: 32px 24px;
+  padding: 0.5rem 0.5rem 0 0.5rem;
   background: $modal-container-bg;
   
   // Si c'est le dernier élément (pas de footer), ajouter les coins arrondis
@@ -162,11 +163,9 @@ $modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
 .seuil-modal-footer {
   position: sticky;
   bottom: 0;
-  background: $modal-footer-bg;
   backdrop-filter: saturate(120%) $modal-overlay-blur;
   -webkit-backdrop-filter: saturate(120%) $modal-overlay-blur;
-  border-top: $modal-footer-border;
-  padding: 20px 24px;
+  padding: 0.5rem;
   display: flex;
   justify-content: center;
   gap: 12px;
@@ -177,7 +176,6 @@ $modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
   .seuil-modal-container.is-at-bottom & {
     margin-bottom: 0;
     border-radius: 0 0 $modal-container-radius $modal-container-radius;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
   }
 }
 
