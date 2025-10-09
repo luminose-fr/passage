@@ -22,7 +22,7 @@ $carousel-bullet-size: 8px;
 // Slides personnalisées
 .seuil-carousel-slide {
   min-height: 300px;
-  padding: 0 8px;
+//   padding: 0 8px;
   box-sizing: border-box;
   
   > * {
@@ -31,7 +31,7 @@ $carousel-bullet-size: 8px;
   
   @media (max-width: 767px) {
     min-height: 250px;
-    padding: 0 4px;
+    // padding: 0 4px;
   }
 }
 

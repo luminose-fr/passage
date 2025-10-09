@@ -638,6 +638,14 @@ button.nav-chip {
       }
     }
   }
+
+  &.programme {
+    #carouselProgramme {
+      .has-rounded-corners-small {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 
 .florent {

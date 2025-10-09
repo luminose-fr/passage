@@ -303,12 +303,25 @@
     }
   }
   #carouselProgramme {
+    
+    width: 100vw;
+    margin-left:calc(0px - var(--bulma-block-spacing) - var(--bulma-box-padding));
     img {
       height:10rem;
       object-fit: cover;
       object-position: center 80%;
       width: 100%;
     }
+    .swiper-wrapper {
+      padding-top: 20px;
+
+      .swiper-slide {
+        .has-rounded-corners-small {
+          box-shadow: v.$nav-shadow;
+        }
+      }
+    }
+    
     .seuil-carousel-nav {
         position: absolute;
         top: 13.2rem !important;

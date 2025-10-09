@@ -1020,7 +1020,7 @@ class SeuilCarousel {
       slidesPerView: parseInt(this.carousel.dataset.slidesPerView) || options.slidesPerView || 1,
       slidesPerViewMobile: parseInt(this.carousel.dataset.slidesPerViewMobile) || options.slidesPerViewMobile || 1,
       showPeek: this.carousel.dataset.showPeek === 'true' || options.showPeek || false,
-      peekValue: parseFloat(this.carousel.dataset.peekValue) || options.peekValue || 0.2, // Personnalisable
+      peekValue: parseFloat(this.carousel.dataset.peekValue) || options.peekValue || 0.16, // Personnalisable
       showBullets: this.carousel.dataset.showBullets === 'true' || options.showBullets || false,
       onChange: options.onChange || null,
       ...options
@@ -1072,7 +1072,7 @@ class SeuilCarousel {
     // Calculer les slidesPerView avec peek SEULEMENT si on a plus de slides que ce qu'on affiche
     const getAdjustedSlidesPerView = (baseValue) => {
       const hasMoreSlides = totalSlides > baseValue;
-      return (this.options.showPeek && hasMoreSlides) ? baseValue + 0.14 : baseValue;
+      return (this.options.showPeek && hasMoreSlides) ? baseValue + this.options.peekValue : baseValue;
     };
     
     const desktopSlidesPerView = getAdjustedSlidesPerView(this.options.slidesPerView);
@@ -1105,13 +1105,22 @@ class SeuilCarousel {
       // Configuration responsive
       slidesPerView: mobileSlidesPerView,
       slidesPerGroup: this.options.slidesPerViewMobile,
-      spaceBetween: 16,
+      spaceBetween: 21.25,
       
       breakpoints: {
         768: {
           slidesPerView: desktopSlidesPerView,
           slidesPerGroup: this.options.slidesPerView,
-          spaceBetween: 20,
+          spaceBetween: 21.25,
+        },
+        1024: {
+          spaceBetween: 23.75,
+        },
+        1216: {
+          spaceBetween: 23.75,
+        },
+        1408: {
+          spaceBetween: 25,
         }
       },
 
