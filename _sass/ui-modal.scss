@@ -163,14 +163,13 @@ $modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
 .seuil-modal-footer {
   position: sticky;
   bottom: 0;
-  backdrop-filter: saturate(120%) $modal-overlay-blur;
-  -webkit-backdrop-filter: saturate(120%) $modal-overlay-blur;
   padding: 0.5rem;
   display: flex;
   justify-content: center;
   gap: 12px;
   border-radius: 0;
   z-index: 10;
+  background-color: $modal-container-bg;
 
   // Animation quand on atteint le bas
   .seuil-modal-container.is-at-bottom & {

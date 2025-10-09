@@ -992,17 +992,24 @@ class SeuilCarousel {
 
     // Parse tes data-attributes existants
     this.options = this.parseOptions(options);
+
+    // Tabs support
+    this.tabsContainer = this.carousel.querySelector('.seuil-carousel-tabs') || 
+                        document.querySelector(`[data-carousel-tabs="${carouselId}"]`);
+    this.tabs = this.tabsContainer ? Array.from(this.tabsContainer.querySelectorAll('.seuil-carousel-tab')) : [];
     
     // DOM elements
     this.slides = Array.from(this.carousel.querySelectorAll('.seuil-carousel-slide'));
     this.wrapper = this.carousel.querySelector('.swiper-wrapper');
     this.prevBtn = this.carousel.querySelector('.seuil-carousel-prev');
     this.nextBtn = this.carousel.querySelector('.seuil-carousel-next');
+    // Nav elements
+    this.nav = document.querySelector(`[data-carousel-nav="${carouselId}"]`);
+    if (this.nav) {
+      this.prevBtn = this.nav.querySelector('.seuil-carousel-prev');
+      this.nextBtn = this.nav.querySelector('.seuil-carousel-next');
+    }
     
-    // Tabs support
-    this.tabsContainer = this.carousel.querySelector('.seuil-carousel-tabs') || 
-                        document.querySelector(`[data-carousel-tabs="${carouselId}"]`);
-    this.tabs = this.tabsContainer ? Array.from(this.tabsContainer.querySelectorAll('.seuil-carousel-tab')) : [];
 
     // State
     this.currentIndex = 0;
@@ -1114,12 +1121,18 @@ class SeuilCarousel {
           spaceBetween: 21.25,
         },
         1024: {
+          slidesPerView: desktopSlidesPerView,
+          slidesPerGroup: this.options.slidesPerView,
           spaceBetween: 23.75,
         },
         1216: {
+          slidesPerView: desktopSlidesPerView,
+          slidesPerGroup: this.options.slidesPerView,
           spaceBetween: 23.75,
         },
         1408: {
+          slidesPerView: desktopSlidesPerView,
+          slidesPerGroup: this.options.slidesPerView,
           spaceBetween: 25,
         }
       },

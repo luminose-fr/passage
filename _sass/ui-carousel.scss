@@ -1,3 +1,5 @@
+@use "ui-variables" as v;
+
 /* ============================================
  * SCSS - ui-carousel.scss
  * ============================================ */
@@ -129,16 +131,16 @@ $carousel-bullet-size: 8px;
   position: sticky;
   bottom: 0;
   display: flex;
+  flex-grow: 1;
   gap: 0.5rem;
-  padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
+//   padding: 0.5rem;
+// padding-bottom: 0.5rem;
   overflow-x: auto;
 }
 
 .seuil-carousel-tab {
   flex: 0 0 auto;
-  width: 80px;
+  flex-grow: 1;
   padding: 10px 12px;
   border: 2px solid transparent;
   border-radius: var(--bulma-radius);
@@ -155,6 +157,12 @@ $carousel-bullet-size: 8px;
     border-color: #0071e3;
     background: rgba(0, 113, 227, 0.05);
   }
+}
+.seuil-carousel-tab:first-of-type {
+    border-radius: var(--bulma-radius) var(--bulma-radius) var(--bulma-radius) v.$rounded-radius;
+}
+.seuil-carousel-tab:last-of-type {
+    border-radius: var(--bulma-radius) var(--bulma-radius) v.$rounded-radius var(--bulma-radius);
 }
 
 .seuil-carousel-tab-icon {

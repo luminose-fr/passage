@@ -302,6 +302,16 @@
       }
     }
   }
+  .seuil-carousel-nav-sticky {
+    .seuil-carousel-nav {
+      &.seuil-carousel-prev {
+        left: 40% !important;
+      }
+      &.seuil-carousel-next {
+        right: 40% !important;
+      }
+    }
+  }
   #carouselProgramme {
     
     width: 100vw;
