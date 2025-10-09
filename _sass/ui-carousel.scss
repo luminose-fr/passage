@@ -164,7 +164,7 @@ $carousel-bullet-size: 8px;
 .seuil-carousel-tab-icon {
   width: 32px;
   height: 32px;
-  margin: 0 auto 8px;
+  margin: 0 auto;
   font-size: 24px;
   
   img, svg {
@@ -175,7 +175,7 @@ $carousel-bullet-size: 8px;
 }
 
 .seuil-carousel-tab-label {
-  font-size: 13px;
+  font-size: var(--bulma-size-7);
   font-weight: 500;
   color: #1d1d1f;
   line-height: var(--bulma-size-6);

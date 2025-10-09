@@ -1,9 +1,5 @@
-[2025-09-30 09:10:59] ERROR '/apple-touch-icon-precomposed.png' not found.
-[2025-09-30 09:10:59] ERROR '/apple-touch-icon.png' not found.
-[2025-09-30 09:10:59] ERROR '/favicon.ico' not found.
-
 Pages :
-- Analytics et CookiesBanner - click_cta_home
+- CookiesBanner - click_cta_home
 - Petit bug visuel de "cliqué/focused" sur les boutons ">" pour ouvrir les détails sur mobile.
 
 Mettre le côté "sacré"
@@ -12,8 +8,6 @@ Mettre des éléments "pédagogiques / formation" ?
 CTA : choisir entre "Demander l'entretien", "Entretien découverte" ou "Vérifier l’adéquation"
 
 Micro-animations CSS / effets modernes (dégradés de couleur)
-
-D’autres illustrations du même type
 
 Revoir les contenus dans l’ensemble et Voir quelle place on donne aux outils… ?
 

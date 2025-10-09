@@ -1,8 +1,37 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no viewport-fit=cover">
 {% seo %}
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#E5C7CD"">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
 {% if page.noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Le Seuil",
+    "url": "https://passage.luminose.fr"
+    }
+</script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'personalization_storage': 'denied',
+    'functionality_storage': 'denied',
+    'security_storage': 'denied'
+    });
+</script>
+{% if jekyll.environment == "production" %}
+<!-- Google Tag Manager --> 
+    
+<!-- End Google Tag Manager -->
+{% endif %}

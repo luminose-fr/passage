@@ -51,6 +51,13 @@ strong {
   }
 }
 
+.footer {
+  background-color: rgba(255, 255, 255, 0.75);
+  a {
+    text-decoration: underline;
+  }
+}
+
 h2.is-simple,
 .content h2.is-simple,
 .content h2:not(:first-child).is-simple {
@@ -116,7 +123,7 @@ h5,
   background: v.$hero-gradient;
   color: v.$white;
 
-  h2, h3 { color: v.$white; }
+  h2, h3, h4, h5 { color: v.$white; }
   h2:not(:first-child) { margin-top: 0; }
 
   .button.is-primary {
@@ -129,6 +136,17 @@ h5,
       color: v.$prune-vivid;
       transform: scale(1.1);
     }
+  }
+  strong {
+    background: linear-gradient(135deg, v.$prune-neutral 0%, v.$prune-vivid 100%);
+    color: v.$white;
+    border-radius: var(--bulma-radius);
+    padding: 0.05em 0.2em;
+  }
+  .numero-etape {
+    background-color: transparent;
+    border: 2px v.$white solid;
+    margin-bottom:0.5rem;
   }
 }
 
@@ -580,7 +598,8 @@ button.nav-chip {
   &.benefices,
   &.qui,
   &.temoignages,
-  &.exception {
+  &.exception,
+  &.interesse-prochaines-etapes {
     h2 {
       font-family: v.$family-serif;
       font-size: var(--bulma-size-4);
@@ -599,7 +618,8 @@ button.nav-chip {
   &.qui,
   &.exception,
   &.temoignages,
-  &.benefices {
+  &.benefices,
+  &.interesse-prochaines-etapes {
     h3:not(:first-child) { margin-bottom: 0; }
   }
 
