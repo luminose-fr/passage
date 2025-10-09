@@ -133,36 +133,32 @@ $carousel-bullet-size: 8px;
   display: flex;
   flex-grow: 1;
   gap: 0.5rem;
-//   padding: 0.5rem;
-// padding-bottom: 0.5rem;
   overflow-x: auto;
 }
 
 .seuil-carousel-tab {
-  flex: 0 0 auto;
+  flex-basis: 0;
+  flex: 1 1 0px;
   flex-grow: 1;
   padding: 10px 12px;
-  border: 2px solid transparent;
-  border-radius: var(--bulma-radius);
-  background: rgba(0, 0, 0, 0.03);
+  border-radius: var(--bulma-radius-medium);
+  background: v.$nav-chip-color;
+  color: v.$prune-neutral;
+  border: 2px solid v.$nav-chip-color;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
   
   &:hover {
-    background: rgba(0, 0, 0, 0.05);
+    color: v.$prune-vivid;
+    border: 2px solid v.$pink;
   }
   
   &.is-active {
-    border-color: #0071e3;
-    background: rgba(0, 113, 227, 0.05);
+    background: v.$pink;
+    color: v.$prune-vivid;
+    border: 2px solid v.$pink;
   }
-}
-.seuil-carousel-tab:first-of-type {
-    border-radius: var(--bulma-radius) var(--bulma-radius) var(--bulma-radius) v.$rounded-radius;
-}
-.seuil-carousel-tab:last-of-type {
-    border-radius: var(--bulma-radius) var(--bulma-radius) v.$rounded-radius var(--bulma-radius);
 }
 
 .seuil-carousel-tab-icon {
@@ -209,12 +205,10 @@ $carousel-bullet-size: 8px;
   .seuil-carousel-next { right: 8px !important; }
   
   .seuil-carousel-tabs {
-    gap: 12px;
-    padding: 12px;
+    gap: 0.5rem;
   }
   
   .seuil-carousel-tab {
-    min-width: 90px;
     padding: 10px 12px;
   }
 }
