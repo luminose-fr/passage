@@ -2,6 +2,7 @@
 
 // Set your brand colors
 $white: #FFFFFF;
+$black: #000000;
 $white-dark-alt: #440E39; //#1e1024; //rgba(30,16,36,.50); //transparent; //#1e1024;// #2E0020;
 
 $prune: #660037;
@@ -19,6 +20,7 @@ $gold-light: #FFF4E2;
 $gold-dark-alt: #B11A41;
 $gold-light-dark-alt: #FF92AE;
 $gold-light-dark-alt2: #531624;
+$gold-medium-dark-alt: #D94DEE;
 
 $brown-dark: #3f0b16;
 $pink-dark: #36022a;
@@ -35,6 +37,7 @@ $pink: #FEE1F1;
 $pink-light: #FFF4F6;
 
 $pink-dark-alt: #300026; //#330b34; //#180B14;
+$pink-dark-alt-2: #F6BDFF; //#FF92AE;
 $pink-light-dark-alt: #671F5C; //#45074B;
 
 $family-sans-serif: 'Futura LT W05 Book', sans-serif;
@@ -52,6 +55,7 @@ $panel-shadow: 0 16px 32px rgba(229,199,205,.70);
 $nav-bar-bg: rgba(42, 24, 37, 0.75);
 $nav-menu-bg: rgba(42, 24, 37, 1);
 $gold-shadow: 0 0 20px rgba(194,97,19,.50);
+$gold-shadow-dark-alt: 0 0 20px rgba(223,37,169,.50);
 
 $nav-chip-color: $white;
 $nav-chip-color-dark-alt: $white-dark-alt;
@@ -62,5 +66,6 @@ $main-gradient-dark-alt : linear-gradient(180deg, #38154B, #6F2233);
 $hero-gradient: linear-gradient(135deg, $prune-vivid 0%, $prune 100%);
 $hero-gradient-dark-alt : linear-gradient(135deg, $prune-vivid-dark-alt 0%, $prune-dark-alt 100%);
 $gold-gradient: linear-gradient(135deg,#FFB244,#FC7A14);
+$gold-gradient-dark-alt: linear-gradient(135deg,#FF4465,#7B007E);
 
 $backdrop-blur-size: 20px !default;

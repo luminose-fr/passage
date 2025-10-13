@@ -16,7 +16,8 @@
 
   strong {
     background-color: v.$pink-light-dark-alt;
-    color: v.$prune-vivid-dark-alt;
+    background: linear-gradient(90deg, rgba(#59104A, 1), rgba(#5B085D, 1));
+    color: v.$pink-dark-alt-2;
   }
 
   .is-simple,
@@ -25,7 +26,8 @@
   .content h2.is-simple,
   .content h2:not(:first-child).is-simple,
   h3,
-  .content h3 {
+  .content h3,
+  h5, h4 {
     color: v.$prune-vivid-dark-alt;
   }
 
@@ -106,7 +108,7 @@
     background: v.$hero-gradient-dark-alt;
     color: v.$white-dark-alt;
 
-    h2, h3 {
+    h2, h3, h4, h5 {
       color: v.$white-dark-alt;
     }
 
@@ -123,6 +125,14 @@
     .fa-check-circle.has-text-success {
       color: v.$white-dark-alt !important;
     }
+    strong {
+      background: linear-gradient(135deg, v.$prune-neutral-dark-alt 0%, v.$prune-vivid-dark-alt 100%);
+      color: v.$white-dark-alt;
+    }
+    .numero-etape {
+      background-color: transparent;
+      border: 2px v.$white-dark-alt solid;
+    }
   }
 
   .hero-body {
@@ -130,7 +140,6 @@
       background-image: url("/images/arche-seuil-dark-bg.jpg");
       background-size: cover;
       background-position: center;
-      height:33rem;
 
       @media
       only screen and (-webkit-min-device-pixel-ratio: 2),
@@ -160,13 +169,20 @@
 
   .has-gold-contrast {
     background-color: v.$gold-light-dark-alt2;
+    background: v.$gold-gradient-dark-alt;
+    color: v.$pink-dark-alt-2;
+
+    h3, h4 {
+      color: v.$pink-dark-alt-2;
+    }
 
     hr {
       background-color: v.$gold-dark-alt;
     }
 
     strong {
-      background-color: v.$brown-dark;
+      background: linear-gradient(90deg, rgba(223,56,132,0.8), rgba(184,31,133,0.8));
+      color: #F3D3F8;
     }
 
     .button.is-secondary {
@@ -176,6 +192,9 @@
         background-color: v.$brown-dark;
       }
     }
+  }
+  .has-gold-light-contrast-border { 
+    border: 2px solid v.$gold-medium-dark-alt;
   }
 
   .has-gold-contrast-border {
@@ -189,6 +208,9 @@
     h3 { color: v.$orange-dark-alt; }
     small { color: v.$orange-medium-dark-alt; }
     hr { background-color: v.$orange-dark-alt; }
+  }
+  .has-gold-shadow { 
+    box-shadow: v.$gold-shadow-dark-alt; 
   }
 
   .numero-etape {
@@ -230,12 +252,38 @@
 
   .has-pink-contrast {
     background-color: v.$pink-dark-alt;
+
+    strong {
+      background: linear-gradient(90deg, #460138, #621252);
+      color: v.$pink-dark-alt-2;
+    }
   }
 
   .skip-link:focus {
     background: #fff;
     border: 2px solid v.$prune-vivid-dark-alt;
   }
+
+  /* =========================
+      Bénéfices
+    ========================= */
+    #benefices {
+      .box.benefices {
+        background-color: rgba(0,0,0,0.4  );
+        .columns {
+          background-color: v.$white-dark-alt;
+          border: 3px v.$pink-dark-alt solid;
+          
+          .column:not(:last-child) {
+            border-right: 3px v.$pink-dark-alt dotted;
+
+            &::after {
+              background-color: v.$pink-dark-alt;
+            }
+          }
+        }
+      }
+    }
 
   /* Adequation form */
   .adequation {
@@ -308,6 +356,11 @@
         color: v.$prune-vivid-dark-alt;
       }
     }
+    
+  }
+
+  .footer {
+    background-color: rgba(0, 0, 0, 0.75);
   }
 
   @include mixins.tablet-only {
