@@ -1027,7 +1027,7 @@ class SeuilCarousel {
       slidesPerView: parseInt(this.carousel.dataset.slidesPerView) || options.slidesPerView || 1,
       slidesPerViewMobile: parseInt(this.carousel.dataset.slidesPerViewMobile) || options.slidesPerViewMobile || 1,
       showPeek: this.carousel.dataset.showPeek === 'true' || options.showPeek || false,
-      peekValue: parseFloat(this.carousel.dataset.peekValue) || options.peekValue || 0.16, // Personnalisable
+      peekValue: parseFloat(this.carousel.dataset.peekValue) || options.peekValue || 0.23, // Personnalisable
       showBullets: this.carousel.dataset.showBullets === 'true' || options.showBullets || false,
       onChange: options.onChange || null,
       ...options
@@ -1084,6 +1084,18 @@ class SeuilCarousel {
     
     const desktopSlidesPerView = getAdjustedSlidesPerView(this.options.slidesPerView);
     const mobileSlidesPerView = getAdjustedSlidesPerView(this.options.slidesPerViewMobile);
+    var mobileCenteredSlidesValue = false; 
+    var centeredSlidesValue = false; 
+    var mobileRewindValue = false;
+    var rewindValue = false;
+    if (!Number.isInteger(mobileSlidesPerView) && this.options.showPeek) {
+      mobileCenteredSlidesValue = true;
+      mobileRewindValue = true;
+    }
+    if (this.options.loop) {
+      mobileRewindValue = true;
+      rewindValue= true;
+    }
     
     // Calculer si navigation est nécessaire (basé sur les valeurs de base)
     const needsNavigationDesktop = totalSlides > this.options.slidesPerView;
@@ -1110,27 +1122,38 @@ class SeuilCarousel {
       } : false,
 
       // Configuration responsive
+      initialSlide: 0,
+      rewind: mobileRewindValue,
+      centeredSlides: mobileCenteredSlidesValue,
       slidesPerView: mobileSlidesPerView,
       slidesPerGroup: this.options.slidesPerViewMobile,
       spaceBetween: 21.25,
       
       breakpoints: {
         768: {
+          rewind: rewindValue,
+          centeredSlides: centeredSlidesValue,
           slidesPerView: desktopSlidesPerView,
           slidesPerGroup: this.options.slidesPerView,
           spaceBetween: 21.25,
         },
         1024: {
+          rewind: rewindValue,
+          centeredSlides: centeredSlidesValue,
           slidesPerView: desktopSlidesPerView,
           slidesPerGroup: this.options.slidesPerView,
           spaceBetween: 23.75,
         },
         1216: {
+          rewind: rewindValue,
+          centeredSlides: centeredSlidesValue,
           slidesPerView: desktopSlidesPerView,
           slidesPerGroup: this.options.slidesPerView,
           spaceBetween: 23.75,
         },
         1408: {
+          rewind: rewindValue,
+          centeredSlides: centeredSlidesValue,
           slidesPerView: desktopSlidesPerView,
           slidesPerGroup: this.options.slidesPerView,
           spaceBetween: 25,
@@ -1138,7 +1161,7 @@ class SeuilCarousel {
       },
 
       // Comportement - désactiver si pas nécessaire
-      loop: this.options.loop && (needsNavigationDesktop || needsNavigationMobile),
+      // loop: this.options.loop && (needsNavigationDesktop || needsNavigationMobile),
       grabCursor: needsNavigationDesktop || needsNavigationMobile,
       allowTouchMove: this.options.swipe && (needsNavigationDesktop || needsNavigationMobile),
       resistanceRatio: 0.3,

@@ -152,12 +152,27 @@ $carousel-bullet-size: 8px;
   &:hover {
     color: v.$prune-vivid;
     border: 2px solid v.$pink;
+
+    .seuil-carousel-tab-label {
+      color: v.$prune-vivid;
+    }
   }
   
   &.is-active {
     background: v.$pink;
     color: v.$prune-vivid;
     border: 2px solid v.$pink;
+
+    .seuil-carousel-tab-label {
+      color: v.$prune-vivid;
+    }
+  }
+
+  .seuil-carousel-tab-label {
+    font-size: var(--bulma-size-7);
+    font-weight: 500;
+    color: v.$prune-neutral;
+    line-height: var(--bulma-size-6);
   }
 }
 
@@ -172,13 +187,6 @@ $carousel-bullet-size: 8px;
     height: 100%;
     object-fit: contain;
   }
-}
-
-.seuil-carousel-tab-label {
-  font-size: var(--bulma-size-7);
-  font-weight: 500;
-  color: #1d1d1f;
-  line-height: var(--bulma-size-6);
 }
 
 // Masquer navigation quand pas nécessaire
@@ -211,4 +219,46 @@ $carousel-bullet-size: 8px;
   .seuil-carousel-tab {
     padding: 10px 12px;
   }
+}
+@mixin dark-theme {
+  .seuil-carousel-tab {
+    background: v.$nav-chip-color-dark-alt;
+    color: v.$prune-neutral-dark-alt;
+    border: 2px solid v.$nav-chip-color-dark-alt;
+    
+    &:hover {
+      color: v.$prune-vivid-dark-alt;
+      border: 2px solid v.$pink-dark-alt;
+
+      .seuil-carousel-tab-label {
+        color: v.$prune-vivid-dark-alt;
+      }
+    }
+    
+    &.is-active {
+      background: v.$pink-dark-alt;
+      color: v.$prune-vivid-dark-alt;
+      border: 2px solid v.$pink-dark-alt;
+
+      .seuil-carousel-tab-label {
+        color: v.$prune-vivid-dark-alt;
+      }
+    }
+
+    .seuil-carousel-tab-label {
+      color: v.$prune-neutral-dark-alt;
+    }
+  }
+  
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include dark-theme;
+  }
+}
+
+[data-theme=dark],
+.theme-dark {
+  @include dark-theme;
 }

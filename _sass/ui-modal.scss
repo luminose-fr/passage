@@ -7,15 +7,19 @@
 
 // Variables configurables
 $modal-overlay-bg: rgba(100, 100, 100, 0.5) !default;
+$modal-overlay-bg-dark-alt: rgba(50, 50, 50, 0.5) !default;
 $modal-overlay-blur: v.$backdrop-blur-size;
 $modal-container-bg: #ffffff !default;
+$modal-container-bg-dark-alt: v.$white-dark-alt !default;
 $modal-footer-bg: #F9F1F2;
+$modal-footer-bg-dark-alt: #3a042f;
 $modal-container-radius: calc(var(--bulma-radius-medium) + 6px);
 $modal-container-radius-mobile: calc(var(--bulma-radius-medium) + 6px);
 $modal-container-max-width: 480px !default;
 $modal-container-shadow: 0 30px 60px rgba(0, 0, 0, 0.3) !default;
 
 $modal-header-border: 1px solid rgba(0, 0, 0, 0.08) !default;
+$modal-header-border-dark-alt: 1px solid rgba(255, 255, 255, 0.08) !default;
 
 $modal-close-bg: v.$prune-vivid;
 $modal-close-color: v.$white;
@@ -52,7 +56,7 @@ $modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0);
+  background: v.$white;
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
   display: none;
@@ -231,4 +235,47 @@ $modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
   .seuil-modal-wrapper {
     padding: 2rem 0;
   }
+}
+
+@mixin dark-theme {
+  .seuil-modal-overlay {
+    background: v.$white-dark-alt;
+    
+    @include modal-scrollbar;
+
+    &.is-active {
+      background: $modal-overlay-bg-dark-alt;
+      backdrop-filter: blur($modal-overlay-blur);
+      -webkit-backdrop-filter: blur($modal-overlay-blur);
+    }
+  }
+  .seuil-modal-container {
+    background: $modal-container-bg-dark-alt;
+    box-shadow: $modal-container-shadow;
+  }
+  .seuil-modal-header {
+    border-bottom: $modal-header-border-dark-alt;
+    background: $modal-container-bg-dark-alt;
+  }
+  .seuil-modal-title {
+    color: #1d1d1f;
+  }
+  .seuil-modal-content {
+    background: $modal-container-bg-dark-alt;
+  }
+  .seuil-modal-footer {
+    background-color: $modal-footer-bg-dark-alt;
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include dark-theme;
+  }
+}
+
+[data-theme=dark],
+.theme-dark {
+  @include dark-theme;
 }

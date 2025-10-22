@@ -16,7 +16,7 @@
 
   strong {
     background-color: v.$pink-light-dark-alt;
-    background: linear-gradient(90deg, rgba(#59104A, 1), rgba(#5B085D, 1));
+    background: v.$strong-dark-gradient;
     color: v.$pink-dark-alt-2;
   }
 
@@ -172,7 +172,7 @@
     background: v.$gold-gradient-dark-alt;
     color: v.$pink-dark-alt-2;
 
-    h3, h4 {
+    h3, h4, h5 {
       color: v.$pink-dark-alt-2;
     }
 
@@ -191,6 +191,13 @@
       &:hover {
         background-color: v.$brown-dark;
       }
+    }
+    .seuil-modal {
+      color: v.$prune-vivid-dark-alt;
+    }
+    .seuil-modal-content strong {
+      color: v.$pink-dark-alt-2;
+      background: v.$strong-dark-gradient;
     }
   }
   .has-gold-light-contrast-border { 
@@ -411,6 +418,15 @@
         .grille-logistique {
           tr td:last-child {
             border-bottom: 2px v.$white-dark-alt solid;
+          }
+        }
+      }
+    }
+    #carouselProgramme {   
+      .swiper-wrapper {
+        .swiper-slide {
+          .has-rounded-corners-small {
+            box-shadow: v.$nav-shadow-dark-alt;
           }
         }
       }

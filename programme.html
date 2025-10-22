@@ -3,6 +3,9 @@ title: "Le Programme — Le Seuil"
 description: "Sept étapes balisées, cadre thérapeutique transpersonnel, sûr et exigeant."
 permalink: /programme/
 ---
+{% assign phase_1 = site.data.programme | where:"phase", 1 %}
+{% assign phase_2 = site.data.programme | where:"phase", 2 %}
+{% assign phase_3 = site.data.programme | where:"phase", 3 %}
 
 <section class="section intro">
   <div class="container content has-text-centered">
@@ -18,12 +21,36 @@ permalink: /programme/
 <section class="section etapes">
   <div class="container">
     <div class="columns is-multiline">
-      {% for etape in site.data.programme %}
-      <div class="column is-4">
+      <div class="column is-4 phase phase-separation">
+        <img class="has-rounded-corners-small"
+            src="/images/programme-separation.jpg"
+            srcset="/images/programme-separation.jpg, /images/programme-separation@2x.jpg 2x"
+            alt="La séparation, une barque s'éloigne">
+        <h5>La séparation</h5>
+      {% for etape in phase_1 %}
         {% include bandeaux/etape.html etape=etape %}
-      </div>
       {% endfor %}
-        
+      </div>
+      <div class="column is-4 phase phase-passage">
+        <img class="has-rounded-corners-small"
+            src="/images/programme-passage.jpg"
+            srcset="/images/programme-passage.jpg, /images/programme-passage@2x.jpg 2x"
+            alt="Le passage, une silhouette avance dans la brume">
+        <h5>Le passage</h5>
+      {% for etape in phase_2 %}
+        {% include bandeaux/etape.html etape=etape %}
+      {% endfor %}
+      </div>
+      <div class="column is-4 phase phase-enracinement">
+        <img class="has-rounded-corners-small"
+            src="/images/programme-enracinement.jpg"
+            srcset="/images/programme-enracinement.jpg, /images/programme-enracinement@2x.jpg 2x"
+            alt="L'enracinement, un arbre déploie ses racines">
+        <h5>L'enracinement</h5>
+      {% for etape in phase_3 %}
+        {% include bandeaux/etape.html etape=etape %}
+      {% endfor %}
+      </div>
     </div>
   </div>
 </section>

@@ -82,6 +82,11 @@ h5,
   font-size: var(--bulma-size-5);
 }
 
+.quote-lettrine {
+  font-family: v.$family-serif;
+  font-size: var(--bulma-size-2);
+}
+
 /* =========================
    SECTIONS
 ========================= */
@@ -184,7 +189,7 @@ h5,
     color: v.$prune-vivid;
   }
 
-  h3, h4 {
+  h3, h4, h5 {
     color:v.$white;
   }
 
@@ -306,6 +311,11 @@ p.illustration,
 .content p:not(:last-child).illustration {
   // font-size: 3rem;
   margin-bottom: 0;
+}
+.arche-zoomed {
+  height:100%;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .cle {
@@ -691,6 +701,18 @@ button.nav-chip {
 /* =========================
    PROGRAMME
 ========================= */
+.etapes {
+  .column.phase {
+    h5 {
+      text-align: center;
+    }
+    img {
+      height:9rem;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}
 section.qui,
 .card .card-content {
   .content h3,
