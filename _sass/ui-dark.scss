@@ -194,6 +194,10 @@
     }
     .seuil-modal {
       color: v.$prune-vivid-dark-alt;
+
+      h3, h4, h5 {
+        color: v.$prune-vivid-dark-alt;
+      }
     }
     .seuil-modal-content strong {
       color: v.$pink-dark-alt-2;

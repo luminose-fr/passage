@@ -187,6 +187,10 @@ h5,
 
   .seuil-modal {
     color: v.$prune-vivid;
+
+    h3, h4, h5 {
+      color: v.$prune-vivid;
+    }
   }
 
   h3, h4, h5 {
