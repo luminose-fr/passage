@@ -706,15 +706,43 @@ button.nav-chip {
    PROGRAMME
 ========================= */
 .etapes {
-  .column.phase {
+
+  .box .carte-etape {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .box.phase {
+    background-size: cover;
+    background-position: center;
+
+    h4,
     h5 {
-      text-align: center;
+      color: v.$white;
     }
-    img {
-      height:9rem;
-      width: 100%;
-      object-fit: cover;
+    h4 {
+      font-size: var(--bulma-size-3);
+      font-family: v.$family-serif;
     }
+    h5 {
+      font-size: var(--bulma-size-6);
+      font-family: v.$family-sans-serif;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .box.phase-separation {
+    background-image: image-set(url("/images/programme-separation-wide.jpg") 1x,
+        url("/images/programme-separation-wide@2x.jpg") 2x);
+  }
+
+  .box.phase-passage {
+    background-image: image-set(url("/images/programme-passage-wide.jpg") 1x,
+        url("/images/programme-passage-wide@2x.jpg") 2x);
+  }
+
+  .box.phase-enracinement {
+    background-image: image-set(url("/images/programme-enracinement-wide.jpg") 1x,
+        url("/images/programme-enracinement-wide@2x.jpg") 2x);
   }
 }
 section.qui,
@@ -739,8 +767,14 @@ section.qui,
     .icon { transition: all 0.2s ease; }
     &.is-open .icon { transform: rotate(180deg); }
   }
-
   .secondaire {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.6s ease;
+  }
+
+  .secondaire.is-visible {
+    max-height: 1000px;
     border-top: 2px solid v.$pink;
     padding-top: 0.75rem;
     margin-top: 0.75rem;

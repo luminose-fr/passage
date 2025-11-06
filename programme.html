@@ -20,36 +20,53 @@ permalink: /programme/
 
 <section class="section etapes">
   <div class="container">
-    <div class="columns is-multiline">
-      <div class="column is-4 phase phase-separation">
-        <img class="has-rounded-corners-small"
-            src="/images/programme-separation.jpg"
-            srcset="/images/programme-separation.jpg, /images/programme-separation@2x.jpg 2x"
-            alt="La séparation, une barque s'éloigne">
-        <h5>La séparation</h5>
-      {% for etape in phase_1 %}
-        {% include bandeaux/etape.html etape=etape %}
-      {% endfor %}
+    <div class="box phase phase-separation">
+      <div class="columns is-multiline">
+        <div class="column is-one-third">
+          <h4>La séparation</h4>
+          <h5>Reconnaître le seuil et libérer ce qui retient</h5>
+          <p class="tags"><span class="tag is-white">Mois 1</span><span class="tag is-white">Étapes 1-2</span></p>
+        </div>
+        <div class="column is-two-third">
+          <div class="columns is-multiline">
+            {% for etape in phase_1 %}
+            <div class="column is-4">{% include bandeaux/etape.html etape=etape %}</div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
-      <div class="column is-4 phase phase-passage">
-        <img class="has-rounded-corners-small"
-            src="/images/programme-passage.jpg"
-            srcset="/images/programme-passage.jpg, /images/programme-passage@2x.jpg 2x"
-            alt="Le passage, une silhouette avance dans la brume">
-        <h5>Le passage</h5>
-      {% for etape in phase_2 %}
-        {% include bandeaux/etape.html etape=etape %}
-      {% endfor %}
+    </div>
+
+    <div class="box phase phase-passage">
+      <div class="columns is-multiline">
+        <div class="column is-one-third">
+          <h4>Le passage</h4>
+          <h5>Traverser les profondeurs et accueillir l'ombre</h5>
+          <p class="tags"><span class="tag is-white">Mois 2-3</span><span class="tag is-white">Étapes 3-5</span></p>
+        </div>
+        <div class="column is-two-third">
+          <div class="columns is-multiline">
+            {% for etape in phase_2 %}
+            <div class="column is-4">{% include bandeaux/etape.html etape=etape %}</div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
-      <div class="column is-4 phase phase-enracinement">
-        <img class="has-rounded-corners-small"
-            src="/images/programme-enracinement.jpg"
-            srcset="/images/programme-enracinement.jpg, /images/programme-enracinement@2x.jpg 2x"
-            alt="L'enracinement, un arbre déploie ses racines">
-        <h5>L'enracinement</h5>
-      {% for etape in phase_3 %}
-        {% include bandeaux/etape.html etape=etape %}
-      {% endfor %}
+    </div>
+
+    <div class="box phase phase-enracinement">
+      <div class="columns is-multiline">
+        <div class="column is-one-third">
+          <h4>L'enracinement</h4>
+          <h5>Unifier et stabiliser la transformation</h5>
+          <p class="tags"><span class="tag is-white">Mois 4</span><span class="tag is-white">Étapes 6-7</span></p>
+      </div>
+      <div class="column is-two-third">
+        <div class="columns is-multiline">
+        {% for etape in phase_3 %}
+          <div class="column is-4">{% include bandeaux/etape.html etape=etape %}</div>
+        {% endfor %}
+        </div>
       </div>
     </div>
   </div>

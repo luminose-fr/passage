@@ -215,16 +215,28 @@ class ExpandableToggle {
     this.buttons.forEach(button => this.bindButton(button));
   }
 
+  // toggle(button, secondary) {
+  //   const isHidden = secondary.classList.contains('is-hidden');
+  //   if (isHidden) {
+  //     secondary.classList.remove('is-hidden');
+  //     secondary.setAttribute('aria-hidden', 'false');
+  //     button.classList.add('is-open');
+  //   } else {
+  //     secondary.classList.add('is-hidden');
+  //     secondary.setAttribute('aria-hidden', 'true');
+  //     button.classList.remove('is-open');
+  //   }
+  // }
   toggle(button, secondary) {
-    const isHidden = secondary.classList.contains('is-hidden');
-    if (isHidden) {
-      secondary.classList.remove('is-hidden');
-      secondary.setAttribute('aria-hidden', 'false');
-      button.classList.add('is-open');
-    } else {
-      secondary.classList.add('is-hidden');
+    const isVisible = secondary.classList.contains('is-visible');
+    if (isVisible) {
+      secondary.classList.remove('is-visible');
       secondary.setAttribute('aria-hidden', 'true');
       button.classList.remove('is-open');
+    } else {
+      secondary.classList.add('is-visible');
+      secondary.setAttribute('aria-hidden', 'false');
+      button.classList.add('is-open');
     }
   }
 
