@@ -231,7 +231,7 @@
   section.qui .box,
   .card .card-content {
     .content h3 { color: inherit; }
-    .secondaire { border-top: 2px v.$pink-dark-alt solid; }
+    .secondaire.is-visible { border-top: 2px v.$pink-dark-alt solid; }
   }
 
   .box.temoignages {

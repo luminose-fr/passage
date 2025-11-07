@@ -566,7 +566,7 @@ button.nav-chip {
     font-family: v.$family-sans-serif;
     font-size: var(--bulma-size-5);
     line-height: var(--bulma-size-4);
-    margin-bottom: 2.3rem;
+    margin-bottom: .75rem;
   }
 
   h2 {
@@ -587,8 +587,15 @@ button.nav-chip {
   .box.splash {
     background-image: url("/images/arche-seuil-clair-bg.jpg");
     background-size: cover;
-    background-position: center;
+    background-position: center 30%;
     height:38rem;
+    
+    
+    h1, p {
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
     @media
     only screen and (-webkit-min-device-pixel-ratio: 2),
