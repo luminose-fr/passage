@@ -4,7 +4,8 @@
   <title>{% if page.title %}{{ page.title }} — {% endif %}{{ site.title }}</title>
   {% include head.html %}
 </head>
-<body class="gradient-fixed has-floating-nav">
+<body class="has-floating-nav">
+  <div class="gradient-fixed"></div>
   {% include header.html %}
   <main id="main" role="main" class="site-main">
     {{ content | french_typography }}

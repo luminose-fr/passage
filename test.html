@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Test Dégradé iOS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background-color: #667eea;
+        }
+
+        .gradient-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: -1;
+        }
+
+        .content {
+            position: relative;
+            padding: 60px 20px 40px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            color: #667eea;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .info-box {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+
+        .info-box p {
+            color: #2d3748;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #48bb78;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-background"></div>
+    
+    <div class="content">
+        <h1>Test Dégradé iOS</h1>
+        <p class="subtitle">Vérification de la barre supérieure Safari</p>
+
+        <div class="card">
+            <h2><span class="status-indicator"></span>État du test</h2>
+            <p>Cette page teste si le dégradé violet-mauve s'étend jusqu'à la barre supérieure de Safari sur iOS.</p>
+            <div class="info-box">
+                <p><strong>Astuce :</strong> Faites défiler la page vers le haut pour observer le comportement de la barre d'état iOS avec le dégradé.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>À vérifier</h2>
+            <p>• La barre supérieure (status bar) affiche-t-elle la couleur du dégradé ?</p>
+            <p>• Le dégradé reste-t-il fixe lors du scroll ?</p>
+            <p>• Les coins arrondis du contenu blanc sont-ils visibles ?</p>
+        </div>
+
+        <div class="card">
+            <h2>Configuration technique</h2>
+            <p>Meta tags utilisés pour iOS :</p>
+            <p>• <code>theme-color</code> défini</p>
+            <p>• <code>viewport-fit=cover</code> activé</p>
+            <p>• <code>apple-mobile-web-app-status-bar-style</code> en mode translucide</p>
+        </div>
+
+        <div class="card">
+            <h2>Contenu additionnel</h2>
+            <p>Ce bloc permet de tester le scroll. Le dégradé en arrière-plan devrait rester fixe pendant que ce contenu défile normalement.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
+</body>
+</html>
