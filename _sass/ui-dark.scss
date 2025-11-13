@@ -3,7 +3,6 @@
 
 @mixin dark-theme {
   body {
-    // background-color: #38154B;
     color: v.$prune-vivid-dark-alt;
   }
 
@@ -223,6 +222,10 @@
   }
   .has-gold-shadow { 
     box-shadow: v.$gold-shadow-dark-alt; 
+  }
+
+  .has-transparent-background {
+    background-color: transparent;
   }
 
   .numero-etape {

@@ -312,36 +312,104 @@ class FAQ {
  * ============================================ */
 class CookieBanner {
   constructor() {
-    this.banner = document.querySelector('.cookie-banner');
+    this.modalId = 'md-cookies'
+    this.banner = document.querySelector('#' + this.modalId);
   }
 
   init() {
     if (!this.banner) return;
 
-    const consent = localStorage.getItem('analyticsConsent') || 'unset';
-    if (consent === 'unset') {
-      this.banner.hidden = false;
+    this.cookiesConsentValue = this.getCookie('cookiesConsent'); // Not set OR denied OR granted
+    this.modal = new SeuilModal(this.modalId,  {
+      closeOnOverlayClick: false,
+      closeOnEscape: false
+    });
+    
+    this.btCookiesAccept = this.banner.querySelector('#bt-cookies-accept');
+    this.btCookiesReject = this.banner.querySelector('#bt-cookies-reject');
+    this.btUpdateCookies = document.querySelector('#bt-cookies-update');
+
+    this.btCookiesAccept?.addEventListener('click', () => this.grantConsent(event));
+    this.btCookiesReject?.addEventListener('click', () => this.denyConsent(event));
+    this.btUpdateCookies?.addEventListener('click', () => this.clearConsent(event));
+
+    if (this.cookiesConsentValue != 'granted' && this.cookiesConsentValue != 'denied') {
+        this.modal.open();
+    } else {
+      if (this.cookiesConsentValue == 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted',
+          'personalization_storage': 'granted',
+          'functionality_storage': 'granted',
+          'security_storage': 'granted'
+        });
+      }
     }
-
-    this.acceptBtn = this.banner.querySelector('[data-accept-analytics]');
-    this.declineBtn = this.banner.querySelector('[data-decline-analytics]');
-
-    this.acceptBtn?.addEventListener('click', () => this.grantConsent());
-    this.declineBtn?.addEventListener('click', () => this.denyConsent());
+  }
+  
+  clearConsent(event) {
+    event.preventDefault();
+    this.setCookie('cookiesConsent', '', "Thu, 01 Jan 1970 00:00:00 UTC");
+    this.cookiesConsentValue = this.getCookie('cookiesConsent');
+    this.modal.open();
+  }
+  
+  grantConsent(event) {
+    event.preventDefault();
+    this.setCookie('cookiesConsent', 'granted', 365);
+    this.cookiesConsentValue = this.getCookie('cookiesConsent');
+    gtag('consent', 'update', {
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted',
+      'analytics_storage': 'granted',
+      'personalization_storage': 'granted',
+      'functionality_storage': 'granted',
+      'security_storage': 'granted'
+    });
+    this.modal.close();
   }
 
-  grantConsent() {
-    localStorage.setItem('analyticsConsent', 'granted');
-    this.banner.hidden = true;
-    window.analyticsConsent = 'granted';
-    if (typeof track === 'function') track('consent_granted');
+  denyConsent(event) {
+    event.preventDefault();
+    this.setCookie('cookiesConsent', 'denied', 365);
+    this.cookiesConsentValue = this.getCookie('cookiesConsent');
+    gtag('consent', 'update', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied',
+      'personalization_storage': 'denied',
+      'functionality_storage': 'denied',
+      'security_storage': 'denied'
+    });
+    this.modal.close();
   }
 
-  denyConsent() {
-    localStorage.setItem('analyticsConsent', 'denied');
-    this.banner.hidden = true;
-    window.analyticsConsent = 'denied';
-    console.log('Analytics disabled by user');
+  setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+  
+  getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
   }
 }
 
@@ -1513,10 +1581,10 @@ class App {
       navOverlay: new NavOverlay(),
       expandableToggle: new ExpandableToggle(),
       faq: new FAQ(),
-      cookieBanner: new CookieBanner(),
       utmParams: new UTMParamsPropagation(),
       adequation: new Adequation(),
       modals: new ModalsManager(),
+      cookieBanner: new CookieBanner(), // Après modals
       carousels: new CarouselManager()
     };
   }
@@ -1528,7 +1596,7 @@ class App {
         module.init();
       }
     });
-    
+
     // Exposer l'API des modales pour usage externe
     window.SeuilModals = this.modules.modals;
     

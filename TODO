@@ -1,5 +1,5 @@
 Pages :
-- CookiesBanner - click_cta_home
+- Petite vidéo de moi qui présente le seuil
 - Petit bug visuel de "cliqué/focused" sur les boutons ">" pour ouvrir les détails sur mobile.
 
 Mettre des éléments "pédagogiques / formation" ?
@@ -9,8 +9,6 @@ CTA : choisir entre "Demander l'entretien", "Entretien découverte" ou "Vérifie
 Micro-animations CSS / effets modernes (dégradés de couleur)
 
 Peut-être storytelling avec vidéo animation « Vous n’êtes pas là par hasard, vous êtes arrivé(e) devant le seuil. (Lien avec moment de vie où mettre de la conscience dans la transition est nécessaire) Il y aura un avant et un après. Êtes-vous prêt(e) à franchir le seuil ? »
-
-Meta description et autre
 
 Vérifier différents navigateurs et différentes résolutions d'écran :
 •	360×800 (mobile standard Android / iPhone récent)

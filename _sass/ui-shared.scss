@@ -25,7 +25,6 @@ html, body {
 ========================= */
 
 body {
-  // background-color: #E5C7CD;
   min-height: 100vh;
   min-height: 100dvh;
 }
@@ -38,6 +37,10 @@ body {
     height: 100vh;
     height: 100dvh;
     background: v.$main-gradient;
+}
+footer.footer,
+section.ouro.section {
+  position: relative;
 }
 
 /* =========================
@@ -238,6 +241,12 @@ h5,
     margin-inline: auto;
   }
 }
+.has-transparent-background {
+  background-color: transparent;
+}
+.has-danger-contrast-border {
+border: 2px solid var(--bulma-danger);
+}
 
 /* =========================
    UTILITAIRES
@@ -356,6 +365,15 @@ p.illustration,
     align-items: center;
     justify-content: center;
     z-index: 30;
+  }
+}
+
+#md-cookies {
+  .seuil-modal-header {
+    padding-right: 0.75rem;
+  }
+  .seuil-modal-content {
+    padding: 0.75rem;
   }
 }
 

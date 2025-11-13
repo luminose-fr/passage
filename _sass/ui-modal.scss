@@ -146,11 +146,10 @@ $modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
 }
 
 .seuil-modal-title {
-  font-size: 28px;
-  font-weight: 600;
-  color: #1d1d1f;
+  font-size: var(--bulma-size-4);
+  color: v.$prune-vivid;
   text-align: center;
-  letter-spacing: -0.5px;
+  font-family: v.$family-serif;;
 }
 
 // Contenu
@@ -258,7 +257,7 @@ $modal-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !default;
     background: $modal-container-bg-dark-alt;
   }
   .seuil-modal-title {
-    color: #1d1d1f;
+    color: v.$prune-vivid-dark-alt;
   }
   .seuil-modal-content {
     background: $modal-container-bg-dark-alt;
