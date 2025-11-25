@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="{{ page.lang | default: site.lang }}" class="preload">
+<head>
+  <title>{% if page.title %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  {% include head.html %}
+</head>
+<body class="landing-page-body">
+  <div class="gradient-fixed"></div>
+  {% include noscript.html %}
+  <main id="main" role="main" class="site-main">
+    {{ content | french_typography }}
+  </main>
+  {% include footer.html %}
+  {% include cookie-banner.html %}
+  {% include scripts.html %}
+</body>
+</html>

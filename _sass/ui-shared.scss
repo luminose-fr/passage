@@ -440,6 +440,19 @@ p.illustration,
   }
 }
 
+.landing-nav {
+  font-size: var(--bulma-size-2);
+  .main-icon {
+    font-size: inherit;
+    padding: 1.5rem 0 0 0;
+
+    .icon.icon-key {
+      margin-left: -0.2rem;
+      width: auto;
+    }
+  }
+}
+
 .nav-shell {
   pointer-events: auto;
   max-width: 1200px;
@@ -629,6 +642,40 @@ button.nav-chip {
     only screen and (                min-resolution: 192dpi),
     only screen and (                min-resolution: 2dppx) { 
       background-image: url("/images/arche-seuil-clair-bg@2x.jpg");
+    }
+  }
+
+  .box.splash.separation {
+    height:28rem;
+    background-image: url("/images/programme-separation-wide.jpg");
+    @media
+    only screen and (-webkit-min-device-pixel-ratio: 2),
+    only screen and (   min--moz-device-pixel-ratio: 2),
+    only screen and (     -o-min-device-pixel-ratio: 2/1),
+    only screen and (        min-device-pixel-ratio: 2),
+    only screen and (                min-resolution: 192dpi),
+    only screen and (                min-resolution: 2dppx) { 
+      background-image: url("/images/programme-separation-wide@2x.jpg");
+    }
+
+    
+
+    .title.is-1,
+    h1, h2 {
+      color: v.$white;
+    }
+    h1 {
+      font-size: var(--bulma-size-4);
+    }
+    h2 {
+      font-size: var(--bulma-size-5);
+    }
+    .intro {
+      border-radius: var(--bulma-radius-large);
+      padding:0.75rem;
+      background-color: rgba(255, 255, 255, 1);
+      margin-top: 0.75rem;
+
     }
   }
 
@@ -1056,5 +1103,79 @@ section.qui,
     font-family: v.$family-sans-serif;
 
     &:not(:first-child) { margin: 0; }
+  }
+}
+
+/* =========================
+   LANDING PAGES
+========================= */
+.landing-page-body {
+  .box h4 {
+    font-size: var(--bulma-size-7);
+    margin-bottom: .75rem;
+  }
+}
+.landing-pour-vous,
+.landing-vous-attend,
+.landing-securite,
+.landing-florent { 
+  .principal {
+    margin-bottom: 1em;
+  }
+  
+}
+.landing-pour-vous {
+  .button.is-secondary {
+    margin-bottom: 0.75rem;
+  }
+  .fa-li {
+    font-size: 1.2rem;
+
+    i.fas {
+      background-color: v.$white;
+      border-radius: 9999px;
+      width:1em;
+    }
+  }
+}
+.decision-point {
+  .pre-checklist {
+    
+  }
+  .cta-principal {
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+}
+.landing-vous-attend {
+  .parcours-visuel-calme {
+    .etape {
+      border-radius: var(--bulma-radius);
+      padding: var(--bulma-block-spacing);
+      margin-bottom: 0.75rem;
+      background-color: v.$pink;
+
+      h5 {
+        margin-bottom: 0;
+        line-height: 2rem;
+      }
+
+      strong {
+        background: linear-gradient(90deg, rgba(250, 210, 140, 0.25), rgba(255, 160, 100, 0.15));
+        color: v.$prune-vivid;
+      }
+
+      .numero-etape {
+        background-color: v.$white;
+      }
+
+      .tag {
+        margin-bottom: 0.75rem;
+      }
+    }
+
+    .choice {
+      margin-bottom: var(--bulma-block-spacing);
+    }
   }
 }
