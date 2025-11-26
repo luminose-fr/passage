@@ -645,40 +645,6 @@ button.nav-chip {
     }
   }
 
-  .box.splash.separation {
-    height:28rem;
-    background-image: url("/images/programme-separation-wide.jpg");
-    @media
-    only screen and (-webkit-min-device-pixel-ratio: 2),
-    only screen and (   min--moz-device-pixel-ratio: 2),
-    only screen and (     -o-min-device-pixel-ratio: 2/1),
-    only screen and (        min-device-pixel-ratio: 2),
-    only screen and (                min-resolution: 192dpi),
-    only screen and (                min-resolution: 2dppx) { 
-      background-image: url("/images/programme-separation-wide@2x.jpg");
-    }
-
-    
-
-    .title.is-1,
-    h1, h2 {
-      color: v.$white;
-    }
-    h1 {
-      font-size: var(--bulma-size-4);
-    }
-    h2 {
-      font-size: var(--bulma-size-5);
-    }
-    .intro {
-      border-radius: var(--bulma-radius-large);
-      padding:0.75rem;
-      background-color: rgba(255, 255, 255, 1);
-      margin-top: 0.75rem;
-
-    }
-  }
-
   .box { position: relative; }
 }
 
@@ -1113,6 +1079,45 @@ section.qui,
   .box h4 {
     font-size: var(--bulma-size-7);
     margin-bottom: .75rem;
+  }
+
+  .hero-body {
+    .box.splash.separation,
+    .box.splash.burnout,
+    .box.splash.deuil,
+    .box.splash.schemas {
+      height:28rem;
+      background-image: url("/images/programme-separation-wide.jpg");
+      @media
+      only screen and (-webkit-min-device-pixel-ratio: 2),
+      only screen and (   min--moz-device-pixel-ratio: 2),
+      only screen and (     -o-min-device-pixel-ratio: 2/1),
+      only screen and (        min-device-pixel-ratio: 2),
+      only screen and (                min-resolution: 192dpi),
+      only screen and (                min-resolution: 2dppx) { 
+        background-image: url("/images/programme-separation-wide@2x.jpg");
+      }
+
+      
+
+      .title.is-1,
+      h1, h2 {
+        color: v.$white;
+      }
+      h1 {
+        font-size: var(--bulma-size-4);
+      }
+      h2 {
+        font-size: var(--bulma-size-5);
+      }
+      .intro {
+        border-radius: var(--bulma-radius-large);
+        padding:0.75rem;
+        background-color: rgba(255, 255, 255, 1);
+        margin-top: 0.75rem;
+
+      }
+    }
   }
 }
 .landing-pour-vous,
