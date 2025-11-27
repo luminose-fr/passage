@@ -1082,12 +1082,8 @@ section.qui,
   }
 
   .hero-body {
-    .box.splash.separation,
-    .box.splash.burnout,
-    .box.splash.deuil,
-    .box.splash.schemas {
-      height:28rem;
-      background-image: url("/images/programme-separation-wide.jpg");
+    .box.splash.separation {
+      background-image: url("/images/landing/reconstruire-apres-separation.jpg");
       @media
       only screen and (-webkit-min-device-pixel-ratio: 2),
       only screen and (   min--moz-device-pixel-ratio: 2),
@@ -1095,27 +1091,87 @@ section.qui,
       only screen and (        min-device-pixel-ratio: 2),
       only screen and (                min-resolution: 192dpi),
       only screen and (                min-resolution: 2dppx) { 
-        background-image: url("/images/programme-separation-wide@2x.jpg");
+        background-image: url("/images/landing/reconstruire-apres-separation@2x.jpg");
+      }
+    }
+    .box.splash.burnout {
+      background-image: url("/images/landing/retrouver-sens-burn-out.jpg");
+      @media
+      only screen and (-webkit-min-device-pixel-ratio: 2),
+      only screen and (   min--moz-device-pixel-ratio: 2),
+      only screen and (     -o-min-device-pixel-ratio: 2/1),
+      only screen and (        min-device-pixel-ratio: 2),
+      only screen and (                min-resolution: 192dpi),
+      only screen and (                min-resolution: 2dppx) { 
+        background-image: url("/images/landing/retrouver-sens-burn-out@2x.jpg");
+      }
+    }
+    .box.splash.deuil {
+      background-image: url("/images/landing/accompagnement-profond-deuil.jpg");
+      @media
+      only screen and (-webkit-min-device-pixel-ratio: 2),
+      only screen and (   min--moz-device-pixel-ratio: 2),
+      only screen and (     -o-min-device-pixel-ratio: 2/1),
+      only screen and (        min-device-pixel-ratio: 2),
+      only screen and (                min-resolution: 192dpi),
+      only screen and (                min-resolution: 2dppx) { 
+        background-image: url("/images/landing/accompagnement-profond-deuil@2x.jpg");
+      }
+    }
+    .box.splash.schemas {
+      .title.is-1,
+      .intro {
+        color: v.$prune-vivid !important;
       }
 
-      
+      background-image: url("/images/landing/rompre-schemas-repetitifs.jpg");
+      @media
+      only screen and (-webkit-min-device-pixel-ratio: 2),
+      only screen and (   min--moz-device-pixel-ratio: 2),
+      only screen and (     -o-min-device-pixel-ratio: 2/1),
+      only screen and (        min-device-pixel-ratio: 2),
+      only screen and (                min-resolution: 192dpi),
+      only screen and (                min-resolution: 2dppx) { 
+        background-image: url("/images/landing/rompre-schemas-repetitifs@2x.jpg");
+      }
+    }
+
+    .box.splash.separation,
+    .box.splash.burnout,
+    .box.splash.deuil,
+    .box.splash.schemas {
+      height:42rem;
+      position: relative;
 
       .title.is-1,
-      h1, h2 {
+      .intro {
         color: v.$white;
       }
       h1 {
-        font-size: var(--bulma-size-4);
+        margin: 1.5rem 0;
+        font-size: var(--bulma-size-2);
+        font-family: v.$family-serif;
+        line-height: 2rem;
       }
       h2 {
-        font-size: var(--bulma-size-5);
+        font-family: v.$family-sans-serif;
+        font-size: var(--bulma-size-6);
       }
       .intro {
-        border-radius: var(--bulma-radius-large);
-        padding:0.75rem;
-        background-color: rgba(255, 255, 255, 1);
+        font-size: var(--bulma-size-5);
         margin-top: 0.75rem;
-
+      }
+      h1, p, .box {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .box {
+        position: absolute;
+        bottom: 1.5rem;
+        max-width: 500px;
+        left:0;
+        right:0;
       }
     }
   }
