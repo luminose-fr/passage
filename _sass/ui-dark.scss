@@ -216,7 +216,7 @@
     background-color: v.$orange-light-dark-alt;
     color: v.$orange-dark-alt;
 
-    h3 { color: v.$orange-dark-alt; }
+    .illustration, h3, h4 { color: v.$orange-dark-alt; }
     small { color: v.$orange-medium-dark-alt; }
     hr { background-color: v.$orange-dark-alt; }
   }
@@ -378,6 +378,93 @@
     background-color: rgba(0, 0, 0, 0.75);
   }
 
+  /* =========================
+    LANDING PAGES
+  ========================= */
+  .landing-page-body {
+
+
+    .hero-body {
+      .box.splash {
+
+        .title.is-1,
+        .intro {
+          color: v.$white-dark-alt;
+        }
+        h1 {
+          
+        }
+        h2 {
+          
+        }
+      }
+      
+      .box.splash.schemas {
+        .title.is-1 {
+          color: v.$white-dark-alt !important;
+        }
+      }
+      .box.splash.burnout {
+        .title.is-1,
+        .intro {
+          color: v.$prune-vivid-dark-alt !important;
+        }
+      }
+    }
+    
+    .is-checkradio {
+        &[type="radio"] {
+        + label::before {
+          background-color: v.$white-dark-alt;
+          border-color: v.$pink-dark-alt;
+        }
+        + label::after {
+          background-color: v.$prune-vivid-dark-alt;
+        }
+      }
+
+      &[type=checkbox]:hover:not([disabled])+label::before,
+      &[type=radio]:hover:not([disabled])+label::before {
+        border-color: v.$pink-light-dark-alt !important;
+      }
+
+      &[type=checkbox]:checked+label::before,
+      &[type=radio]:checked+label::before {
+        background-color: transparent; //v.$white-dark-alt;
+        border-color: v.$pink-dark-alt;
+      }
+
+      &[type=checkbox]+label::before,
+      &[type=radio]+label::before {
+        background-color:  transparent; //v.$white-dark-alt;
+        border-color: v.$pink-dark-alt;
+      }
+      &[type=checkbox]+label::after, 
+      &[type=checkbox]+label:after {
+        border-color: v.$pink-dark-alt;
+      }
+    }
+  }
+
+  .landing-vous-attend {
+    .parcours-visuel-calme {
+      .etape {
+
+        background-color: v.$pink-dark-alt;
+
+        strong {
+          background: linear-gradient(90deg, #460138, #621252);
+          color: v.$pink-dark-alt-2;
+        }
+
+        .numero-etape {
+          background-color: v.$white-dark-alt;
+        }
+
+      }
+    }
+  }
+
   @include mixins.tablet-only {
     .avant-pendant-apres .column:not(:first-child) {
       border-left: 2px v.$brown-dark solid;
@@ -435,6 +522,42 @@
         .swiper-slide {
           .has-rounded-corners-small {
             box-shadow: v.$nav-shadow-dark-alt;
+          }
+        }
+      }
+    }
+    /* =========================
+      LANDING PAGES
+    ========================= */
+    .landing-page-body {
+      .box h4 {
+        font-size: var(--bulma-size-7);
+        margin-bottom: .75rem;
+      }
+
+      .hero-body {
+        .box.splash.separation,
+        .box.splash.burnout,
+        .box.splash.deuil,
+        .box.splash.schemas {
+          .title.is-1,
+          .intro {
+            color: v.$white-dark-alt;
+          }
+          .intro {
+                background-color: v.$prune-vivid-dark-alt ;
+
+                strong {
+                  background: transparent;
+                  color: v.$white-dark-alt;
+                  padding: 0;
+                }
+              }
+        }
+        .box.splash.burnout {
+          .title.is-1,
+          .intro {
+            color: v.$white-dark-alt !important;
           }
         }
       }
