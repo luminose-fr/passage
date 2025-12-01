@@ -52,6 +52,9 @@ strong {
   background: linear-gradient(90deg, rgba(v.$pink-light, 1), rgba(v.$gold-light, 1));
   border-radius: var(--bulma-radius);
   padding: 0.05em 0.2em;
+  /* La clé pour avoir des coins arrondis sur chaque ligne */
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone; /* Pour Safari */
 
   .has-pink-contrast &,
   .has-orange-medium-contrast &,
@@ -95,6 +98,91 @@ h5,
   font-family: v.$family-serif;
   font-size: var(--bulma-size-2);
 }
+
+/* =========================
+   Tooltips
+========================= */
+.tooltip-trigger {
+  position: relative;
+  cursor: help;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.2em;
+  text-decoration-color:rgba(255, 255, 255, 0.5);
+  transition: text-decoration-color 0.2s ease;
+}
+.tooltip-trigger:hover {
+  text-decoration-color:rgba(255, 255, 255, 1);
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  
+  background: v.$white;
+  color: v.$prune-vivid;
+  // border: 1px solid var(--bulma-border);
+  border-radius: var(--bulma-radius);
+  box-shadow: var(--bulma-shadow);
+  
+  padding: 0.75rem 1rem;
+  max-width: 300px;
+  width: max-content;
+  
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: left;
+  text-decoration: none;
+  
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  
+  z-index: 1000;
+
+  // Flèche pointant vers le bas
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    border: 0.5rem solid transparent;
+    border-top-color: v.$white;
+  }
+
+}
+
+// Affichage au survol et au focus
+.tooltip-trigger:hover .tooltip,
+.tooltip-trigger:focus .tooltip,
+.tooltip-trigger.is-active .tooltip {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tooltip-trigger[data-tooltip-position="top"] .tooltip {
+  bottom: calc(100% + 0.5rem);
+  top: auto;
+  
+  &::after {
+    top: 100%;
+    bottom: auto;
+    border-top-color:  v.$white;
+    border-bottom-color: transparent;
+  }
+  
+  &::before {
+    top: 100%;
+    bottom: auto;
+    border-top-color: var(--bulma-border);
+    border-bottom-color: transparent;
+  }
+}
+
 
 /* =========================
    SECTIONS
@@ -183,7 +271,6 @@ h5,
   }
 
   strong { 
-    // background-color: v.$gold-medium; 
     background: linear-gradient(90deg, rgba(100,40,70,0.15), rgba(220,140,160,0.15));
     color: v.$prune-vivid;
   }
@@ -632,6 +719,9 @@ button.nav-chip {
       max-width: 500px;
       margin-left: auto;
       margin-right: auto;
+    }
+    p {
+      margin-bottom: 1rem;
     }
 
     @media
