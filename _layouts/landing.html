@@ -8,7 +8,7 @@
   <div class="gradient-fixed"></div>
   {% include noscript.html %}
   <main id="main" role="main" class="site-main">
-    {{ content | french_typography }}
+    {{ content | add_tooltips | french_typography }}
   </main>
   {% include footer.html %}
   {% include cookie-banner.html %}

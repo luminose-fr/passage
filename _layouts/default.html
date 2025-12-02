@@ -9,7 +9,7 @@
   {% include noscript.html %}
   {% include navigation.html %}
   <main id="main" role="main" class="site-main">
-    {{ content | french_typography }}
+    {{ content | add_tooltips | french_typography }}
   </main>
   {% include footer.html %}
   {% include cookie-banner.html %}

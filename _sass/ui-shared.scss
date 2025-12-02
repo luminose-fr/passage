@@ -108,11 +108,11 @@ h5,
   text-decoration: underline;
   text-decoration-style: dotted;
   text-underline-offset: 0.2em;
-  text-decoration-color:rgba(255, 255, 255, 0.5);
+  text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
   transition: text-decoration-color 0.2s ease;
 }
 .tooltip-trigger:hover {
-  text-decoration-color:rgba(255, 255, 255, 1);
+  text-decoration-color: currentColor;
 }
 
 .tooltip {
@@ -126,6 +126,9 @@ h5,
   // border: 1px solid var(--bulma-border);
   border-radius: var(--bulma-radius);
   box-shadow: var(--bulma-shadow);
+  font-weight: normal;
+  font-family: v.$family-sans-serif;
+  font-size: var(--bulma-size-6);
   
   padding: 0.75rem 1rem;
   max-width: 300px;
