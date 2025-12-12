@@ -306,6 +306,15 @@
       color: v.$prune-vivid-dark-alt;
     }
 
+    .columns.options-exclusion {
+      background-color: v.$white-dark-alt;
+      border: 3px v.$pink-dark-alt solid;
+      
+      .column:not(:last-child) {
+        border-right: 3px v.$pink-dark-alt dotted;
+      }
+    }
+
     .columns.field.is-horizontal {
       .column.is-3 .label {
         color: v.$prune-vivid-dark-alt;
@@ -485,6 +494,11 @@
       .adequation-close.button.is-white {
         background: rgba(0, 0, 0, 0.9);
         color: v.$prune-vivid-dark-alt;
+      }
+      .columns.options-exclusion {
+        .column:not(:last-child) {
+          border-right: none;
+        }
       }
 
       .form-step:not([data-step="0"]):not([data-step="0b"]) {

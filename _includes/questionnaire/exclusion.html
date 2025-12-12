@@ -7,14 +7,48 @@
     <div class="column is-9">
         <p class="notification is-danger is-light" role="alert">Malheuresement, d'après vos réponses et pour des raisons de
             sécurité, ce parcours ne me semble pas adapté à votre situation actuelle.</p>
-        <p>Vous pouvez demander un examen manuel si vous pensez qu'il y a une erreur ou qu'avec certains aménagements ce
-            parcours pourrait vous être adapté.</p>
-        {% include tiny-signature.html %}
+        <div class="columns options-exclusion">
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="principal">
+                            <p class="illustration"><i class="icon icon-key"></i></p>
+                            <h3>Demander un examen manuel</h3>
+                        </div>
 
-        <div class="buttons">
-            <a class="button is-secondary" href="/securite/">Voir la page cadre & sécurité</a>
-            <a href="mailto:florent@luminose.fr?subject=Demande examen manuel - Le Seuil" type="button"
-                class="button is-primary">Demander un examen manuel</a>
+                        <div class="content has-text-left">
+                            <p>Vous pouvez demander un examen manuel si vous pensez qu'il y a une erreur ou qu'avec certains aménagements ce
+                                parcours pourrait vous être adapté.</p>
+                            
+
+                            <div class="buttons is-centered">
+                                <a class="button is-secondary" href="/securite/">Cadre & sécurité</a>
+                                <a href="mailto:florent@luminose.fr?subject=Demande examen manuel - Le Seuil" type="button"
+                                    class="button is-primary">Demander un examen manuel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="principal">
+                            <p class="illustration"><i class="icon icon-luminose"></i></p>
+                        <h3>Une autre possibilité d’accompagnement</h3>
+                        </div>
+                        <div class="content has-text-left">
+                            <p>Si vous ressentez le besoin d’être accompagné dès maintenant, je vous invite à découvrir l’espace d’<strong>accompagnement individuel</strong> que je propose sur <a href="https://www.luminose.fr">luminose.fr</a> — un chemin plus souple et progressif pour avancer en sécurité.</p>
+
+                            <div class="buttons is-centered">
+                                <a href="https://www.luminose.fr" type="button" class="button is-primary">www.luminose.fr</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        {% include tiny-signature.html %}
+            
     </div>
 </div>

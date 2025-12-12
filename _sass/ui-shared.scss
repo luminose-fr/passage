@@ -1019,6 +1019,26 @@ section.qui,
     }
   }
 
+  .columns.options-exclusion {
+    background-color: v.$white;
+    border: 3px v.$pink solid;
+    border-radius: v.$rounded-radius;
+    margin:0 0 var(--bulma-block-spacing) 0;
+    
+    .column h3 {
+      margin:0;
+    }
+    
+    .column:not(:last-child) {
+      position: relative;
+      border-right: 3px v.$pink dotted;
+    }
+
+    .card-content {
+      padding: 0;
+    }
+  }
+
   
 
   .columns.field.is-horizontal {
