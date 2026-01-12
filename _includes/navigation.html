@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="nav-cta">
-        <a href="{{ '/adequation/' | relative_url }}" class="button is-primary cta-pill" onclick="track('click_cta_header')">{{ site.cta_label | default: "Vérifier l’adéquation" }}</a>
+        <a href="{{ '/adequation/' | relative_url }}" class="button is-primary cta-pill" data-track="bt_verifier_adequation">{{ site.cta_label | default: "Vérifier l’adéquation" }}</a>
       </div>
     </div>
 
@@ -38,7 +38,7 @@
         <button class="button nav-chip nav-menu-button" aria-controls="mobile-overlay" aria-expanded="false">Menu</button>
       </div>
       <div class="nav-cta">
-        <a href="{{ '/adequation/' | relative_url }}" class="button nav-chip is-primary cta-pill" onclick="track('click_cta_header')">{{ site.cta_label | default: "Vérifier l’adéquation" }}</a>
+        <a href="{{ '/adequation/' | relative_url }}" class="button nav-chip is-primary cta-pill" data-track="bt_verifier_adequation">{{ site.cta_label | default: "Vérifier l’adéquation" }}</a>
       </div>
     </div>
   
