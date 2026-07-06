@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /confirmation/
-Sitemap: https://passage.luminose.fr/sitemap.xml
